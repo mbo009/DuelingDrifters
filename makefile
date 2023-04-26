@@ -1,4 +1,6 @@
-all: compile link
+all: build launch clean
+
+build: compile link
 
 compile:
 	g++ -Isrc/include -c code/*.cpp
@@ -6,6 +8,9 @@ compile:
 link:
 	g++ main.o -o main -Lsrc/lib -lsfml-graphics -lsfml-window -lsfml-system
 
+launch:
+	./main.exe
+
 clean:
-	del main.o 
+	del main.o
 	del main.exe

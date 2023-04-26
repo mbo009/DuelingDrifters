@@ -4,7 +4,10 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 800), "Racing game!");
     sf::CircleShape shape(100.f);
-
+    sf::Texture tCar;
+    tCar.loadFromFile("img/downLeftRed.png");
+    sf::Sprite car(tCar);
+    car.setScale(sf::Vector2f(5.0, 5.0));
     while (window.isOpen())
     {
         sf::Event event;
@@ -13,8 +16,8 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
-        window.clear(sf::Color::White);
+        window.clear(sf::Color::Black);
+        window.draw(car);
         window.display();
     }
 
