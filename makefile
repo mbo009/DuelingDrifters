@@ -6,7 +6,7 @@ compile:
 	g++ -Isrc/include -c code/*.cpp
 
 link:
-	g++ main.o -o main -Lsrc/lib -lsfml-graphics -lsfml-window -lsfml-system
+	g++ *.o -o main -Lsrc/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 launch:
 	./main.exe
