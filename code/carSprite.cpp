@@ -44,22 +44,26 @@ bool CarSprite::reloadTextures()
     setTexture(textures[0]);
 }
 
-void CarSprite::updateCarDirection(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed)
+bool CarSprite::setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed)
 {
     if (WPressed && DPressed)
-        setTexture(textures[1]);
+        keyAction = 1;
     else if (DPressed && SPressed)
-        setTexture(textures[3]);
+        keyAction = 3;
     else if (SPressed && APressed)
-        setTexture(textures[5]);
+        keyAction = 5;
     else if (APressed && WPressed)
-        setTexture(textures[7]);
+        keyAction = 7;
     else if (WPressed)
-        setTexture(textures[0]);
+        keyAction = 0;
     else if (DPressed)
-        setTexture(textures[2]);
+        keyAction = 2;
     else if (SPressed)
-        setTexture(textures[4]);
+        keyAction = 4;
     else if (APressed)
-        setTexture(textures[6]);
+        keyAction = 6;
+}
+void CarSprite::updateDirectionTexture()
+{
+    setTexture(textures[keyAction]);
 }

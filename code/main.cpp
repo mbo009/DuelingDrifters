@@ -23,14 +23,20 @@ int main()
             bool DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
             bool RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
             if (event.type == sf::Event::KeyPressed)
-                car.updateCarDirection(UpPressed, LeftPressed, DownPressed, RightPressed);
+            {
+                car.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
+                car.updateDirectionTexture();
+            }
 
             UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
             LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
             DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
             RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
             if (event.type == sf::Event::KeyPressed)
-                car2.updateCarDirection(UpPressed, LeftPressed, DownPressed, RightPressed);
+            {
+                car2.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
+                car2.updateDirectionTexture();
+            }
         }
 
         window.clear(sf::Color::Black);
