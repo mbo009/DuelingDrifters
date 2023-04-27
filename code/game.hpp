@@ -1,7 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
-#include "carSprite.hpp"
+
+#include <SFML/Audio.hpp>
 #include <memory>
+#include "carSprite.hpp"
 
 class Game
 {
@@ -15,13 +17,17 @@ public:
     void loadFont();
     void nextSong();
     void nextMap();
-    sf::Sound music;
     std::vector<CarSprite> cars;
 
 private:
+    sf::Sound startSound;
+    sf::Sound crashSound;
+    sf::Sound music;
     sf::Texture carTexture;
     sf::Texture mapTexture;
     sf::SoundBuffer musicBuffer;
+    sf::SoundBuffer startSoundBuffer;
+    sf::SoundBuffer crashSoundBuffer;
     sf::Clock clock;
     sf::Time roundTime;
     sf::Font font;

@@ -81,10 +81,20 @@ void Game::nextMap()
 
 void Game::loadMusic()
 {
+    startSoundBuffer.loadFromFile("music/gameStart.ogg");
+    startSound.setBuffer(startSoundBuffer);
+    startSound.setVolume(60);
+    startSound.play();
+
     musicBuffer.loadFromFile("music/" + musicPath[songIndex]); // to be changed
     music.setBuffer(musicBuffer);
     music.setLoop(true);
     music.setVolume(20);
+
+    crashSoundBuffer.loadFromFile("music/crash.ogg");
+    crashSound.setBuffer(crashSoundBuffer);
+    crashSound.setVolume(60);
+
     music.play();
 }
 
@@ -109,6 +119,11 @@ void Game::loadObjectsRound()
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
     for (auto &car : cars)
         car.move();
+    if (cars[0].getGlobalBounds().intersects(cars[1].getGlobalBounds()))
+    {
+        crashSound.play();
+    }
+
     window->clear(sf::Color::Black);
     window->draw(map);
     window->draw(cars[0]);

@@ -1,6 +1,14 @@
 #include "game.hpp"
 #include <iostream>
 
+// TODO
+// * collisions
+// * sound when collision
+// * countdown before starting game
+// * player point system
+// * game stopping when car out of ring, point going to the other player
+// * hp system for cars, hp meter in bottom corners of screen
+
 int main()
 {
     std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1024, 1024), "CARBRAWL");
