@@ -31,8 +31,8 @@ private:
     float rotation = 0;
     float xVelocity = 0;
     float yVelocity = 0;
-    float maxSpeed = 0.5;
-    float acceleration = 0.001;
+    float maxSpeed = 6;
+    float acceleration = 0.2;
     float x = 300;
     float y = 300;
 };

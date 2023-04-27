@@ -3,13 +3,18 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Racing game!");
+    sf::RenderWindow window(sf::VideoMode(1024, 1024), "CARBRAWL");
     window.setFramerateLimit(60);
-
+    bool UpPressed, LeftPressed, DownPressed, RightPressed;
     CarSprite car = CarSprite("Red", 300, 300);
     CarSprite car2 = CarSprite("Red", 200, 200);
-    car.setScale(sf::Vector2f(3.0, 3.0));
-    car2.setScale(sf::Vector2f(3.0, 3.0));
+    sf::Texture mapTexture;
+    mapTexture.loadFromFile("img/spaceMap.png");
+    sf::Sprite map(mapTexture);
+    map.setScale(sf::Vector2f(1.5, 1.5));
+    map.setOrigin(190, 230);
+    car.setScale(sf::Vector2f(2.5, 2.5));
+    car2.setScale(sf::Vector2f(2.5, 2.5));
 
     while (window.isOpen())
     {
@@ -30,7 +35,6 @@ int main()
             }
             else
                 car.noMovementKeyPressed();
-            car.move();
 
             UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
             LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
@@ -43,10 +47,11 @@ int main()
             }
             else
                 car2.noMovementKeyPressed();
-            car2.move();
         }
-
+        car.move();
+        car2.move();
         window.clear(sf::Color::Black);
+        window.draw(map);
         window.draw(car);
         window.draw(car2);
         window.display();
