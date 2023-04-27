@@ -4,11 +4,13 @@
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Racing game!");
+    window.setFramerateLimit(60);
+
     CarSprite car = CarSprite("Red", 300, 300);
     CarSprite car2 = CarSprite("Red", 200, 200);
     car.setScale(sf::Vector2f(3.0, 3.0));
     car2.setScale(sf::Vector2f(3.0, 3.0));
-    // car2.setPosition(200, 200);
+
     while (window.isOpen())
     {
         sf::Event event;
