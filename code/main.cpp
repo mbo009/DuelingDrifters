@@ -17,19 +17,22 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
             bool UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
             bool LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
             bool DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
             bool RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+            if (event.type == sf::Event::KeyPressed)
+                car.updateCarDirection(UpPressed, LeftPressed, DownPressed, RightPressed);
 
-            car.updateCarDirection(event, UpPressed, LeftPressed, DownPressed, RightPressed);
             UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
             LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
             DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
             RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-
-            car2.updateCarDirection(event, UpPressed, LeftPressed, DownPressed, RightPressed);
+            if (event.type == sf::Event::KeyPressed)
+                car2.updateCarDirection(UpPressed, LeftPressed, DownPressed, RightPressed);
         }
+
         window.clear(sf::Color::Black);
         window.draw(car);
         window.draw(car2);

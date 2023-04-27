@@ -4,7 +4,7 @@ class CarSprite : public sf::Sprite
 {
 public:
     CarSprite(std::string color);
-    void updateCarDirection(sf::Event &event, bool &W, bool &A, bool &S, bool &D);
+    void updateCarDirection(bool &W, bool &A, bool &S, bool &D);
     bool reloadTextures();
     void setColor(std::string newColor);
     std::string getColor();

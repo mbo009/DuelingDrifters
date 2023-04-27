@@ -44,7 +44,7 @@ bool CarSprite::reloadTextures()
     setTexture(textures[0]);
 }
 
-void CarSprite::updateCarDirection(sf::Event &event, bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed)
+void CarSprite::updateCarDirection(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed)
 {
     if (WPressed && DPressed)
         setTexture(textures[1]);

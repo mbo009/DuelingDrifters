@@ -12,5 +12,5 @@ launch:
 	./main.exe
 
 clean:
-	del main.o
-	del main.exe
+	del *.o
+	del *.exe
