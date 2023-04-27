@@ -2,6 +2,7 @@
 #define CARSPRITE_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <cmath>
 
 enum TriStateBool

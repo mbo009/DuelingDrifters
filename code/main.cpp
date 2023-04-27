@@ -9,13 +9,19 @@ int main()
     CarSprite car = CarSprite("Red", 300, 300);
     CarSprite car2 = CarSprite("Red", 200, 200);
     sf::Texture mapTexture;
+    sf::SoundBuffer musicBuffer;
+    sf::Sound music;
+    musicBuffer.loadFromFile("music/battleTheme.ogg");
+    music.setBuffer(musicBuffer);
+    music.setLoop(true);
     mapTexture.loadFromFile("img/spaceMap.png");
     sf::Sprite map(mapTexture);
     map.setScale(sf::Vector2f(1.5, 1.5));
     map.setOrigin(190, 230);
     car.setScale(sf::Vector2f(2.5, 2.5));
     car2.setScale(sf::Vector2f(2.5, 2.5));
-
+    music.play();
+    music.setVolume(20);
     while (window.isOpen())
     {
         sf::Event event;
