@@ -3,13 +3,12 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 800), "Racing game!");
-    CarSprite car = CarSprite("Red");
-    CarSprite car2 = CarSprite("Red");
+    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Racing game!");
+    CarSprite car = CarSprite("Red", 300, 300);
+    CarSprite car2 = CarSprite("Red", 200, 200);
     car.setScale(sf::Vector2f(3.0, 3.0));
-    car.setPosition(400, 400);
     car2.setScale(sf::Vector2f(3.0, 3.0));
-    car2.setPosition(200, 200);
+    // car2.setPosition(200, 200);
     while (window.isOpen())
     {
         sf::Event event;
@@ -22,21 +21,27 @@ int main()
             bool LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
             bool DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
             bool RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-            if (event.type == sf::Event::KeyPressed)
+            if ((UpPressed || LeftPressed || DownPressed || RightPressed))
             {
                 car.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
                 car.updateDirectionTexture();
             }
+            else
+                car.noMovementKeyPressed();
+            car.move();
 
             UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
             LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
             DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
             RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-            if (event.type == sf::Event::KeyPressed)
+            if ((UpPressed || LeftPressed || DownPressed || RightPressed))
             {
                 car2.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
                 car2.updateDirectionTexture();
             }
+            else
+                car2.noMovementKeyPressed();
+            car2.move();
         }
 
         window.clear(sf::Color::Black);
