@@ -3,7 +3,6 @@ std::vector<std::string> files = {"up", "upRight", "right", "downRight",
                                   "down", "downLeft", "left", "upLeft"};
 std::string folder = "img";
 std::string extension = "png";
-std::string color = "Red";
 
 class loadingTexturesError : public std::exception
 {
@@ -14,9 +13,14 @@ public:
     }
 };
 
-CarSprite::CarSprite()
+CarSprite::CarSprite(std::string color)
 {
-    reloadTextures();
+    setColor(color);
+}
+
+std::string CarSprite::getColor()
+{
+    return color;
 }
 
 void CarSprite::setColor(std::string new_color)
@@ -42,20 +46,20 @@ bool CarSprite::reloadTextures()
 
 void CarSprite::updateCarDirection(sf::Event &event, bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed)
 {
-    if (event.type == sf::Event::KeyPressed && WPressed && DPressed)
+    if (WPressed && DPressed)
         setTexture(textures[1]);
-    else if (event.type == sf::Event::KeyPressed && DPressed && SPressed)
+    else if (DPressed && SPressed)
         setTexture(textures[3]);
-    else if (event.type == sf::Event::KeyPressed && SPressed && APressed)
+    else if (SPressed && APressed)
         setTexture(textures[5]);
-    else if (event.type == sf::Event::KeyPressed && APressed && WPressed)
+    else if (APressed && WPressed)
         setTexture(textures[7]);
-    else if (event.type == sf::Event::KeyPressed && WPressed)
+    else if (WPressed)
         setTexture(textures[0]);
-    else if (event.type == sf::Event::KeyPressed && DPressed)
+    else if (DPressed)
         setTexture(textures[2]);
-    else if (event.type == sf::Event::KeyPressed && SPressed)
+    else if (SPressed)
         setTexture(textures[4]);
-    else if (event.type == sf::Event::KeyPressed && APressed)
+    else if (APressed)
         setTexture(textures[6]);
 }
