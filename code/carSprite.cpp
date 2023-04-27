@@ -77,18 +77,18 @@ void CarSprite::changeVelocity(TriStateBool xAcc, TriStateBool yAcc)
     else if (xVelocity - acceleration > -maxSpeed && xAcc == 0) // Left
         xVelocity -= acceleration;
     else if (xAcc == 1 && xVelocity > 0)
-        xVelocity -= acceleration / 16;
+        xVelocity -= acceleration / 4;
     else if (xAcc == 1 && xVelocity < 0)
-        xVelocity += acceleration / 16;
+        xVelocity += acceleration / 4;
 
     if (yVelocity + acceleration < maxSpeed && yAcc == 2) // Up
         yVelocity += acceleration;
     else if (yVelocity - acceleration > -maxSpeed && yAcc == 0) // Down
         yVelocity -= acceleration;
     else if (yAcc == 1 && yVelocity > 0)
-        yVelocity -= acceleration / 16;
+        yVelocity -= acceleration / 4;
     else if (yAcc == 1 && yVelocity < 0)
-        yVelocity += acceleration / 16;
+        yVelocity += acceleration / 4;
 }
 
 void CarSprite::move()
