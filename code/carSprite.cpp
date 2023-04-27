@@ -17,6 +17,7 @@ CarSprite::CarSprite(std::string color, float x, float y) : x(x), y(y)
 {
     setColor(color);
     setPosition(x, y);
+    sf::Texture temp;
 }
 
 std::string CarSprite::getColor()
@@ -89,6 +90,10 @@ void CarSprite::changeVelocity(TriStateBool xAcc, TriStateBool yAcc)
         yVelocity -= acceleration / 2;
     else if (yAcc == 1 && yVelocity < 0)
         yVelocity += acceleration / 2;
+    if (std::abs(xVelocity) < 0.1)
+        xVelocity = 0;
+    if (std::abs(yVelocity) < 0.1)
+        yVelocity = 0;
 }
 
 void CarSprite::move()

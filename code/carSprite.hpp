@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <cmath>
+#include <vector>
 
 enum TriStateBool
 {
@@ -25,8 +26,8 @@ public:
     void noMovementKeyPressed();
 
 private:
-    void changeVelocity(TriStateBool xAcc, TriStateBool yAcc);
     std::vector<sf::Texture> textures;
+    void changeVelocity(TriStateBool xAcc, TriStateBool yAcc);
     std::string color = "";
     unsigned int keyAction = 0;
     float rotation = 0;
