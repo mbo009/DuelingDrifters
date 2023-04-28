@@ -25,15 +25,13 @@ void Game::makeCar(std::string color)
 {
     if (cars.size() == 0)
     {
-        CarSprite car = CarSprite(color, 80, 50);
-        car.setScale(sf::Vector2f(2.5, 2.5));
+        CarSprite car = CarSprite(color, 80, 50, 2.5);
         cars.push_back(car);
     }
 
     else
     {
-        CarSprite car = CarSprite(color, 850, 850);
-        car.setScale(sf::Vector2f(2.5, 2.5));
+        CarSprite car = CarSprite(color, 850, 850, 2.5);
         cars.push_back(car);
     }
 }
@@ -120,7 +118,7 @@ void Game::loadObjectsRound()
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
     for (auto &car : cars)
         car.move();
-    if (cars[0].getGlobalBounds().intersects(cars[1].getGlobalBounds()))
+    if (cars[0].checkCollision(cars[1]))
     {
         crashSound.play();
     }
