@@ -29,18 +29,17 @@ void Game::makeCar(std::string color)
 {
     if (cars.size() == 0)
     {
-        CarSprite car = CarSprite(color, 80, 50);
-        car.setScale(sf::Vector2f(2.5, 2.5));
+        CarSprite car = CarSprite(color, 80, 50, 2.5);
         cars.push_back(car);
     }
 
     else
     {
-        CarSprite car = CarSprite(color, 850, 850);
-        car.setScale(sf::Vector2f(2.5, 2.5));
+        CarSprite car = CarSprite(color, 850, 850, 2.5);
         cars.push_back(car);
     }
 }
+
 // TODO: To change
 void Game::handleEvent(sf::Event &event)
 {
@@ -196,7 +195,7 @@ void Game::loadObjectsRound()
         car.move();
     checkPointCondition();
 
-    if (cars[0].getGlobalBounds().intersects(cars[1].getGlobalBounds()))
+    if (cars[0].checkCollision(cars[1]))
     {
         crashSound.play();
         handleCarCollision();
