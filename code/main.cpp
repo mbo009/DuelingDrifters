@@ -12,10 +12,10 @@
 int main()
 {
     std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1024, 1024), "CARBRAWL");
-    std::shared_ptr<CarSprite> car = std::make_shared<CarSprite>("Red", 100, 100);
+    // std::shared_ptr<CarSprite> car = std::make_shared<CarSprite>("Red", 100, 100, 1);
     Game game = Game(window);
-
-    // the best option we found for now to preload car texture
+    // TODO: Change this or f*ck up (Load default texture)
+    // // the best option we found for now to preload car texture
     sf::Texture t;
     sf::Texture t1;
     t.loadFromFile("img/downRightRed.png");
