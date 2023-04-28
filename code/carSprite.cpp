@@ -87,3 +87,18 @@ void CarSprite::move()
     carObj.move(keyAction);
     setPosition(getX(), getY());
 }
+
+sf::Vector2f CarSprite::getVelocity()
+{
+    return sf::Vector2f(carObj.getXVelocity(), carObj.getYVelocity());
+}
+
+void CarSprite::getPushed(float opXV, float opYV)
+{
+    this->carObj.getPushed(opXV, opYV);
+}
+
+void CarSprite::push(float opXV, float opYV)
+{
+    this->carObj.push(opXV, opYV);
+}

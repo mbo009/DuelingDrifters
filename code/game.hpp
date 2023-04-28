@@ -11,6 +11,7 @@ public:
     Game(std::shared_ptr<sf::RenderWindow> window);
     void makeCar(std::string color);
     void handleEvent(sf::Event &event);
+    void handleCarCollision();
     void loadMusic();
     void loadMap();
     void loadObjectsRound();
@@ -37,7 +38,6 @@ private:
     unsigned int songIndex;
     unsigned int mapIndex;
     std::shared_ptr<sf::RenderWindow> window;
-    // std::shared_ptr<sf::Event> event;
 };
 
 #endif
