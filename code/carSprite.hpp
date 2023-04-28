@@ -14,6 +14,8 @@ public:
     std::string getColor() const;
     int getKeyAction() const;
     int getScale() const;
+    int getX() const;
+    int getY() const;
     
     bool reloadTextures();
     void updateDirectionTexture();

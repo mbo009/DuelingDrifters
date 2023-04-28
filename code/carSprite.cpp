@@ -43,6 +43,16 @@ int CarSprite::getScale() const
     return scale;
 }
 
+int CarSprite::getX() const
+{
+    return x;
+}
+
+int CarSprite::getY() const
+{
+    return y;
+}
+
 bool CarSprite::reloadTextures()
 {
     sf::Texture temp;
