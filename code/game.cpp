@@ -36,7 +36,7 @@ void Game::makeCar(std::string color)
         cars.push_back(car);
     }
 }
-
+// TODO: To change
 void Game::handleEvent(sf::Event &event)
 {
     if (event.type == sf::Event::Closed)
