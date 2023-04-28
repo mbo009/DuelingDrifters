@@ -21,9 +21,11 @@ public:
     void noMovementKeyPressed();
     // Get updated position from carObj
     void move();
+    void restartPosition();
     sf::Vector2f getVelocity();
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
+    CarObj &getCarObj();
 
 private:
     // TODO: Add more colors, change the folder, change the extension

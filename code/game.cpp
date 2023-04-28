@@ -16,6 +16,10 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
     view.setSize(1024, 1024);
     timerText = sf::Text("", font, 50);
     timerText.setPosition(428.5, 50.f);
+    car1PointsText = sf::Text("", font, 50);
+    car1PointsText.setPosition(208.f, 50.f);
+    car2PointsText = sf::Text("", font, 50);
+    car2PointsText.setPosition(778.f, 50.f);
     clock.restart();
     makeCar("Red");
     makeCar("Red");
@@ -72,6 +76,16 @@ void Game::nextSong()
 {
     songIndex++;
     songIndex = songIndex % musicPath.size();
+}
+
+bool Game::carCrossedLine(unsigned int carIndex)
+{
+    if (carIndex < cars.size())
+    {
+        if (cars[carIndex].getX() < 40 || cars[carIndex].getY() < 10 || cars[carIndex].getX() > 900 || cars[carIndex].getY() > 900)
+            return true;
+    }
+    return false;
 }
 
 void Game::nextMap()
@@ -147,6 +161,28 @@ void Game::handleCarCollision()
         }
     }
 }
+void Game::checkPointCondition()
+{
+    bool car1CrossedLine = carCrossedLine(0);
+    bool car2CrossedLine = carCrossedLine(1);
+    if (car1CrossedLine)
+    {
+        if (!car2CrossedLine)
+            cars[1].getCarObj().scoredPoint();
+        resetCarPosition();
+    }
+    else if (car2CrossedLine)
+    {
+        cars[0].getCarObj().scoredPoint();
+        resetCarPosition();
+    }
+}
+
+void Game::resetCarPosition()
+{
+    cars[0].restartPosition();
+    cars[1].restartPosition();
+}
 
 void Game::loadObjectsRound()
 {
@@ -154,18 +190,25 @@ void Game::loadObjectsRound()
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
+    car1PointsText.setString(std::to_string(cars[0].getCarObj().getPoints()));
+    car2PointsText.setString(std::to_string(cars[1].getCarObj().getPoints()));
     for (auto &car : cars)
         car.move();
+    checkPointCondition();
+
     if (cars[0].getGlobalBounds().intersects(cars[1].getGlobalBounds()))
     {
         crashSound.play();
         handleCarCollision();
     }
+
     view.setCenter((cars[0].getX() + cars[1].getX() + 3090) / 8, (cars[0].getY() + cars[1].getY() + 3000) / 8);
     window->setView(view);
     window->clear(sf::Color::Black);
     window->draw(map);
     window->draw(timerText);
+    window->draw(car1PointsText);
+    window->draw(car2PointsText);
     window->draw(cars[0]);
     window->draw(cars[1]);
     window->display();

@@ -1,7 +1,9 @@
 #include "carObj.hpp"
 
-CarObj::CarObj(float x, float y) : x(x), y(y)
+CarObj::CarObj(float x, float y) : startX(x), startY(y)
 {
+    x = startX;
+    y = startY;
 }
 
 void CarObj::setX(float x)
@@ -22,6 +24,34 @@ float CarObj::getX() const
 float CarObj::getY() const
 {
     return y;
+}
+
+float CarObj::getStartX() const
+{
+    return startX;
+}
+
+float CarObj::getStartY() const
+{
+    return startY;
+}
+
+void CarObj::restartVelocity()
+{
+    xVelocity = 0;
+    yVelocity = 0;
+}
+
+void CarObj::restartPosition()
+{
+    setX(startX);
+    setY(startY);
+}
+
+void CarObj::restart()
+{
+    restartVelocity();
+    restartPosition();
 }
 
 void CarObj::move(int opsCode)
@@ -47,6 +77,11 @@ void CarObj::move(int opsCode)
 
     setX(x + xVelocity);
     setY(y + yVelocity);
+}
+
+void CarObj::scoredPoint()
+{
+    points++;
 }
 
 void CarObj::changeVelocity(TriStateBool xAcc, TriStateBool yAcc)
@@ -82,6 +117,11 @@ float CarObj::getXVelocity()
 float CarObj::getYVelocity()
 {
     return yVelocity;
+}
+
+unsigned int CarObj::getPoints()
+{
+    return points;
 }
 
 void CarObj::capVelocity(float multiplier)
