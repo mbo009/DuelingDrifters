@@ -100,7 +100,6 @@ void CarSprite::noMovementKeyPressed()
 void CarSprite::move()
 {
     carObj.move(keyAction);
-
     setPosition(x, y);
 }
 
@@ -158,6 +157,5 @@ void CarSprite::getPushed(float opXV, float opYV)
 
 void CarSprite::push(float opXV, float opYV)
 {
-
     this->carObj.push(opXV, opYV);
 }
