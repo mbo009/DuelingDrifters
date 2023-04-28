@@ -100,7 +100,9 @@ void CarSprite::noMovementKeyPressed()
 void CarSprite::move()
 {
     carObj.move(keyAction);
-    setPosition(x, y);
+    setPosition(carObj.getX(), carObj.getY());
+    this->x = carObj.getX();
+    this->y = carObj.getY();
 }
 
 bool CarSprite::checkCollision(const CarSprite &other)
