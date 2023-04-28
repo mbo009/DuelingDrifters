@@ -10,7 +10,7 @@ class CarSprite : public sf::Sprite
 public:
     CarSprite(const std::string &color = "red", float x = 0, float y = 0, float scale = 1);
     
-    void setColor(const std::string &newColor);
+    void setColor(const std::string &color);
     std::string getColor() const;
     int getKeyAction() const;
     int getScale() const;
