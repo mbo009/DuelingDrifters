@@ -33,7 +33,7 @@ private:
     sf::Font font;
     sf::Sprite map;
     sf::Text timerText;
-
+    sf::View view;
     unsigned int songIndex;
     unsigned int mapIndex;
     std::shared_ptr<sf::RenderWindow> window;
