@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <memory>
 #include "carObj.hpp"
 
 class CarSprite : public sf::Sprite

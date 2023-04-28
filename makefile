@@ -1,5 +1,5 @@
 CXX = g++
-CXX_FLAGS = -Wall -Wextra -Werror -pedantic -std=c++20
+CXX_FLAGS = -Wall -Wextra -Werror -pedantic -std=c++17
 SRC_DIR = code
 TEST_DIR = tests
 

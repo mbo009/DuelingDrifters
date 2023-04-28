@@ -13,6 +13,7 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
     loadMap();
     loadMusic();
     loadFont();
+    view.setSize(1024, 1024);
     timerText = sf::Text("", font, 50);
     timerText.setPosition(428.5, 50.f);
     clock.restart();
@@ -121,11 +122,12 @@ void Game::loadObjectsRound()
     {
         crashSound.play();
     }
-
+    view.setCenter((cars[0].getX() + cars[1].getX() + 3090) / 8, (cars[0].getY() + cars[1].getY() + 3000) / 8);
+    window->setView(view);
     window->clear(sf::Color::Black);
     window->draw(map);
+    window->draw(timerText);
     window->draw(cars[0]);
     window->draw(cars[1]);
-    window->draw(timerText);
     window->display();
 }

@@ -30,7 +30,9 @@ void CarSprite::setColor(const std::string &color)
 
 std::string CarSprite::getColor() const
 {
-    return color;
+    this->color = color;
+    textures.clear(); // Clear the textures vector
+    reloadTextures();
 }
 
 int CarSprite::getKeyAction() const
@@ -59,7 +61,7 @@ bool CarSprite::reloadTextures()
 
 void CarSprite::updateDirectionTexture()
 {
-    setTexture(textures[keyAction]);
+    return carObj.getY();
 }
 
 void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed)
@@ -87,7 +89,7 @@ void CarSprite::noMovementKeyPressed()
     keyAction = 8;
 }
 
-void CarSprite::move()
+void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed)
 {
     carObj.move(keyAction);
     x = carObj.getX();
