@@ -2,38 +2,37 @@
 #define CARSPRITE_H
 
 #include <SFML/Graphics.hpp>
-#include <cmath>
 #include <vector>
-
-enum TriStateBool
-{
-    False, // -
-    Zero,  // 0
-    True   // +
-};
+#include "carObj.hpp"
 
 class CarSprite : public sf::Sprite
 {
 public:
-    CarSprite(std::string color, float x, float y);
-    void updateDirectionTexture();
+    CarSprite(const std::string &color = "red", float x=0, float y=0);
+    void setColor(const std::string &newColor); // Set new color, reload textures
+    std::string getColor() const; // Return the color of the car
     bool reloadTextures();
-    void setColor(std::string newColor);
-    std::string getColor();
+    void updateDirectionTexture();
+    // TODO: Write setter for x, y
+    // Convert user input to parameters to pass to carObj
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed);
-    void move();
     void noMovementKeyPressed();
-
+    // Get updated position from carObj
+    void move();
+    
 private:
+    //TODO: Add more colors, change the folder, change the extension
+    //=================THIS SHOULD BE CHANGE==============//
+    const std::vector<std::string> files = {"up", "upRight", "right", "downRight",
+                                  "down", "downLeft", "left", "upLeft"};
+    const std::string folder = "img";
+    const std::string extension = "png";
+    // ==================================================//
     std::vector<sf::Texture> textures;
-    void changeVelocity(TriStateBool xAcc, TriStateBool yAcc);
+    CarObj carObj;
     std::string color = "";
+    void changeVelocity(TriStateBool xAcc, TriStateBool yAcc);
     unsigned int keyAction = 0;
-    float rotation = 0;
-    float xVelocity = 0;
-    float yVelocity = 0;
-    float maxSpeed = 6;
-    float acceleration = 0.2;
     float x = 300;
     float y = 300;
 };
