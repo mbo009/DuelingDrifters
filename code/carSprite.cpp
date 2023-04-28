@@ -18,7 +18,7 @@ CarSprite::CarSprite(const std::string &color, float x, float y, float scale) : 
     this->scale = scale;
     this->setScale(sf::Vector2f(scale, scale));
     this->setColor(color);
-    
+    carObj = CarObj(x, y);
 }
 
 void CarSprite::setColor(const std::string &color)
@@ -43,16 +43,6 @@ int CarSprite::getScale() const
     return scale;
 }
 
-int CarSprite::getX() const
-{
-    return x;
-}
-
-int CarSprite::getY() const
-{
-    return y;
-}
-
 bool CarSprite::reloadTextures()
 {
     sf::Texture temp;
@@ -65,6 +55,16 @@ bool CarSprite::reloadTextures()
     }
     setTexture(textures[0]);
     return true;
+}
+
+float CarSprite::getX() const
+{
+    return carObj.getX();
+}
+
+float CarSprite::getY() const
+{
+    return carObj.getY();
 }
 
 void CarSprite::updateDirectionTexture()
@@ -97,10 +97,10 @@ void CarSprite::noMovementKeyPressed()
     keyAction = 8;
 }
 
-void CarSprite::move() {
+void CarSprite::move()
+{
     carObj.move(keyAction);
-    x = carObj.getX();
-    y = carObj.getY();
+
     setPosition(x, y);
 }
 
@@ -135,8 +135,8 @@ bool CarSprite::checkCollision(const CarSprite &other)
     {
         for (int y = intersection.top; y < intersection.top + intersection.height; y++)
         {
-            sf::Color color1 = image1.getPixel((x - bounds1.left)/this->scale, (y - bounds1.top)/this->scale);
-            sf::Color color2 = image2.getPixel((x - bounds2.left)/this->scale, (y - bounds2.top)/this->scale);
+            sf::Color color1 = image1.getPixel((x - bounds1.left) / this->scale, (y - bounds1.top) / this->scale);
+            sf::Color color2 = image2.getPixel((x - bounds2.left) / this->scale, (y - bounds2.top) / this->scale);
             if (color1.a != 0 && color2.a != 0)
             {
                 return true; // Collision detected
@@ -144,4 +144,20 @@ bool CarSprite::checkCollision(const CarSprite &other)
         }
     }
     return false; // No collision detected
+}
+
+sf::Vector2f CarSprite::getVelocity()
+{
+    return sf::Vector2f(carObj.getXVelocity(), carObj.getYVelocity());
+}
+
+void CarSprite::getPushed(float opXV, float opYV)
+{
+    this->carObj.getPushed(opXV, opYV);
+}
+
+void CarSprite::push(float opXV, float opYV)
+{
+
+    this->carObj.push(opXV, opYV);
 }

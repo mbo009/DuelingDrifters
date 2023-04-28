@@ -9,20 +9,23 @@ class CarSprite : public sf::Sprite
 {
 public:
     CarSprite(const std::string &color = "red", float x = 0, float y = 0, float scale = 1);
-    
+
     void setColor(const std::string &color);
     std::string getColor() const;
     int getKeyAction() const;
     int getScale() const;
-    int getX() const;
-    int getY() const;
-    
+    float getX() const;
+    float getY() const;
+
     bool reloadTextures();
     void updateDirectionTexture();
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed);
     void noMovementKeyPressed();
     void move();
     bool checkCollision(const CarSprite &other);
+    sf::Vector2f getVelocity();
+    void getPushed(float opXV, float opYV);
+    void push(float opXV, float opYV);
 
 private:
     // TODO: Add more colors, change the folder, change the extension

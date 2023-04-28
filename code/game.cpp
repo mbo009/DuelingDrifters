@@ -35,6 +35,7 @@ void Game::makeCar(std::string color)
         cars.push_back(car);
     }
 }
+
 // TODO: To change
 void Game::handleEvent(sf::Event &event)
 {
@@ -110,6 +111,42 @@ void Game::loadMap()
     map.setOrigin(190, 230);
 }
 
+void Game::handleCarCollision()
+{
+    sf::Vector2f relPosition = cars[1].getPosition() - cars[0].getPosition();
+    sf::Vector2f relVelocity = cars[0].getVelocity() - cars[1].getVelocity();
+
+    // Compute the dot product of the relative velocity and the relative position vectors
+    float dotProduct = relVelocity.x * relPosition.x + relVelocity.y * relPosition.y;
+    float dotProduct2 = cars[0].getVelocity().x * cars[1].getVelocity().x + cars[0].getVelocity().y * cars[1].getVelocity().y;
+
+    if (dotProduct2 < 0)
+    {
+        // Cars are going in opposite directions
+        sf::Vector2f temp = cars[0].getVelocity();
+        cars[0].getPushed(cars[1].getVelocity().x, cars[1].getVelocity().y);
+        cars[1].getPushed(temp.x, temp.y);
+    }
+    else // if (dotProduct2 > 0)
+    {
+        // not a head-on collision
+        if (dotProduct >= 0)
+        {
+            // Cars[0] is driving towards cars[1]
+            sf::Vector2f temp = cars[0].getVelocity();
+            cars[0].push(cars[1].getVelocity().x, cars[1].getVelocity().y);
+            cars[1].getPushed(temp.x, temp.y);
+        }
+        else if (dotProduct < 0)
+        {
+            // Cars[1] is driving towards cars[0]
+            sf::Vector2f temp = cars[0].getVelocity();
+            cars[0].getPushed(cars[1].getVelocity().x, cars[1].getVelocity().y);
+            cars[1].push(temp.x, temp.y);
+        }
+    }
+}
+
 void Game::loadObjectsRound()
 {
     sf::Time elapsed = clock.getElapsedTime();
@@ -121,6 +158,7 @@ void Game::loadObjectsRound()
     if (cars[0].checkCollision(cars[1]))
     {
         crashSound.play();
+        handleCarCollision();
     }
     view.setCenter((cars[0].getX() + cars[1].getX() + 3090) / 8, (cars[0].getY() + cars[1].getY() + 3000) / 8);
     window->setView(view);
