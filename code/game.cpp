@@ -123,7 +123,6 @@ void Game::loadObjectsRound()
     {
         crashSound.play();
     }
-
     window->clear(sf::Color::Black);
     window->draw(map);
     window->draw(cars[0]);

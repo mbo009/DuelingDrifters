@@ -10,12 +10,9 @@ public:
     }
 };
 
-
-CarSprite::CarSprite(const std::string &color, float x, float y) : x(x), y(y)
+CarSprite::CarSprite(const std::string &color, float x, float y)
 {
     this->setColor(color);
-    this->x = x;
-    this->y = y;
     carObj = CarObj(x, y);
 }
 
@@ -45,6 +42,16 @@ bool CarSprite::reloadTextures()
     return true;
 }
 
+float CarSprite::getX()
+{
+    return carObj.getX();
+}
+
+float CarSprite::getY()
+{
+    return carObj.getY();
+}
+
 void CarSprite::updateDirectionTexture()
 {
     setTexture(textures[keyAction]);
@@ -52,23 +59,23 @@ void CarSprite::updateDirectionTexture()
 
 void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed)
 {
-    if (UpPressed && RightPressed)              // Go north-east
+    if (UpPressed && RightPressed) // Go north-east
         this->keyAction = 1;
-    else if (RightPressed && DownPressed)       // Go south-east
+    else if (RightPressed && DownPressed) // Go south-east
         this->keyAction = 3;
-    else if (DownPressed && LeftPressed)        // Go south-west
+    else if (DownPressed && LeftPressed) // Go south-west
         this->keyAction = 5;
-    else if (LeftPressed && UpPressed)          // Go north-west
+    else if (LeftPressed && UpPressed) // Go north-west
         this->keyAction = 7;
-    else if (UpPressed)                         // Go north
+    else if (UpPressed) // Go north
         this->keyAction = 0;
-    else if (RightPressed)                      // Go east
+    else if (RightPressed) // Go east
         this->keyAction = 2;
-    else if (DownPressed)                       // Go south    
+    else if (DownPressed) // Go south
         this->keyAction = 4;
-    else if (LeftPressed)                       // Go west
+    else if (LeftPressed) // Go west
         this->keyAction = 6;
-} 
+}
 
 void CarSprite::noMovementKeyPressed()
 {
@@ -78,8 +85,5 @@ void CarSprite::noMovementKeyPressed()
 void CarSprite::move()
 {
     carObj.move(keyAction);
-    x = carObj.getX();
-    y = carObj.getY();
-    setPosition(x, y);
+    setPosition(getX(), getY());
 }
-
