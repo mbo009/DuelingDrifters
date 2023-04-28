@@ -44,6 +44,7 @@ bool CarSprite::reloadTextures()
             throw loadingTexturesError();
     }
     setTexture(textures[0]);
+    return true;
 }
 
 void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed)
