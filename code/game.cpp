@@ -128,8 +128,8 @@ void Game::loadObjectsRound()
     window->setView(view);
     window->clear(sf::Color::Black);
     window->draw(map);
+    window->draw(timerText);
     window->draw(cars[0]);
     window->draw(cars[1]);
-    window->draw(timerText);
     window->display();
 }
