@@ -44,7 +44,7 @@ void CarObj::move(int opsCode)
         changeVelocity(False, False);
     else if (opsCode == 8)
         changeVelocity(Zero, Zero);
-    
+
     setX(x + xVelocity);
     setY(y + yVelocity);
 }
@@ -72,4 +72,47 @@ void CarObj::changeVelocity(TriStateBool xAcc, TriStateBool yAcc)
         xVelocity = 0;
     if (std::abs(yVelocity) < 0.1)
         yVelocity = 0;
+}
+
+float CarObj::getXVelocity()
+{
+    return xVelocity;
+}
+
+float CarObj::getYVelocity()
+{
+    return yVelocity;
+}
+
+void CarObj::capVelocity(float multiplier)
+{
+    if (std::abs(this->xVelocity) > std::abs(multiplier * maxSpeed))
+    {
+        if (this->xVelocity > 0)
+            this->xVelocity = multiplier * maxSpeed;
+        else
+            this->xVelocity = multiplier * (-maxSpeed);
+    }
+
+    if (std::abs(this->yVelocity) > std::abs(multiplier * maxSpeed))
+    {
+        if (this->yVelocity > 0)
+            this->yVelocity = multiplier * maxSpeed;
+        else
+            this->yVelocity = multiplier * (-maxSpeed);
+    }
+}
+
+void CarObj::getPushed(float opXV, float opYV)
+{
+    this->xVelocity += 2 * opXV;
+    this->yVelocity += 2 * opYV;
+    this->capVelocity(2);
+}
+
+void CarObj::push(float opXV, float opYV)
+{
+    this->xVelocity -= opXV / 2;
+    this->yVelocity -= opYV / 2;
+    this->capVelocity(2);
 }
