@@ -22,10 +22,12 @@ public:
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed);
     void noMovementKeyPressed();
     void move();
+    void restartPosition();
     bool checkCollision(const CarSprite &other);
     sf::Vector2f getVelocity();
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
+    CarObj &getCarObj();
 
 private:
     // TODO: Add more colors, change the folder, change the extension

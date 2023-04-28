@@ -14,6 +14,9 @@ public:
     void handleCarCollision();
     void loadMusic();
     void loadMap();
+    void resetCarPosition();
+    void checkPointCondition();
+    bool carCrossedLine(unsigned int carIndex);
     void loadObjectsRound();
     void loadFont();
     void nextSong();
@@ -34,6 +37,8 @@ private:
     sf::Font font;
     sf::Sprite map;
     sf::Text timerText;
+    sf::Text car1PointsText;
+    sf::Text car2PointsText;
     sf::View view;
     unsigned int songIndex;
     unsigned int mapIndex;

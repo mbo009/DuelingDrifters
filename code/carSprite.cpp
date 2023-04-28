@@ -28,6 +28,12 @@ void CarSprite::setColor(const std::string &color)
     reloadTextures();
 }
 
+void CarSprite::restartPosition()
+{
+    setPosition(getCarObj().getStartX(), getCarObj().getStartY());
+    getCarObj().restart();
+}
+
 std::string CarSprite::getColor() const
 {
     return color;
@@ -90,6 +96,11 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
         this->keyAction = 4;
     else if (LeftPressed) // Go west
         this->keyAction = 6;
+}
+
+CarObj &CarSprite ::getCarObj()
+{
+    return carObj;
 }
 
 void CarSprite::noMovementKeyPressed()
