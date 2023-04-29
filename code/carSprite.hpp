@@ -9,7 +9,7 @@ class CarSprite : public sf::Sprite
 {
 public:
     CarSprite(const std::string &color = "red", float x = 0, float y = 0, float scale = 1);
-
+    CarSprite &operator=(const CarSprite &other);
     void setColor(const std::string &color);
     std::string getColor() const;
     int getKeyAction() const;
@@ -38,7 +38,7 @@ private:
     const std::string extension = "png";
     // ==================================================//
     unsigned int keyAction = 8;
-    float scale = 1;
+    float scale = 1.0;
     float x = 300;
     float y = 300;
     std::vector<sf::Texture> textures;

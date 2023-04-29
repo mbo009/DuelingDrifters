@@ -18,7 +18,22 @@ CarSprite::CarSprite(const std::string &color, float x, float y, float scale) : 
     this->scale = scale;
     this->setScale(sf::Vector2f(scale, scale));
     this->setColor(color);
-    carObj = CarObj(x, y);
+}
+
+CarSprite &CarSprite::operator=(const CarSprite &other)
+{
+    if (this != &other)
+    {
+        this->keyAction = other.keyAction;
+        this->scale = other.scale;
+        this->setScale(sf::Vector2f(scale, scale));
+        this->x = other.x;
+        this->y = other.y;
+        this->textures = other.textures;
+        this->carObj = other.carObj;
+        this->color = other.color;
+    }
+    return *this;
 }
 
 void CarSprite::setColor(const std::string &color)

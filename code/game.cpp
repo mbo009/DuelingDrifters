@@ -21,23 +21,8 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
     car2PointsText = sf::Text("", font, 50);
     car2PointsText.setPosition(778.f, 50.f);
     clock.restart();
-    makeCar("Red");
-    makeCar("Red");
-}
-
-void Game::makeCar(std::string color)
-{
-    if (cars.size() == 0)
-    {
-        CarSprite car = CarSprite(color, 80, 50, 2.5);
-        cars.push_back(car);
-    }
-
-    else
-    {
-        CarSprite car = CarSprite(color, 850, 850, 2.5);
-        cars.push_back(car);
-    }
+    car1 = CarSprite("Red", 80, 50, 2.5);
+    car2 = CarSprite("Red", 850, 850, 2.5);
 }
 
 // TODO: To change
@@ -52,11 +37,11 @@ void Game::handleEvent(sf::Event &event)
     bool RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
-        cars[0].setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
-        cars[0].updateDirectionTexture();
+        car1.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
+        car1.updateDirectionTexture();
     }
     else
-        cars[0].noMovementKeyPressed();
+        car1.noMovementKeyPressed();
 
     UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
     LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
@@ -64,11 +49,11 @@ void Game::handleEvent(sf::Event &event)
     RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
-        cars[1].setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
-        cars[1].updateDirectionTexture();
+        car2.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
+        car2.updateDirectionTexture();
     }
     else
-        cars[1].noMovementKeyPressed();
+        car2.noMovementKeyPressed();
 }
 
 void Game::nextSong()
@@ -77,14 +62,11 @@ void Game::nextSong()
     songIndex = songIndex % musicPath.size();
 }
 
-bool Game::carCrossedLine(unsigned int carIndex)
+bool Game::carCrossedLine(const CarSprite &car)
 {
-    if (carIndex < cars.size())
-    {
-        if (cars[carIndex].getX() < 40 || cars[carIndex].getY() < 10 || cars[carIndex].getX() > 900 || cars[carIndex].getY() > 900)
-            return true;
-    }
-    return false;
+    if (car.getX() > 40 && car.getY() > 10 && car.getX() < 900 && car.getY() < 900)
+        return false;
+    return true;
 }
 
 void Game::nextMap()
@@ -127,60 +109,60 @@ void Game::loadMap()
 
 void Game::handleCarCollision()
 {
-    sf::Vector2f relPosition = cars[1].getPosition() - cars[0].getPosition();
-    sf::Vector2f relVelocity = cars[0].getVelocity() - cars[1].getVelocity();
+    sf::Vector2f relPosition = car2.getPosition() - car1.getPosition();
+    sf::Vector2f relVelocity = car1.getVelocity() - car2.getVelocity();
 
     // Compute the dot product of the relative velocity and the relative position vectors
     float dotProduct = relVelocity.x * relPosition.x + relVelocity.y * relPosition.y;
-    float dotProduct2 = cars[0].getVelocity().x * cars[1].getVelocity().x + cars[0].getVelocity().y * cars[1].getVelocity().y;
+    float dotProduct2 = car1.getVelocity().x * car2.getVelocity().x + car1.getVelocity().y * car2.getVelocity().y;
 
     if (dotProduct2 < 0)
     {
         // Cars are going in opposite directions
-        sf::Vector2f temp = cars[0].getVelocity();
-        cars[0].getPushed(cars[1].getVelocity().x, cars[1].getVelocity().y);
-        cars[1].getPushed(temp.x, temp.y);
+        sf::Vector2f temp = car1.getVelocity();
+        car1.getPushed(car2.getVelocity().x, car2.getVelocity().y);
+        car2.getPushed(temp.x, temp.y);
     }
     else // if (dotProduct2 > 0)
     {
         // not a head-on collision
         if (dotProduct >= 0)
         {
-            // Cars[0] is driving towards cars[1]
-            sf::Vector2f temp = cars[0].getVelocity();
-            cars[0].push(cars[1].getVelocity().x, cars[1].getVelocity().y);
-            cars[1].getPushed(temp.x, temp.y);
+            // car1 is driving towards car2
+            sf::Vector2f temp = car1.getVelocity();
+            car1.push(car2.getVelocity().x, car2.getVelocity().y);
+            car2.getPushed(temp.x, temp.y);
         }
         else if (dotProduct < 0)
         {
-            // Cars[1] is driving towards cars[0]
-            sf::Vector2f temp = cars[0].getVelocity();
-            cars[0].getPushed(cars[1].getVelocity().x, cars[1].getVelocity().y);
-            cars[1].push(temp.x, temp.y);
+            // car2 is driving towards car1
+            sf::Vector2f temp = car1.getVelocity();
+            car1.getPushed(car2.getVelocity().x, car2.getVelocity().y);
+            car2.push(temp.x, temp.y);
         }
     }
 }
 void Game::checkPointCondition()
 {
-    bool car1CrossedLine = carCrossedLine(0);
-    bool car2CrossedLine = carCrossedLine(1);
+    bool car1CrossedLine = carCrossedLine(car1);
+    bool car2CrossedLine = carCrossedLine(car2);
     if (car1CrossedLine)
     {
         if (!car2CrossedLine)
-            cars[1].getCarObj().scoredPoint();
+            car2.getCarObj().scoredPoint();
         resetCarPosition();
     }
     else if (car2CrossedLine)
     {
-        cars[0].getCarObj().scoredPoint();
+        car1.getCarObj().scoredPoint();
         resetCarPosition();
     }
 }
 
 void Game::resetCarPosition()
 {
-    cars[0].restartPosition();
-    cars[1].restartPosition();
+    car1.restartPosition();
+    car2.restartPosition();
 }
 
 void Game::loadObjectsRound()
@@ -189,26 +171,25 @@ void Game::loadObjectsRound()
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
-    car1PointsText.setString(std::to_string(cars[0].getCarObj().getPoints()));
-    car2PointsText.setString(std::to_string(cars[1].getCarObj().getPoints()));
-    for (auto &car : cars)
-        car.move();
+    car1PointsText.setString(std::to_string(car1.getCarObj().getPoints()));
+    car2PointsText.setString(std::to_string(car2.getCarObj().getPoints()));
+    car1.move();
+    car2.move();
     checkPointCondition();
-
-    if (cars[0].checkCollision(cars[1]))
+    if (car1.checkCollision(car2))
     {
         crashSound.play();
         handleCarCollision();
     }
 
-    view.setCenter((cars[0].getX() + cars[1].getX() + 3090) / 8, (cars[0].getY() + cars[1].getY() + 3000) / 8);
+    view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->setView(view);
     window->clear(sf::Color::Black);
     window->draw(map);
     window->draw(timerText);
     window->draw(car1PointsText);
     window->draw(car2PointsText);
-    window->draw(cars[0]);
-    window->draw(cars[1]);
+    window->draw(car1);
+    window->draw(car2);
     window->display();
 }
