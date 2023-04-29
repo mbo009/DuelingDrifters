@@ -19,6 +19,9 @@ public:
     void loadObjectsRound();
     void loadFont();
     void nextSong();
+    void countDown();
+    void nextRound();
+    void drawObjects();
     void nextMap();
 
 private:

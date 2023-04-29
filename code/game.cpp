@@ -23,6 +23,7 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
     clock.restart();
     car1 = CarSprite("Red", 80, 50, 2.5);
     car2 = CarSprite("Red", 850, 850, 2.5);
+    resetCarPosition();
 }
 
 // TODO: To change
@@ -67,6 +68,29 @@ bool Game::carCrossedLine(const CarSprite &car)
     if (car.getX() > 40 && car.getY() > 10 && car.getX() < 900 && car.getY() < 900)
         return false;
     return true;
+}
+
+void Game::countDown()
+{
+    sf::Text countDownText;
+    countDownText.setCharacterSize(300);
+    countDownText.setFont(font);
+    crashSound.setPitch(2);
+    view.setCenter((3090 + 80 + 850)/8, (3000 + 50 + 850)/8);
+    window->setView(view);
+    std::vector<sf::Vector2f> nextPositions = {sf::Vector2f(710, 300), sf::Vector2f(430, 550), sf::Vector2f(150, 300)};
+    for(int i = 3; i > 0; i--)
+    {
+        countDownText.setString(std::to_string(i));
+        countDownText.setPosition(nextPositions[i-1]);
+        window->clear(sf::Color::Black);
+        drawObjects();
+        window->draw(countDownText);
+        window->display();
+        crashSound.play();
+        sf::sleep(sf::milliseconds(500));
+    }
+    crashSound.setPitch(1);
 }
 
 void Game::nextMap()
@@ -142,6 +166,7 @@ void Game::handleCarCollision()
         }
     }
 }
+
 void Game::checkPointCondition()
 {
     bool car1CrossedLine = carCrossedLine(car1);
@@ -150,12 +175,12 @@ void Game::checkPointCondition()
     {
         if (!car2CrossedLine)
             car2.getCarObj().scoredPoint();
-        resetCarPosition();
+        nextRound();
     }
     else if (car2CrossedLine)
     {
         car1.getCarObj().scoredPoint();
-        resetCarPosition();
+        nextRound();
     }
 }
 
@@ -165,6 +190,22 @@ void Game::resetCarPosition()
     car2.restartPosition();
 }
 
+void Game::nextRound()
+{
+    resetCarPosition();
+    startSound.play();
+    countDown();
+}
+
+void Game::drawObjects()
+{
+    window->draw(map);
+    window->draw(timerText);
+    window->draw(car1PointsText);
+    window->draw(car2PointsText);
+    window->draw(car1);
+    window->draw(car2);
+}
 void Game::loadObjectsRound()
 {
     sf::Time elapsed = clock.getElapsedTime();
@@ -183,13 +224,8 @@ void Game::loadObjectsRound()
     }
 
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
-    window->setView(view);
     window->clear(sf::Color::Black);
-    window->draw(map);
-    window->draw(timerText);
-    window->draw(car1PointsText);
-    window->draw(car2PointsText);
-    window->draw(car1);
-    window->draw(car2);
+    window->setView(view);
+    drawObjects();
     window->display();
 }
