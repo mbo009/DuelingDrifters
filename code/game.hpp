@@ -9,19 +9,17 @@ class Game
 {
 public:
     Game(std::shared_ptr<sf::RenderWindow> window);
-    void makeCar(std::string color);
     void handleEvent(sf::Event &event);
     void handleCarCollision();
     void loadMusic();
     void loadMap();
     void resetCarPosition();
     void checkPointCondition();
-    bool carCrossedLine(unsigned int carIndex);
+    bool carCrossedLine(const CarSprite &car);
     void loadObjectsRound();
     void loadFont();
     void nextSong();
     void nextMap();
-    std::vector<CarSprite> cars;
 
 private:
     sf::Sound startSound;
@@ -43,6 +41,7 @@ private:
     unsigned int songIndex;
     unsigned int mapIndex;
     std::shared_ptr<sf::RenderWindow> window;
+    CarSprite car1, car2;
 };
 
 #endif
