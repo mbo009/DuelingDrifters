@@ -76,13 +76,13 @@ void Game::countDown()
     countDownText.setCharacterSize(300);
     countDownText.setFont(font);
     crashSound.setPitch(2);
-    view.setCenter((3090 + 80 + 850)/8, (3000 + 50 + 850)/8);
+    view.setCenter((3090 + 80 + 850) / 8, (3000 + 50 + 850) / 8);
     window->setView(view);
     std::vector<sf::Vector2f> nextPositions = {sf::Vector2f(710, 300), sf::Vector2f(430, 550), sf::Vector2f(150, 300)};
-    for(int i = 3; i > 0; i--)
+    for (int i = 3; i > 0; i--)
     {
         countDownText.setString(std::to_string(i));
-        countDownText.setPosition(nextPositions[i-1]);
+        countDownText.setPosition(nextPositions[i - 1]);
         window->clear(sf::Color::Black);
         drawObjects();
         window->draw(countDownText);
@@ -187,11 +187,14 @@ void Game::checkPointCondition()
 void Game::resetCarPosition()
 {
     car1.restartPosition();
+    car1.loadStartingPosition(1);
     car2.restartPosition();
+    car2.loadStartingPosition(2);
 }
 
 void Game::nextRound()
 {
+
     resetCarPosition();
     startSound.play();
     countDown();

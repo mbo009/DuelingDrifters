@@ -28,6 +28,7 @@ public:
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
     CarObj &getCarObj();
+    void loadStartingPosition(unsigned int carId);
 
 private:
     // TODO: Add more colors, change the folder, change the extension
@@ -44,6 +45,7 @@ private:
     std::vector<sf::Texture> textures;
     CarObj carObj;
     std::string color = "";
+    sf::Texture initialTexture;
 };
 
 #endif

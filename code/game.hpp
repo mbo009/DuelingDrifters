@@ -28,7 +28,6 @@ private:
     sf::Sound startSound;
     sf::Sound crashSound;
     sf::Sound music;
-    sf::Texture carTexture;
     sf::Texture mapTexture;
     sf::SoundBuffer musicBuffer;
     sf::SoundBuffer startSoundBuffer;

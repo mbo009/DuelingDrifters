@@ -187,3 +187,13 @@ void CarSprite::push(float opXV, float opYV)
 {
     this->carObj.push(opXV, opYV);
 }
+
+void CarSprite::loadStartingPosition(unsigned int carId)
+{
+    if (carId == 1)
+        initialTexture.loadFromFile("assets/images/Car/downRight.png");
+    else
+        initialTexture.loadFromFile("assets/images/Car/upLeft.png");
+
+    setTexture(initialTexture);
+}
