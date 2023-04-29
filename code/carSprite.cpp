@@ -180,12 +180,16 @@ sf::Vector2f CarSprite::getVelocity()
 
 void CarSprite::getPushed(float opXV, float opYV)
 {
-    this->carObj.getPushed(opXV, opYV);
+    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
+        this->carObj.getPushed(opXV, opYV);
+    timeSinceCollision.restart();
 }
 
 void CarSprite::push(float opXV, float opYV)
 {
-    this->carObj.push(opXV, opYV);
+    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
+        this->carObj.push(opXV, opYV);
+    timeSinceCollision.restart();
 }
 
 void CarSprite::loadStartingPosition(unsigned int carId)

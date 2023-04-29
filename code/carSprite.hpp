@@ -46,6 +46,7 @@ private:
     CarObj carObj;
     std::string color = "";
     sf::Texture initialTexture;
+    sf::Clock timeSinceCollision;
 };
 
 #endif
