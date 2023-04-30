@@ -13,18 +13,20 @@ class Game
 public:
     Game(std::shared_ptr<sf::RenderWindow> window);
     void loadAssets();
+    void loadFont();
+    void loadMap();
+    void nextMap();
+    void loadMusic();
+    void nextMusic();
+    void drawObjects();
     void handleEvent(sf::Event &event);
     void handleCarCollision();
-    void loadMusic();
     void resetCarPosition();
     void checkPointCondition();
     bool carCrossedLine(const CarSprite &car);
     void loadObjectsRound();
-    void nextSong();
     void countDown();
     void nextRound();
-    void drawObjects();
-    void nextMap();
 
 private:
     // Constants
@@ -52,19 +54,21 @@ private:
     sf::Text timerText;
     sf::Text car1PointsText;
     sf::Text car2PointsText;
-    
+
     sf::Sprite map;
     sf::Texture mapTexture;
 
-    unsigned int songIndex = 0;
-    unsigned int mapIndex = 0;
-
     sf::Sound startSound;
+    sf::SoundBuffer startSoundBuffer;
     sf::Sound crashSound;
+    sf::SoundBuffer crashSoundBuffer;
     sf::Sound music;
     sf::SoundBuffer musicBuffer;
-    sf::SoundBuffer startSoundBuffer;
-    sf::SoundBuffer crashSoundBuffer;
+    
+    
+    unsigned int musicIndex = 0;
+    unsigned int mapIndex = 0;
+
     sf::Clock clock;
     sf::Time roundTime;
     std::shared_ptr<sf::RenderWindow> window;
