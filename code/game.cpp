@@ -6,9 +6,10 @@ std::vector<std::string> mapPath = {"spaceMap.png"};
 Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
     window->setFramerateLimit(60);
-    loadAssets();
+    
     car1 = CarSprite("Red", 80, 50, 2.5);
     car2 = CarSprite("Red", 850, 850, 2.5);
+    loadAssets();
     clock.restart();
 }
 
@@ -16,8 +17,14 @@ void Game::loadAssets()
 {
     // Set view
     view.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+    loadFont();
+    loadMap();
+    loadMusic();
+}
+
+void Game::loadFont() {
     // Load font
-    font.loadFromFile(STATS_FONT_PATH);
+    font.loadFromFile(ASSET_PATHS_HPP::STATS_FONT);
     // Create text
     timerText = sf::Text("", font, STATS_FONT_SIZE);
     timerText.setPosition(TIMER_X, TIMER_Y);
@@ -25,18 +32,58 @@ void Game::loadAssets()
     car1PointsText.setPosition(CAR1_POINTS_X, CAR1_POINTS_Y);
     car2PointsText = sf::Text("", font, STATS_FONT_SIZE);
     car2PointsText.setPosition(CAR2_POINTS_X, CAR2_POINTS_Y);
+}
 
-    mapTexture.loadFromFile("img/" + mapPath[mapIndex]);
+void Game::loadMap() {
+    // Load map
+    mapTexture.loadFromFile(ASSET_PATHS_HPP::MAP_LIST[mapIndex]);
     map.setTexture(mapTexture, true);
-    map.setScale(sf::Vector2f(1.5, 1.5));
+    map.setScale(sf::Vector2f(MAP_SCALE, MAP_SCALE));
     map.setOrigin(190, 230);
+}
 
-    loadMap();
-    loadMusic();
+void Game::nextMap()
+{
+    mapIndex++;
+    mapIndex = mapIndex % mapPath.size();
+}
+
+void Game::loadMusic() {
+    //Load game start sound
+    startSoundBuffer.loadFromFile(ASSET_PATHS_HPP::GAMESTART_SOUND);
+    startSound.setBuffer(startSoundBuffer);
+    startSound.setVolume(60);
+    startSound.play();
+    // Load music
+    musicBuffer.loadFromFile(ASSET_PATHS_HPP::MUSIC_LIST[musicIndex]);
+    music.setBuffer(musicBuffer);
+    music.setLoop(true);
+    music.setVolume(20);
+    // Load crash sound
+    crashSoundBuffer.loadFromFile(ASSET_PATHS_HPP::CRASH_SOUND);
+    crashSound.setBuffer(crashSoundBuffer);
+    crashSound.setVolume(60);
+    // Play music
+    music.play();
     resetCarPosition();
 }
 
-// TODO: To change
+void Game::nextMusic()
+{
+    musicIndex++;
+    musicIndex = musicIndex % musicPath.size();
+}
+
+void Game::drawObjects()
+{
+    window->draw(map);
+    window->draw(timerText);
+    window->draw(car1PointsText);
+    window->draw(car2PointsText);
+    window->draw(car1);
+    window->draw(car2);
+}
+
 void Game::handleEvent(sf::Event &event)
 {
     if (event.type == sf::Event::Closed)
@@ -67,11 +114,6 @@ void Game::handleEvent(sf::Event &event)
         car2.noMovementKeyPressed();
 }
 
-void Game::nextSong()
-{
-    songIndex++;
-    songIndex = songIndex % musicPath.size();
-}
 
 bool Game::carCrossedLine(const CarSprite &car)
 {
@@ -101,30 +143,6 @@ void Game::countDown()
     crashSound.setPitch(1);
 }
 
-void Game::nextMap()
-{
-    mapIndex++;
-    mapIndex = mapIndex % mapPath.size();
-}
-
-void Game::loadMusic()
-{
-    startSoundBuffer.loadFromFile("music/gameStart.ogg");
-    startSound.setBuffer(startSoundBuffer);
-    startSound.setVolume(60);
-    startSound.play();
-
-    musicBuffer.loadFromFile("music/" + musicPath[songIndex]); // to be changed
-    music.setBuffer(musicBuffer);
-    music.setLoop(true);
-    music.setVolume(20);
-
-    crashSoundBuffer.loadFromFile("music/crash.ogg");
-    crashSound.setBuffer(crashSoundBuffer);
-    crashSound.setVolume(60);
-
-    music.play();
-}
 
 void Game::handleCarCollision()
 {
@@ -194,15 +212,6 @@ void Game::nextRound()
     countDown();
 }
 
-void Game::drawObjects()
-{
-    window->draw(map);
-    window->draw(timerText);
-    window->draw(car1PointsText);
-    window->draw(car2PointsText);
-    window->draw(car1);
-    window->draw(car2);
-}
 void Game::loadObjectsRound()
 {
     sf::Time elapsed = clock.getElapsedTime();

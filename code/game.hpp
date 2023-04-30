@@ -13,20 +13,20 @@ class Game
 public:
     Game(std::shared_ptr<sf::RenderWindow> window);
     void loadAssets();
+    void loadFont();
+    void loadMap();
+    void nextMap();
+    void loadMusic();
+    void nextMusic();
+    void drawObjects();
     void handleEvent(sf::Event &event);
     void handleCarCollision();
-    void loadMusic();
-    void loadMap();
     void resetCarPosition();
     void checkPointCondition();
     bool carCrossedLine(const CarSprite &car);
     void loadObjectsRound();
-    void loadFont();
-    void nextSong();
     void countDown();
     void nextRound();
-    void drawObjects();
-    void nextMap();
 
 private:
     // Constants
@@ -39,8 +39,7 @@ private:
     const float CAR2_POINTS_X = 778;
     const float CAR2_POINTS_Y = 50;
     const float STATS_FONT_SIZE = 50;
-    const std::string STATS_FONT_PATH = ASSET_PATHS_HPP::STATS_FONT;
-
+    const float MAP_SCALE = 1.5;
 
     //PLAYGROUND BORDER
     const float BORDER_LEFT = 40;
@@ -56,19 +55,22 @@ private:
     sf::Text car1PointsText;
     sf::Text car2PointsText;
 
-    unsigned int songIndex = 0;
-    unsigned int mapIndex = 0;
+    sf::Sprite map;
+    sf::Texture mapTexture;
 
     sf::Sound startSound;
-    sf::Sound crashSound;
-    sf::Sound music;
-    sf::Texture mapTexture;
-    sf::SoundBuffer musicBuffer;
     sf::SoundBuffer startSoundBuffer;
+    sf::Sound crashSound;
     sf::SoundBuffer crashSoundBuffer;
+    sf::Sound music;
+    sf::SoundBuffer musicBuffer;
+    
+    
+    unsigned int musicIndex = 0;
+    unsigned int mapIndex = 0;
+
     sf::Clock clock;
     sf::Time roundTime;
-    sf::Sprite map;
     std::shared_ptr<sf::RenderWindow> window;
     CarSprite car1, car2;
 };
