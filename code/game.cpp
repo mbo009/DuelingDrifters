@@ -1,8 +1,5 @@
 #include "game.hpp"
 
-std::vector<std::string> musicPath = {"battleTheme.ogg"};
-std::vector<std::string> mapPath = {"spaceMap.png"};
-
 Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
     window->setFramerateLimit(60);
@@ -45,7 +42,7 @@ void Game::loadMap() {
 void Game::nextMap()
 {
     mapIndex++;
-    mapIndex = mapIndex % mapPath.size();
+    mapIndex = mapIndex % ASSET_PATHS_HPP::MAP_LIST.size();
 }
 
 void Game::loadMusic() {
@@ -71,7 +68,7 @@ void Game::loadMusic() {
 void Game::nextMusic()
 {
     musicIndex++;
-    musicIndex = musicIndex % musicPath.size();
+    musicIndex = musicIndex % ASSET_PATHS_HPP::MUSIC_LIST.size();
 }
 
 void Game::drawObjects()
