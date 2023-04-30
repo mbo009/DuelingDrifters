@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include "carObj.hpp"
+#include "assetPaths.hpp"
+#include "exception.hpp"
 
 class CarSprite : public sf::Sprite
 {

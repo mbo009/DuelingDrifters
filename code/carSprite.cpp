@@ -1,5 +1,4 @@
 #include "carSprite.hpp"
-#include "exception.hpp"
 
 CarSprite::CarSprite(const std::string &color, float x, float y, float scale) : x(x), y(y)
 {

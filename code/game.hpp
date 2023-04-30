@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 #include "carSprite.hpp"
-#include "asset_paths.hpp"
+#include "assetPaths.hpp"
 
 class Game
 {
