@@ -1,14 +1,5 @@
 #include "carSprite.hpp"
-
-// TODO: Implement error as a class
-class loadingTexturesError : public std::exception
-{
-public:
-    const char *what() const noexcept override
-    {
-        return "Error in loading textures!";
-    }
-};
+#include "exception.hpp"
 
 CarSprite::CarSprite(const std::string &color, float x, float y, float scale) : x(x), y(y)
 {
