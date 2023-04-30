@@ -28,7 +28,7 @@ CarSprite &CarSprite::operator=(const CarSprite &other)
 
 void CarSprite::setColor(const std::string &color)
 {
-    this->color = color;
+    this->color = toLowerCase(color);
     textures.clear();
     reloadTextures();
 }
@@ -54,18 +54,17 @@ int CarSprite::getScale() const
     return scale;
 }
 
-bool CarSprite::reloadTextures()
+void CarSprite::reloadTextures()
 {
     sf::Texture temp;
-    for (const auto &t : files)
+    for (size_t i = 0; i < ASSET_PATHS_HPP::CAR_SPRITE_LIST.at(color).size(); i++)
     {
-        if (temp.loadFromFile(folder + "/" + t + color + "." + extension))
+        if (temp.loadFromFile(ASSET_PATHS_HPP::CAR_SPRITE_LIST.at(color)[i]))
             textures.push_back(temp);
         else
             throw loadingTexturesError();
     }
     setTexture(textures[0]);
-    return true;
 }
 
 float CarSprite::getX() const
@@ -190,4 +189,12 @@ void CarSprite::loadStartingPosition(unsigned int carId)
         initialTexture.loadFromFile("assets/images/cars/8NW.png");
 
     setTexture(initialTexture);
+}
+
+std::string CarSprite::toLowerCase(const std::string &str)
+{
+    std::string result(str);
+    std::transform(str.begin(), str.end(), result.begin(), [](unsigned char c)
+                   { return std::tolower(c); });
+    return result;
 }

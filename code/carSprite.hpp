@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <algorithm>
+#include <cctype>
+#include <string>
 #include "carObj.hpp"
 #include "assetPaths.hpp"
 #include "exception.hpp"
@@ -19,7 +22,7 @@ public:
     float getX() const;
     float getY() const;
 
-    bool reloadTextures();
+    void reloadTextures();
     void updateDirectionTexture();
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed);
     void noMovementKeyPressed();
@@ -33,13 +36,7 @@ public:
     void loadStartingPosition(unsigned int carId);
 
 private:
-    // TODO: Add more colors, change the folder, change the extension
-    //=================THIS SHOULD BE CHANGE==============//
-    const std::vector<std::string> files = {"up", "upRight", "right", "downRight",
-                                            "down", "downLeft", "left", "upLeft"};
-    const std::string folder = "img";
-    const std::string extension = "png";
-    // ==================================================//
+    std::string toLowerCase(const std::string &str);
     unsigned int keyAction = 8;
     float scale = 1.0;
     float x = 300;
