@@ -3,12 +3,16 @@
 
 #include <SFML/Audio.hpp>
 #include <memory>
+#include <vector>
+#include <string>
 #include "carSprite.hpp"
+#include "asset_paths.hpp"
 
 class Game
 {
 public:
     Game(std::shared_ptr<sf::RenderWindow> window);
+    void loadAssets();
     void handleEvent(sf::Event &event);
     void handleCarCollision();
     void loadMusic();
@@ -25,6 +29,7 @@ public:
     void nextMap();
 
 private:
+    // Constants
     const int VIEW_WIDTH = 1024;
     const int VIEW_HEIGHT = 1024;
     const float TIMER_X = 428.5;
@@ -34,6 +39,8 @@ private:
     const float CAR2_POINTS_X = 778;
     const float CAR2_POINTS_Y = 50;
     const float STATS_FONT_SIZE = 50;
+    const std::string STATS_FONT_PATH = ASSET_PATHS_HPP::STATS_FONT;
+
 
     //PLAYGROUND BORDER
     const float BORDER_LEFT = 40;
@@ -41,9 +48,17 @@ private:
     const float BORDER_TOP = 10;
     const float BORDER_BOTTOM = 900;
 
-    unsigned int songIndex;
-    unsigned int mapIndex;
-    
+    sf::Font font;
+ 
+    sf::View view;
+
+    sf::Text timerText;
+    sf::Text car1PointsText;
+    sf::Text car2PointsText;
+
+    unsigned int songIndex = 0;
+    unsigned int mapIndex = 0;
+
     sf::Sound startSound;
     sf::Sound crashSound;
     sf::Sound music;
@@ -53,12 +68,7 @@ private:
     sf::SoundBuffer crashSoundBuffer;
     sf::Clock clock;
     sf::Time roundTime;
-    sf::Font font;
     sf::Sprite map;
-    sf::Text timerText;
-    sf::Text car1PointsText;
-    sf::Text car2PointsText;
-    sf::View view;
     std::shared_ptr<sf::RenderWindow> window;
     CarSprite car1, car2;
 };

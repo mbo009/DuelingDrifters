@@ -2,26 +2,37 @@
 
 std::vector<std::string> musicPath = {"battleTheme.ogg"};
 std::vector<std::string> mapPath = {"spaceMap.png"};
-std::string fontPath = "PixeloidMono.ttf";
 
 Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
-    songIndex = 0;
-    mapIndex = 0;
     window->setFramerateLimit(60);
-    loadMap();
-    loadMusic();
-    loadFont();
+    loadAssets();
+    car1 = CarSprite("Red", 80, 50, 2.5);
+    car2 = CarSprite("Red", 850, 850, 2.5);
+    clock.restart();
+}
+
+void Game::loadAssets()
+{
+    // Set view
     view.setSize(VIEW_WIDTH, VIEW_HEIGHT);
+    // Load font
+    font.loadFromFile(STATS_FONT_PATH);
+    // Create text
     timerText = sf::Text("", font, STATS_FONT_SIZE);
     timerText.setPosition(TIMER_X, TIMER_Y);
     car1PointsText = sf::Text("", font, STATS_FONT_SIZE);
     car1PointsText.setPosition(CAR1_POINTS_X, CAR1_POINTS_Y);
     car2PointsText = sf::Text("", font, STATS_FONT_SIZE);
     car2PointsText.setPosition(CAR2_POINTS_X, CAR2_POINTS_Y);
-    clock.restart();
-    car1 = CarSprite("Red", 80, 50, 2.5);
-    car2 = CarSprite("Red", 850, 850, 2.5);
+
+    mapTexture.loadFromFile("img/" + mapPath[mapIndex]);
+    map.setTexture(mapTexture, true);
+    map.setScale(sf::Vector2f(1.5, 1.5));
+    map.setOrigin(190, 230);
+
+    loadMap();
+    loadMusic();
     resetCarPosition();
 }
 
@@ -113,19 +124,6 @@ void Game::loadMusic()
     crashSound.setVolume(60);
 
     music.play();
-}
-
-void Game::loadFont()
-{
-    font.loadFromFile("font/" + fontPath);
-}
-
-void Game::loadMap()
-{
-    mapTexture.loadFromFile("img/" + mapPath[mapIndex]);
-    map.setTexture(mapTexture, true);
-    map.setScale(sf::Vector2f(1.5, 1.5));
-    map.setOrigin(190, 230);
 }
 
 void Game::handleCarCollision()
