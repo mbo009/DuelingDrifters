@@ -13,14 +13,15 @@
 class CarSprite : public sf::Sprite
 {
 public:
-    CarSprite(const std::string &color = "red", float x = 0, float y = 0, float scale = 1);
+    CarSprite(const std::string &color = "red", float x = 0, float y = 0, float scale = 1, unsigned int initTextureCode = 1);
     CarSprite &operator=(const CarSprite &other);
-    void setColor(const std::string &color);
-    std::string getColor() const;
     int getKeyAction() const;
     int getScale() const;
     float getX() const;
     float getY() const;
+    void setColor(const std::string &color);
+    std::string getColor() const;
+    CarObj &getCarObj();
 
     void reloadTextures();
     void updateDirectionTexture();
@@ -32,18 +33,18 @@ public:
     sf::Vector2f getVelocity();
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
-    CarObj &getCarObj();
-    void loadStartingPosition(unsigned int carId);
+    // void loadStartingPosition(unsigned int carId);
 
 private:
     std::string toLowerCase(const std::string &str);
     unsigned int keyAction = 8;
+    unsigned int initialTextureCode = 1;
     float scale = 1.0;
     float x = 300;
     float y = 300;
-    std::vector<sf::Texture> textures;
     CarObj carObj;
     std::string color = "";
+    std::vector<sf::Texture> textures;
     sf::Texture initialTexture;
     sf::Clock timeSinceCollision;
 };

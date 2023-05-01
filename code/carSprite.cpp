@@ -1,13 +1,15 @@
 #include "carSprite.hpp"
 
-CarSprite::CarSprite(const std::string &color, float x, float y, float scale) : x(x), y(y)
+CarSprite::CarSprite(const std::string &color, float x, float y, float scale, unsigned int initTextureCode)
 {
+    this->scale = scale;
+    sf::Transformable::setScale(sf::Vector2f(scale, scale));
     this->x = x;
     this->y = y;
     this->carObj = CarObj(x, y);
-    this->scale = scale;
-    this->setScale(sf::Vector2f(scale, scale));
-    this->setColor(color);
+    setColor(color);
+    this->initialTextureCode = initTextureCode;
+    setTexture(textures[initialTextureCode - 1]);
 }
 
 CarSprite &CarSprite::operator=(const CarSprite &other)
@@ -16,32 +18,16 @@ CarSprite &CarSprite::operator=(const CarSprite &other)
     {
         this->keyAction = other.keyAction;
         this->scale = other.scale;
-        this->setScale(sf::Vector2f(scale, scale));
+        this->sf::Transformable::setScale(sf::Vector2f(scale, scale));
         this->x = other.x;
         this->y = other.y;
         this->textures = other.textures;
         this->carObj = other.carObj;
         this->color = other.color;
+        this->initialTextureCode = other.initialTextureCode;
+        this->setTexture(textures[initialTextureCode - 1]);
     }
     return *this;
-}
-
-void CarSprite::setColor(const std::string &color)
-{
-    this->color = toLowerCase(color);
-    textures.clear();
-    reloadTextures();
-}
-
-void CarSprite::restartPosition()
-{
-    setPosition(getCarObj().getStartX(), getCarObj().getStartY());
-    getCarObj().restart();
-}
-
-std::string CarSprite::getColor() const
-{
-    return color;
 }
 
 int CarSprite::getKeyAction() const
@@ -54,6 +40,40 @@ int CarSprite::getScale() const
     return scale;
 }
 
+float CarSprite::getX() const
+{
+    return carObj.getX();
+}
+
+float CarSprite::getY() const
+{
+    return carObj.getY();
+}
+
+void CarSprite::setColor(const std::string &color)
+{
+    this->color = toLowerCase(color);
+    textures.clear();
+    reloadTextures();
+}
+
+std::string CarSprite::getColor() const
+{
+    return color;
+}
+
+CarObj &CarSprite ::getCarObj()
+{
+    return carObj;
+}
+
+void CarSprite::restartPosition()
+{
+    setPosition(getCarObj().getStartX(), getCarObj().getStartY());
+    setTexture(textures[initialTextureCode - 1]);
+    getCarObj().restart();
+}
+
 void CarSprite::reloadTextures()
 {
     sf::Texture temp;
@@ -64,18 +84,8 @@ void CarSprite::reloadTextures()
         else
             throw loadingTexturesError();
     }
-    setTexture(textures[0]);
 }
 
-float CarSprite::getX() const
-{
-    return carObj.getX();
-}
-
-float CarSprite::getY() const
-{
-    return carObj.getY();
-}
 
 void CarSprite::updateDirectionTexture()
 {
@@ -102,10 +112,6 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
         this->keyAction = 6;
 }
 
-CarObj &CarSprite ::getCarObj()
-{
-    return carObj;
-}
 
 void CarSprite::noMovementKeyPressed()
 {
@@ -181,15 +187,15 @@ void CarSprite::push(float opXV, float opYV)
     timeSinceCollision.restart();
 }
 
-void CarSprite::loadStartingPosition(unsigned int carId)
-{
-    if (carId == 1)
-        initialTexture.loadFromFile("assets/images/cars/4SE.png");
-    else
-        initialTexture.loadFromFile("assets/images/cars/8NW.png");
+// void CarSprite::loadStartingPosition(unsigned int carId)
+// {
+//     if (carId == 1)
+//         initialTexture.loadFromFile("assets/images/cars/4SE.png");
+//     else
+//         initialTexture.loadFromFile("assets/images/cars/8NW.png");
 
-    setTexture(initialTexture);
-}
+//     setTexture(initialTexture);
+// }
 
 std::string CarSprite::toLowerCase(const std::string &str)
 {

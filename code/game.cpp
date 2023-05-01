@@ -4,9 +4,10 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
     window->setFramerateLimit(60);
     
-    car1 = CarSprite("Red", 80, 50, 2.5);
-    car2 = CarSprite("Red", 850, 850, 2.5);
+    car1 = CarSprite("Black", 80, 50, 2.5, 4);
+    car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
+    resetCarsPosition();
     clock.restart();
 }
 
@@ -62,7 +63,6 @@ void Game::loadMusic() {
     crashSound.setVolume(60);
     // Play music
     music.play();
-    resetCarPosition();
 }
 
 void Game::nextMusic()
@@ -197,9 +197,9 @@ void Game::checkPointCondition()
 void Game::resetCarPosition()
 {
     car1.restartPosition();
-    car1.loadStartingPosition(1);
+    // car1.loadStartingPosition(1);
     car2.restartPosition();
-    car2.loadStartingPosition(2);
+    // car2.loadStartingPosition(2);
 }
 
 void Game::nextRound()
