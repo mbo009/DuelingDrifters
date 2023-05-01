@@ -4,9 +4,10 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
     window->setFramerateLimit(60);
     
-    car1 = CarSprite("Red", 80, 50, 2.5);
-    car2 = CarSprite("Red", 850, 850, 2.5);
+    car1 = CarSprite("Blue", 80, 50, 2.5, 4);
+    car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
+    resetCarsPosition();
     clock.restart();
 }
 
@@ -62,7 +63,6 @@ void Game::loadMusic() {
     crashSound.setVolume(60);
     // Play music
     music.play();
-    resetCarPosition();
 }
 
 void Game::nextMusic()
@@ -81,6 +81,30 @@ void Game::drawObjects()
     window->draw(car2);
 }
 
+void Game::loadObjectsRound()
+{
+    sf::Time elapsed = clock.getElapsedTime();
+    int min = static_cast<int>(elapsed.asSeconds()) / 60;
+    int sec = static_cast<int>(elapsed.asSeconds()) % 60;
+    timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
+    car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
+    car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
+    car1.move();
+    car2.move();
+    checkPointCondition();
+    if (car1.checkCollision(car2))
+    {
+        crashSound.play();
+        handleCarCollision();
+    }
+
+    view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
+    window->clear(sf::Color::Black);
+    window->setView(view);
+    drawObjects();
+    window->display();
+}
+
 void Game::handleEvent(sf::Event &event)
 {
     if (event.type == sf::Event::Closed)
@@ -93,10 +117,9 @@ void Game::handleEvent(sf::Event &event)
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
         car1.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
-        car1.updateDirectionTexture();
     }
     else
-        car1.noMovementKeyPressed();
+        car1.noMovementKeyPressed(); // Stop the car
 
     UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
     LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
@@ -105,41 +128,10 @@ void Game::handleEvent(sf::Event &event)
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
         car2.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
-        car2.updateDirectionTexture();
     }
     else
-        car2.noMovementKeyPressed();
+        car2.noMovementKeyPressed(); // Stop the car
 }
-
-
-bool Game::carCrossedLine(const CarSprite &car)
-{
-    return !(car.getX() > BORDER_LEFT && car.getY() > BORDER_TOP && car.getX() < BORDER_RIGHT && car.getY() < BORDER_BOTTOM);
-}
-
-void Game::countDown()
-{
-    sf::Text countDownText;
-    countDownText.setCharacterSize(300);
-    countDownText.setFont(font);
-    crashSound.setPitch(2);
-    view.setCenter((3090 + 80 + 850) / 8, (3000 + 50 + 850) / 8);
-    window->setView(view);
-    std::vector<sf::Vector2f> nextPositions = {sf::Vector2f(710, 300), sf::Vector2f(430, 550), sf::Vector2f(150, 300)};
-    for (int i = 3; i > 0; i--)
-    {
-        countDownText.setString(std::to_string(i));
-        countDownText.setPosition(nextPositions[i - 1]);
-        window->clear(sf::Color::Black);
-        drawObjects();
-        window->draw(countDownText);
-        window->display();
-        crashSound.play();
-        sf::sleep(sf::milliseconds(500));
-    }
-    crashSound.setPitch(1);
-}
-
 
 void Game::handleCarCollision()
 {
@@ -177,6 +169,34 @@ void Game::handleCarCollision()
     }
 }
 
+void Game::countDown()
+{
+    sf::Text countDownText;
+    countDownText.setCharacterSize(300);
+    countDownText.setFont(font);
+    crashSound.setPitch(2);
+    view.setCenter((3090 + 80 + 850) / 8, (3000 + 50 + 850) / 8);
+    window->setView(view);
+    std::vector<sf::Vector2f> nextPositions = {sf::Vector2f(710, 300), sf::Vector2f(430, 550), sf::Vector2f(150, 300)};
+    for (int i = 3; i > 0; i--)
+    {
+        countDownText.setString(std::to_string(i));
+        countDownText.setPosition(nextPositions[i - 1]);
+        window->clear(sf::Color::Black);
+        drawObjects();
+        window->draw(countDownText);
+        window->display();
+        crashSound.play();
+        sf::sleep(sf::milliseconds(500));
+    }
+    crashSound.setPitch(1);
+}
+
+bool Game::carCrossedLine(const CarSprite &car)
+{
+    return !(car.getX() > BORDER_LEFT && car.getY() > BORDER_TOP && car.getX() < BORDER_RIGHT && car.getY() < BORDER_BOTTOM);
+}
+
 void Game::checkPointCondition()
 {
     bool car1CrossedLine = carCrossedLine(car1);
@@ -184,51 +204,25 @@ void Game::checkPointCondition()
     if (car1CrossedLine)
     {
         if (!car2CrossedLine)
-            car2.getCarObj().scoredPoint();
+            car2.getCarObj().setPoint();
         nextRound();
     }
     else if (car2CrossedLine)
     {
-        car1.getCarObj().scoredPoint();
+        car1.getCarObj().setPoint();
         nextRound();
     }
 }
 
-void Game::resetCarPosition()
+void Game::resetCarsPosition()
 {
-    car1.restartPosition();
-    car1.loadStartingPosition(1);
-    car2.restartPosition();
-    car2.loadStartingPosition(2);
+    car1.resetCar();
+    car2.resetCar();
 }
 
 void Game::nextRound()
 {
-    resetCarPosition();
+    resetCarsPosition();
     startSound.play();
     countDown();
-}
-
-void Game::loadObjectsRound()
-{
-    sf::Time elapsed = clock.getElapsedTime();
-    int min = static_cast<int>(elapsed.asSeconds()) / 60;
-    int sec = static_cast<int>(elapsed.asSeconds()) % 60;
-    timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
-    car1PointsText.setString(std::to_string(car1.getCarObj().getPoints()));
-    car2PointsText.setString(std::to_string(car2.getCarObj().getPoints()));
-    car1.move();
-    car2.move();
-    checkPointCondition();
-    if (car1.checkCollision(car2))
-    {
-        crashSound.play();
-        handleCarCollision();
-    }
-
-    view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
-    window->clear(sf::Color::Black);
-    window->setView(view);
-    drawObjects();
-    window->display();
 }

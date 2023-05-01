@@ -1,9 +1,9 @@
 #include "carObj.hpp"
 
-CarObj::CarObj(float x, float y) : startX(x), startY(y)
+CarObj::CarObj(float startX, float startY) : startX(startX), startY(startY)
 {
-    x = startX;
-    y = startY;
+    this->x = this->startX;
+    this->y = this->startY;
 }
 
 void CarObj::setX(float x)
@@ -11,14 +11,14 @@ void CarObj::setX(float x)
     this->x = x;
 }
 
-void CarObj::setY(float y)
-{
-    this->y = y;
-}
-
 float CarObj::getX() const
 {
     return x;
+}
+
+void CarObj::setY(float y)
+{
+    this->y = y;
 }
 
 float CarObj::getY() const
@@ -36,55 +36,27 @@ float CarObj::getStartY() const
     return startY;
 }
 
-void CarObj::restartVelocity()
+float CarObj::getXVelocity()
 {
-    xVelocity = 0;
-    yVelocity = 0;
+    return xVelocity;
 }
 
-void CarObj::restartPosition()
+float CarObj::getYVelocity()
 {
-    setX(startX);
-    setY(startY);
+    return yVelocity;
 }
 
-void CarObj::restart()
+void CarObj::setPoint(int inc)
 {
-    restartVelocity();
-    restartPosition();
+    points += inc;
 }
 
-void CarObj::move(int opsCode)
+unsigned int CarObj::getPoint()
 {
-    if (opsCode == 0)
-        changeVelocity(Zero, False);
-    else if (opsCode == 1)
-        changeVelocity(True, False);
-    else if (opsCode == 2)
-        changeVelocity(True, Zero);
-    else if (opsCode == 3)
-        changeVelocity(True, True);
-    else if (opsCode == 4)
-        changeVelocity(Zero, True);
-    else if (opsCode == 5)
-        changeVelocity(False, True);
-    else if (opsCode == 6)
-        changeVelocity(False, Zero);
-    else if (opsCode == 7)
-        changeVelocity(False, False);
-    else if (opsCode == 8)
-        changeVelocity(Zero, Zero);
-
-    setX(x + xVelocity);
-    setY(y + yVelocity);
+    return points;
 }
 
-void CarObj::scoredPoint()
-{
-    points++;
-}
-
-void CarObj::changeVelocity(TriStateBool xAcc, TriStateBool yAcc)
+void CarObj::setVelocity(TriStateBool xAcc, TriStateBool yAcc)
 {
     if (xVelocity + acceleration < maxSpeed && xAcc == 2) // Right
         xVelocity += acceleration;
@@ -109,19 +81,61 @@ void CarObj::changeVelocity(TriStateBool xAcc, TriStateBool yAcc)
         yVelocity = 0;
 }
 
-float CarObj::getXVelocity()
+void CarObj::resetVelocity()
 {
-    return xVelocity;
+    xVelocity = 0;
+    yVelocity = 0;
 }
 
-float CarObj::getYVelocity()
+void CarObj::resetPosition()
 {
-    return yVelocity;
+    setX(startX);
+    setY(startY);
 }
 
-unsigned int CarObj::getPoints()
+void CarObj::reset()
 {
-    return points;
+    resetVelocity();
+    resetPosition();
+}
+
+void CarObj::move(int opsCode)
+{
+    if (opsCode == 0)
+        setVelocity(Zero, False);
+    else if (opsCode == 1)
+        setVelocity(True, False);
+    else if (opsCode == 2)
+        setVelocity(True, Zero);
+    else if (opsCode == 3)
+        setVelocity(True, True);
+    else if (opsCode == 4)
+        setVelocity(Zero, True);
+    else if (opsCode == 5)
+        setVelocity(False, True);
+    else if (opsCode == 6)
+        setVelocity(False, Zero);
+    else if (opsCode == 7)
+        setVelocity(False, False);
+    else if (opsCode == 8)
+        setVelocity(Zero, Zero);
+
+    setX(x + xVelocity);
+    setY(y + yVelocity);
+}
+
+void CarObj::getPushed(float opXV, float opYV)
+{
+    this->xVelocity += 2 * opXV;
+    this->yVelocity += 2 * opYV;
+    this->capVelocity(2);
+}
+
+void CarObj::push(float opXV, float opYV)
+{
+    this->xVelocity -= opXV / 2;
+    this->yVelocity -= opYV / 2;
+    this->capVelocity(2);
 }
 
 void CarObj::capVelocity(float multiplier)
@@ -141,18 +155,4 @@ void CarObj::capVelocity(float multiplier)
         else
             this->yVelocity = multiplier * (-maxSpeed);
     }
-}
-
-void CarObj::getPushed(float opXV, float opYV)
-{
-    this->xVelocity += 2 * opXV;
-    this->yVelocity += 2 * opYV;
-    this->capVelocity(2);
-}
-
-void CarObj::push(float opXV, float opYV)
-{
-    this->xVelocity -= opXV / 2;
-    this->yVelocity -= opYV / 2;
-    this->capVelocity(2);
 }

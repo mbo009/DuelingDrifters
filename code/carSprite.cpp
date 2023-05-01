@@ -1,14 +1,15 @@
 #include "carSprite.hpp"
-#include "exception.hpp"
 
-CarSprite::CarSprite(const std::string &color, float x, float y, float scale) : x(x), y(y)
+CarSprite::CarSprite(const std::string &color, float x, float y, float scale, unsigned int initTextureCode)
 {
+    this->scale = scale;
+    sf::Transformable::setScale(sf::Vector2f(scale, scale));
     this->x = x;
     this->y = y;
     this->carObj = CarObj(x, y);
-    this->scale = scale;
-    this->setScale(sf::Vector2f(scale, scale));
-    this->setColor(color);
+    setColor(color);
+    this->initialTextureCode = initTextureCode;
+    setTexture(textures[initialTextureCode - 1]);
 }
 
 CarSprite &CarSprite::operator=(const CarSprite &other)
@@ -17,32 +18,16 @@ CarSprite &CarSprite::operator=(const CarSprite &other)
     {
         this->keyAction = other.keyAction;
         this->scale = other.scale;
-        this->setScale(sf::Vector2f(scale, scale));
+        this->sf::Transformable::setScale(sf::Vector2f(scale, scale));
         this->x = other.x;
         this->y = other.y;
         this->textures = other.textures;
         this->carObj = other.carObj;
         this->color = other.color;
+        this->initialTextureCode = other.initialTextureCode;
+        this->setTexture(textures[initialTextureCode - 1]);
     }
     return *this;
-}
-
-void CarSprite::setColor(const std::string &color)
-{
-    this->color = color;
-    textures.clear();
-    reloadTextures();
-}
-
-void CarSprite::restartPosition()
-{
-    setPosition(getCarObj().getStartX(), getCarObj().getStartY());
-    getCarObj().restart();
-}
-
-std::string CarSprite::getColor() const
-{
-    return color;
 }
 
 int CarSprite::getKeyAction() const
@@ -55,20 +40,6 @@ int CarSprite::getScale() const
     return scale;
 }
 
-bool CarSprite::reloadTextures()
-{
-    sf::Texture temp;
-    for (const auto &t : files)
-    {
-        if (temp.loadFromFile(folder + "/" + t + color + "." + extension))
-            textures.push_back(temp);
-        else
-            throw loadingTexturesError();
-    }
-    setTexture(textures[0]);
-    return true;
-}
-
 float CarSprite::getX() const
 {
     return carObj.getX();
@@ -79,7 +50,41 @@ float CarSprite::getY() const
     return carObj.getY();
 }
 
-void CarSprite::updateDirectionTexture()
+sf::Vector2f CarSprite::getVelocity()
+{
+    return sf::Vector2f(carObj.getXVelocity(), carObj.getYVelocity());
+}
+
+void CarSprite::setColor(const std::string &color)
+{
+    this->color = toLowerCase(color);
+    textures.clear();
+    loadTextures();
+}
+
+std::string CarSprite::getColor() const
+{
+    return color;
+}
+
+CarObj &CarSprite ::getCarObj()
+{
+    return carObj;
+}
+
+void CarSprite::loadTextures()
+{
+    sf::Texture temp;
+    for (size_t i = 0; i < ASSET_PATHS_HPP::CAR_SPRITE_LIST.at(color).size(); i++)
+    {
+        if (temp.loadFromFile(ASSET_PATHS_HPP::CAR_SPRITE_LIST.at(color)[i]))
+            textures.push_back(temp);
+        else
+            throw loadingTexturesError();
+    }
+}
+
+void CarSprite::updateTexture()
 {
     return setTexture(textures[keyAction]);
 }
@@ -102,11 +107,8 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
         this->keyAction = 4;
     else if (LeftPressed) // Go west
         this->keyAction = 6;
-}
-
-CarObj &CarSprite ::getCarObj()
-{
-    return carObj;
+    updateTexture();
+    return;
 }
 
 void CarSprite::noMovementKeyPressed()
@@ -146,8 +148,6 @@ bool CarSprite::checkCollision(const CarSprite &other)
     // Get the texture data for each sprite
     sf::Image image1 = texture1->copyToImage();
     sf::Image image2 = texture2->copyToImage();
-    // const sf::Uint8 *pixels1 = image1.getPixelsPtr();
-    // const sf::Uint8 *pixels2 = image2.getPixelsPtr();
     // Check each pixel in the intersection area for opacity overlap
     for (int x = intersection.left; x < intersection.left + intersection.width; x++)
     {
@@ -164,11 +164,6 @@ bool CarSprite::checkCollision(const CarSprite &other)
     return false; // No collision detected
 }
 
-sf::Vector2f CarSprite::getVelocity()
-{
-    return sf::Vector2f(carObj.getXVelocity(), carObj.getYVelocity());
-}
-
 void CarSprite::getPushed(float opXV, float opYV)
 {
     if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
@@ -183,12 +178,17 @@ void CarSprite::push(float opXV, float opYV)
     timeSinceCollision.restart();
 }
 
-void CarSprite::loadStartingPosition(unsigned int carId)
+void CarSprite::resetCar()
 {
-    if (carId == 1)
-        initialTexture.loadFromFile("assets/images/cars/4SE.png");
-    else
-        initialTexture.loadFromFile("assets/images/cars/8NW.png");
+    setPosition(carObj.getStartX(), carObj.getStartY());
+    setTexture(textures[initialTextureCode - 1]);
+    carObj.reset();
+}
 
-    setTexture(initialTexture);
+std::string CarSprite::toLowerCase(const std::string &str)
+{
+    std::string result(str);
+    std::transform(str.begin(), str.end(), result.begin(), [](unsigned char c)
+                   { return std::tolower(c); });
+    return result;
 }
