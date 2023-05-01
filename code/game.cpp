@@ -4,7 +4,7 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
     window->setFramerateLimit(60);
     
-    car1 = CarSprite("Black", 80, 50, 2.5, 4);
+    car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
     resetCarsPosition();
