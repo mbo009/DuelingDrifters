@@ -19,13 +19,13 @@ public:
     void loadMusic();
     void nextMusic();
     void drawObjects();
+    void loadObjectsRound();
     void handleEvent(sf::Event &event);
     void handleCarCollision();
-    void resetCarPosition();
-    void checkPointCondition();
-    bool carCrossedLine(const CarSprite &car);
-    void loadObjectsRound();
     void countDown();
+    bool carCrossedLine(const CarSprite &car);
+    void checkPointCondition();
+    void resetCarsPosition();
     void nextRound();
 
 private:
