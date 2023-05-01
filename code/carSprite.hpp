@@ -19,26 +19,24 @@ public:
     int getScale() const;
     float getX() const;
     float getY() const;
+    sf::Vector2f getVelocity();
     void setColor(const std::string &color);
     std::string getColor() const;
     CarObj &getCarObj();
 
-    void reloadTextures();
-    void updateDirectionTexture();
+    void loadTextures();
+    void updateTexture();
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed);
     void noMovementKeyPressed();
     void move();
-    void restartPosition();
     bool checkCollision(const CarSprite &other);
-    sf::Vector2f getVelocity();
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
-    // void loadStartingPosition(unsigned int carId);
+    void resetCar();
 
 private:
     std::string toLowerCase(const std::string &str);
     unsigned int keyAction = 8;
-    unsigned int initialTextureCode = 1;
     float scale = 1.0;
     float x = 300;
     float y = 300;
@@ -47,6 +45,7 @@ private:
     std::vector<sf::Texture> textures;
     sf::Texture initialTexture;
     sf::Clock timeSinceCollision;
+    unsigned int initialTextureCode = 1;
 };
 
 #endif

@@ -117,10 +117,9 @@ void Game::handleEvent(sf::Event &event)
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
         car1.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
-        car1.updateDirectionTexture();
     }
     else
-        car1.noMovementKeyPressed();
+        car1.noMovementKeyPressed(); // Stop the car
 
     UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
     LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
@@ -129,10 +128,9 @@ void Game::handleEvent(sf::Event &event)
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
         car2.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
-        car2.updateDirectionTexture();
     }
     else
-        car2.noMovementKeyPressed();
+        car2.noMovementKeyPressed(); // Stop the car
 }
 
 void Game::handleCarCollision()
@@ -218,8 +216,8 @@ void Game::checkPointCondition()
 
 void Game::resetCarsPosition()
 {
-    car1.restartPosition();
-    car2.restartPosition();
+    car1.resetCar();
+    car2.resetCar();
 }
 
 void Game::nextRound()
