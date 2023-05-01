@@ -148,8 +148,6 @@ bool CarSprite::checkCollision(const CarSprite &other)
     // Get the texture data for each sprite
     sf::Image image1 = texture1->copyToImage();
     sf::Image image2 = texture2->copyToImage();
-    // const sf::Uint8 *pixels1 = image1.getPixelsPtr();
-    // const sf::Uint8 *pixels2 = image2.getPixelsPtr();
     // Check each pixel in the intersection area for opacity overlap
     for (int x = intersection.left; x < intersection.left + intersection.width; x++)
     {
