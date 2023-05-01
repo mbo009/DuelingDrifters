@@ -12,24 +12,25 @@ enum TriStateBool
 class CarObj
 {
 public:
-    CarObj(float x = 0, float y = 0);
+    CarObj(float startX = 0, float startY = 0);
     void setX(float x);
-    void setY(float y);
     float getX() const;
+    void setY(float y);
     float getY() const;
-    void move(int code);
-    void restartPosition();
-    void changeVelocity(TriStateBool xAcc, TriStateBool yAcc);
-    float getXVelocity();
-    float getYVelocity();
-    void scoredPoint();
     float getStartX() const;
     float getStartY() const;
-    unsigned int getPoints();
+    float getXVelocity();
+    float getYVelocity();
+    void setPoint(int inc = 1);
+    unsigned int getPoint();
+    
+    void setVelocity(TriStateBool xAcc, TriStateBool yAcc);
+    void resetVelocity();
+    void resetPosition();
+    void reset();
+    void move(int code);
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
-    void restartVelocity();
-    void restart();
 
 private:
     void capVelocity(float multiplier);

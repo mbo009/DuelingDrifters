@@ -87,8 +87,8 @@ void Game::loadObjectsRound()
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
-    car1PointsText.setString(std::to_string(car1.getCarObj().getPoints()));
-    car2PointsText.setString(std::to_string(car2.getCarObj().getPoints()));
+    car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
+    car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
     car1.move();
     car2.move();
     checkPointCondition();
@@ -204,12 +204,12 @@ void Game::checkPointCondition()
     if (car1CrossedLine)
     {
         if (!car2CrossedLine)
-            car2.getCarObj().scoredPoint();
+            car2.getCarObj().setPoint();
         nextRound();
     }
     else if (car2CrossedLine)
     {
-        car1.getCarObj().scoredPoint();
+        car1.getCarObj().setPoint();
         nextRound();
     }
 }

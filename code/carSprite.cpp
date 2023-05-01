@@ -182,7 +182,7 @@ void CarSprite::resetCar()
 {
     setPosition(carObj.getStartX(), carObj.getStartY());
     setTexture(textures[initialTextureCode - 1]);
-    carObj.restart();
+    carObj.reset();
 }
 
 std::string CarSprite::toLowerCase(const std::string &str)
