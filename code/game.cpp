@@ -3,7 +3,7 @@
 Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
     window->setFramerateLimit(60);
-    
+
     car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
@@ -18,9 +18,12 @@ void Game::loadAssets()
     loadFont();
     loadMap();
     loadMusic();
+    car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
+    car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
 }
 
-void Game::loadFont() {
+void Game::loadFont()
+{
     // Load font
     font.loadFromFile(ASSET_PATHS_HPP::STATS_FONT);
     // Create text
@@ -32,7 +35,8 @@ void Game::loadFont() {
     car2PointsText.setPosition(CAR2_POINTS_X, CAR2_POINTS_Y);
 }
 
-void Game::loadMap() {
+void Game::loadMap()
+{
     // Load map
     mapTexture.loadFromFile(ASSET_PATHS_HPP::MAP_LIST[mapIndex]);
     map.setTexture(mapTexture, true);
@@ -46,8 +50,9 @@ void Game::nextMap()
     mapIndex = mapIndex % ASSET_PATHS_HPP::MAP_LIST.size();
 }
 
-void Game::loadMusic() {
-    //Load game start sound
+void Game::loadMusic()
+{
+    // Load game start sound
     startSoundBuffer.loadFromFile(ASSET_PATHS_HPP::GAMESTART_SOUND);
     startSound.setBuffer(startSoundBuffer);
     startSound.setVolume(60);
@@ -87,8 +92,6 @@ void Game::loadObjectsRound()
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
-    car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
-    car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
     car1.move();
     car2.move();
     checkPointCondition();
@@ -97,7 +100,6 @@ void Game::loadObjectsRound()
         crashSound.play();
         handleCarCollision();
     }
-
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->clear(sf::Color::Black);
     window->setView(view);
@@ -224,5 +226,7 @@ void Game::nextRound()
 {
     resetCarsPosition();
     startSound.play();
+    car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
+    car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
     countDown();
 }
