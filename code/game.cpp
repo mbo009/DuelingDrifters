@@ -27,7 +27,8 @@ void Game::spawnItem()
         std::srand(std::time(nullptr));
         float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
         itemsOnMap.push_back(Item(itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % 3], xItemPos, yItemPos));
-        itemsOnMap[itemsOnMap.size() - 1].refreshTexture();
+        for (auto &item : itemsOnMap)
+            item.refreshTexture();
     }
 }
 
