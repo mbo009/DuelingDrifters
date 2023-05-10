@@ -127,8 +127,8 @@ void CarSprite::move()
 bool CarSprite::checkCollision(const CarSprite &other)
 {
     // Get the current texture for each sprite
-    const sf::Texture *texture1 = this->getTexture();
-    const sf::Texture *texture2 = other.getTexture();
+    const std::shared_ptr<sf::Texture> texture1 = std::make_shared<sf::Texture>(*this->getTexture());
+    const std::shared_ptr<sf::Texture> texture2 = std::make_shared<sf::Texture>(*other.getTexture());
     if (!texture1 || !texture2) // Make sure both sprites have textures
     {
         return false;

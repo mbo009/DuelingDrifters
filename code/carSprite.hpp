@@ -1,14 +1,16 @@
 #ifndef CARSPRITE_H
 #define CARSPRITE_H
 
-#include <SFML/Graphics.hpp>
+// #include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
 #include <cctype>
-#include <string>
+// #include <string>
+#include <memory>
 #include "carObj.hpp"
-#include "assetPaths.hpp"
+// #include "assetPaths.hpp"
 #include "exception.hpp"
+#include "item.hpp"
 
 class CarSprite : public sf::Sprite
 {

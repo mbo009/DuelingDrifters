@@ -3,12 +3,32 @@
 Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
     window->setFramerateLimit(60);
-
+    itemTypes = {"SpeedUp", "OpponentSlow", "Bomb", "Dash"};
     car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
     resetCarsPosition();
     clock.restart();
+    sinceLastItemSpawn.restart();
+}
+
+void Game::spawnItem()
+{
+    std::srand(std::time(nullptr));
+    bool spawn = ((std::rand() % 6) == 5);
+    // bool spawn = 1;
+    // std::cout << itemsOnMap.size() << std::endl;
+
+    if (spawn)
+    {
+        // TODO: not spawn on player or other item
+        std::srand(std::time(nullptr));
+        float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
+        std::srand(std::time(nullptr));
+        float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
+        itemsOnMap.push_back(Item(itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % 3], xItemPos, yItemPos));
+        itemsOnMap[itemsOnMap.size() - 1].refreshTexture();
+    }
 }
 
 void Game::loadAssets()
@@ -84,14 +104,21 @@ void Game::drawObjects()
     window->draw(car2PointsText);
     window->draw(car1);
     window->draw(car2);
+    for (auto &item : itemsOnMap)
+        window->draw(item);
 }
 
 void Game::loadObjectsRound()
 {
-    sf::Time elapsed = clock.getElapsedTime();
+    sf::Time elapsed = clock.getElapsedTime() - roundTimeToSubtract;
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
+    if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 1)
+    {
+        spawnItem();
+        sinceLastItemSpawn.restart();
+    }
     car1.move();
     car2.move();
     checkPointCondition();
@@ -208,11 +235,13 @@ void Game::checkPointCondition()
         if (!car2CrossedLine)
             car2.getCarObj().setPoint();
         nextRound();
+        roundTimeToSubtract += sf::milliseconds(1500);
     }
     else if (car2CrossedLine)
     {
         car1.getCarObj().setPoint();
         nextRound();
+        roundTimeToSubtract += sf::milliseconds(1500);
     }
 }
 

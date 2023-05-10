@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <ctime>
 #include "carSprite.hpp"
 #include "assetPaths.hpp"
 
@@ -27,6 +28,7 @@ public:
     void checkPointCondition();
     void resetCarsPosition();
     void nextRound();
+    void spawnItem();
 
 private:
     // Constants
@@ -41,14 +43,14 @@ private:
     const float STATS_FONT_SIZE = 50;
     const float MAP_SCALE = 1.5;
 
-    //PLAYGROUND BORDER
+    // PLAYGROUND BORDERS
     const float BORDER_LEFT = 40;
     const float BORDER_RIGHT = 900;
     const float BORDER_TOP = 10;
     const float BORDER_BOTTOM = 900;
 
     sf::Font font;
- 
+
     sf::View view;
 
     sf::Text timerText;
@@ -64,15 +66,18 @@ private:
     sf::SoundBuffer crashSoundBuffer;
     sf::Sound music;
     sf::SoundBuffer musicBuffer;
-    
-    
+
     unsigned int musicIndex = 0;
     unsigned int mapIndex = 0;
 
     sf::Clock clock;
-    sf::Time roundTime;
+    sf::Time roundTimeToSubtract;
     std::shared_ptr<sf::RenderWindow> window;
     CarSprite car1, car2;
+
+    std::vector<std::string> itemTypes;
+    std::vector<Item> itemsOnMap;
+    sf::Clock sinceLastItemSpawn;
 };
 
 #endif
