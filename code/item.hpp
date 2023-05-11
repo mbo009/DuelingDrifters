@@ -13,7 +13,7 @@
 class Item : public sf::Sprite
 {
 public:
-    Item(const std::string &name, float x, float y, sf::Time duration, float acc = -1, float maxSpeed = -1, bool reverse = 0, bool explode = 0);
+    Item(const std::string &name, float x, float y, sf::Time duration, bool useOnself = 1, float acc = -1, float maxSpeed = -1, bool reverse = 0, bool explode = 0);
     std::string getName() const;
     float getX() const;
     void setX(float x);
@@ -33,11 +33,11 @@ private:
     float xPos;
     float yPos;
     sf::Time duration;
+    bool useOnSelf;
     float changeAcc = -1;
     float changeMaxSpeed = -1;
     bool reverseSteering;
     bool explode;
-    bool useOnSelf;
 };
 
 #endif

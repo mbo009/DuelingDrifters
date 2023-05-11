@@ -29,7 +29,7 @@ public:
     void resetCarsPosition();
     void nextRound();
     void spawnItem();
-    void useItem(CarSprite &car, Item item);
+    void useItem(CarSprite &car, Item &item);
 
 private:
     // Constants

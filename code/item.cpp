@@ -11,9 +11,10 @@ void createTextureMap()
     itemTextures["Dash"] = ASSET_PATHS_HPP::DASH_ORB;
 }
 
-Item::Item(const std::string &name, float x, float y, sf::Time duration, float acc, float maxSpeed, bool reverse, bool explode) : name(name), xPos(x), yPos(y), duration(duration),
-                                                                                                                                  changeAcc(acc), changeMaxSpeed(maxSpeed),
-                                                                                                                                  reverseSteering(reverse), explode(explode)
+Item::Item(const std::string &name, float x, float y, sf::Time duration, bool useOnSelf, float acc, float maxSpeed, bool reverse, bool explode) : name(name), xPos(x), yPos(y), duration(duration),
+                                                                                                                                                  useOnSelf(useOnSelf), changeAcc(acc),
+                                                                                                                                                  changeMaxSpeed(maxSpeed), reverseSteering(reverse),
+                                                                                                                                                  explode(explode)
 {
     createTextureMap();
     texture.loadFromFile(itemTextures[name]);
