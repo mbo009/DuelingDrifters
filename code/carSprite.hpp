@@ -38,6 +38,7 @@ public:
     void explosion();
     void checkItemReset();
     void usedItem(sf::Time timeItem);
+    void reverseSteering();
 
 private:
     std::string toLowerCase(const std::string &str);
@@ -52,6 +53,7 @@ private:
     sf::Clock timeSinceCollision;
     sf::Clock activeItemClock;
     bool activeItem;
+    bool reversed = false;
     sf::Time timeItem;
     unsigned int initialTextureCode = 1;
 };

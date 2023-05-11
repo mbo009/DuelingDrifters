@@ -8,7 +8,9 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
     itemTypes = {Item("SpeedUp", 1000, 1000, sf::seconds(2), 1, 0.4, 9),
                  Item("OpponentSlow", 1000, 1000, sf::seconds(2), 0, 0.1, 3),
                  Item("Bomb", 1000, 1000, sf::seconds(0), 1, -1, -1, 0, 1),
-                 Item("Dash", 1000, 1000, sf::milliseconds(100), 1, 2, 20)};
+                 Item("Dash", 1000, 1000, sf::milliseconds(100), 1, 2, 20),
+                 Item("Reverse", 1000, 1000, sf::seconds(3), false, -1, -1, 1),
+                 Item("Stun", 1000, 1000, sf::seconds(2), 0, 0, 0)};
 
     car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
@@ -317,6 +319,8 @@ void Game::useItem(CarSprite &car, Item &item)
         if (item.getAcceleration() >= 0)
             car.getCarObj().setAcceleration(item.getAcceleration());
 
+        if (item.getReverseSteering())
+            car.reverseSteering();
         car.usedItem(item.getDuration());
     }
 }

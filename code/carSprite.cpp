@@ -91,6 +91,16 @@ void CarSprite::updateTexture()
 
 void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed)
 {
+    if (reversed)
+    {
+        bool temp = UpPressed;
+        UpPressed = DownPressed;
+        DownPressed = temp;
+        temp = LeftPressed;
+        LeftPressed = RightPressed;
+        RightPressed = temp;
+    }
+
     if (UpPressed && RightPressed) // Go north-east
         this->keyAction = 1;
     else if (RightPressed && DownPressed) // Go south-east
@@ -205,6 +215,7 @@ void CarSprite::checkItemReset()
         if (activeItemClock.getElapsedTime().asMilliseconds() > timeItem.asMilliseconds())
         {
             carObj.resetBaseStats();
+            reversed = false;
             activeItem = 0;
         }
     }
@@ -215,4 +226,9 @@ void CarSprite::usedItem(sf::Time time)
     activeItem = true;
     timeItem = time;
     activeItemClock.restart();
+}
+
+void CarSprite::reverseSteering()
+{
+    reversed = true;
 }

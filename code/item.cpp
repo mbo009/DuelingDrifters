@@ -9,6 +9,8 @@ void createTextureMap()
     itemTextures["OpponentSlow"] = ASSET_PATHS_HPP::OPPONENT_SLOW_ORB;
     itemTextures["Bomb"] = ASSET_PATHS_HPP::BOMB_ORB;
     itemTextures["Dash"] = ASSET_PATHS_HPP::DASH_ORB;
+    itemTextures["Reverse"] = ASSET_PATHS_HPP::REVERSE_ORB;
+    itemTextures["Stun"] = ASSET_PATHS_HPP::STUN_ORB;
 }
 
 Item::Item(const std::string &name, float x, float y, sf::Time duration, bool useOnSelf, float acc, float maxSpeed, bool reverse, bool explode) : name(name), xPos(x), yPos(y), duration(duration),
