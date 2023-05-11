@@ -172,3 +172,9 @@ void CarObj::capVelocity(float multiplier)
             this->yVelocity = multiplier * (-maxSpeed);
     }
 }
+
+void CarObj::stop()
+{
+    xVelocity = 0;
+    yVelocity = 0;
+}

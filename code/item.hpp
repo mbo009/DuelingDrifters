@@ -13,7 +13,7 @@
 class Item : public sf::Sprite
 {
 public:
-    Item(const std::string &name, float x, float y, sf::Time duration, bool useOnself = 1, float acc = -1, float maxSpeed = -1, bool reverse = 0, bool explode = 0);
+    Item(const std::string &name, float x, float y, sf::Time duration, bool useOnself = 1, float acc = -1, float maxSpeed = -1, bool reverse = 0, bool explode = 0, bool stun = 0, bool swap = 0);
     ~Item(){};
     std::string getName() const;
     float getX() const;
@@ -28,6 +28,8 @@ public:
     float getAcceleration() const;
     bool getUseOnSelf() const;
     sf::Time getDuration() const;
+    bool getStun() const;
+    bool getSwap() const;
 
 private:
     sf::Texture texture;
@@ -40,6 +42,8 @@ private:
     float changeMaxSpeed = -1;
     bool reverseSteering;
     bool explode;
+    bool stun;
+    bool swap;
 };
 
 #endif

@@ -9,8 +9,9 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
                  Item("OpponentSlow", 1000, 1000, sf::seconds(2), 0, 0.1, 3),
                  Item("Bomb", 1000, 1000, sf::seconds(0), 1, -1, -1, 0, 1),
                  Item("Dash", 1000, 1000, sf::milliseconds(100), 1, 2, 20),
-                 Item("Reverse", 1000, 1000, sf::seconds(3), false, -1, -1, 1),
-                 Item("Stun", 1000, 1000, sf::seconds(2), 0, 0, 0)};
+                 Item("Reverse", 1000, 1000, sf::seconds(1), 0, -1, -1, 1),
+                 Item("Stun", 1000, 1000, sf::seconds(0), 0, -1, -1, 0, 0, 1),
+                 Item("Swap", 1000, 1000, sf::seconds(0), 0, -1, -1, 0, 0, 0, 1)};
 
     car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
@@ -23,23 +24,18 @@ Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 void Game::spawnItem()
 {
     std::srand(std::time(nullptr));
-    bool spawn = ((std::rand() % 6) == 5);
-    // bool spawn = 1;
     // std::cout << itemsOnMap.size() << std::endl;
 
-    if (spawn)
-    {
-        // TODO: not spawn on player or other item
-        std::srand(std::time(nullptr));
-        float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
-        std::srand(std::time(nullptr));
-        float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
-        itemsOnMap.push_back((itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % 4]));
-        // itemsOnMap.push_back(std::make_unique<Item>(itemTypes[]));
-        itemsOnMap[itemsOnMap.size() - 1].setPos(xItemPos, yItemPos);
-        for (auto &item : itemsOnMap)
-            item.refreshTexture();
-    }
+    // TODO: not spawn on player or other item
+    std::srand(std::time(nullptr));
+    float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
+    std::srand(std::time(nullptr));
+    float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
+    itemsOnMap.push_back((itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()]));
+    // itemsOnMap.push_back(itemTypes[6]);
+    itemsOnMap[itemsOnMap.size() - 1].setPos(xItemPos, yItemPos);
+    for (auto &item : itemsOnMap)
+        item.refreshTexture();
 }
 
 void Game::loadAssets()
@@ -125,7 +121,7 @@ void Game::loadObjectsRound()
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
 
-    if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 1 && itemsOnMap.size() < itemCap)
+    if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 2 && itemsOnMap.size() < itemCap)
     {
         spawnItem();
         sinceLastItemSpawn.restart();
@@ -158,7 +154,7 @@ void Game::handleEvent(sf::Event &event)
     bool RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
-        car1.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
+        car1.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed, car2);
     }
     else
         car1.noMovementKeyPressed(); // Stop the car
@@ -169,7 +165,7 @@ void Game::handleEvent(sf::Event &event)
     RightPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
     if ((UpPressed || LeftPressed || DownPressed || RightPressed))
     {
-        car2.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed);
+        car2.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed, car1);
     }
     else
         car2.noMovementKeyPressed(); // Stop the car
@@ -311,6 +307,16 @@ void Game::useItem(CarSprite &car, Item &item)
 {
     if (item.getExplode())
         car.explosion();
+    if (item.getStun())
+        car.stop();
+    if (item.getSwap())
+    {
+        float tempX = car1.getX();
+        float tempY = car1.getY();
+        car1.setPos(car2.getX(), car2.getY());
+        car2.setPos(tempX, tempY);
+    }
+
     else
     {
         if (item.getMaxSpeed() >= 0)

@@ -94,6 +94,8 @@ const std::string BOMB_ORB = ITEM_PATH + "bomb.png";
 const std::string DASH_ORB = ITEM_PATH + "dash.png";
 const std::string REVERSE_ORB = ITEM_PATH + "reverse.png";
 const std::string STUN_ORB = ITEM_PATH + "stun.png";
+const std::string SWAP_ORB = ITEM_PATH + "swap.png";
+
 const std::vector<std::string> CAR_LIST = loadFolderList(CAR_PATH);
 const std::vector<std::string> MAP_LIST = loadFileList(MAP_PATH);
 const std::vector<std::string> MUSIC_LIST = loadFileList(MUSIC_PATH);

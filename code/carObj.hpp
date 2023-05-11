@@ -33,6 +33,7 @@ public:
     void move(int code);
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
+    void stop();
 
 private:
     void capVelocity(float multiplier);

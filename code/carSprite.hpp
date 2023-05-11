@@ -27,8 +27,8 @@ public:
     CarObj &getCarObj();
 
     void loadTextures();
-    void updateTexture();
-    void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed);
+    void updateTexture(CarSprite &other);
+    void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed, CarSprite &other);
     void noMovementKeyPressed();
     void move();
     bool checkCollision(const sf::Sprite &other);
@@ -39,6 +39,8 @@ public:
     void checkItemReset();
     void usedItem(sf::Time timeItem);
     void reverseSteering();
+    void stop();
+    void setPos(float x, float y);
 
 private:
     std::string toLowerCase(const std::string &str);

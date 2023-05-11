@@ -82,7 +82,7 @@ private:
     std::vector<Item> itemsOnMap;
     sf::Clock sinceLastItemSpawn;
 
-    unsigned int itemCap = 10;
+    unsigned int itemCap = 5;
 };
 
 #endif

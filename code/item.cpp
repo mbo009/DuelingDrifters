@@ -11,12 +11,13 @@ void createTextureMap()
     itemTextures["Dash"] = ASSET_PATHS_HPP::DASH_ORB;
     itemTextures["Reverse"] = ASSET_PATHS_HPP::REVERSE_ORB;
     itemTextures["Stun"] = ASSET_PATHS_HPP::STUN_ORB;
+    itemTextures["Swap"] = ASSET_PATHS_HPP::SWAP_ORB;
 }
 
-Item::Item(const std::string &name, float x, float y, sf::Time duration, bool useOnSelf, float acc, float maxSpeed, bool reverse, bool explode) : name(name), xPos(x), yPos(y), duration(duration),
-                                                                                                                                                  useOnSelf(useOnSelf), changeAcc(acc),
-                                                                                                                                                  changeMaxSpeed(maxSpeed), reverseSteering(reverse),
-                                                                                                                                                  explode(explode)
+Item::Item(const std::string &name, float x, float y, sf::Time duration, bool useOnSelf, float acc, float maxSpeed, bool reverse, bool explode, bool stun, bool swap) : name(name), xPos(x), yPos(y), duration(duration),
+                                                                                                                                                                        useOnSelf(useOnSelf), changeAcc(acc),
+                                                                                                                                                                        changeMaxSpeed(maxSpeed), reverseSteering(reverse),
+                                                                                                                                                                        explode(explode), stun(stun), swap(swap)
 {
     createTextureMap();
     texture.loadFromFile(itemTextures[name]);
@@ -91,4 +92,14 @@ bool Item::getUseOnSelf() const
 sf::Time Item::getDuration() const
 {
     return duration;
+}
+
+bool Item::getStun() const
+{
+    return stun;
+}
+
+bool Item::getSwap() const
+{
+    return swap;
 }

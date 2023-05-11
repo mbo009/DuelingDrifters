@@ -84,12 +84,16 @@ void CarSprite::loadTextures()
     }
 }
 
-void CarSprite::updateTexture()
+void CarSprite::updateTexture(CarSprite &other)
 {
-    return setTexture(textures[keyAction]);
+    sf::Sprite test;
+    test.setPosition(x, y);
+    test.setTexture(textures[keyAction]);
+    if (!other.checkCollision(test))
+        setTexture(textures[keyAction]);
 }
 
-void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed)
+void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed, CarSprite &other)
 {
     if (reversed)
     {
@@ -117,7 +121,7 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
         this->keyAction = 4;
     else if (LeftPressed) // Go west
         this->keyAction = 6;
-    updateTexture();
+    updateTexture(other);
     return;
 }
 
@@ -136,15 +140,15 @@ void CarSprite::move()
 
 void CarSprite::getPushed(float opXV, float opYV)
 {
-    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
-        this->carObj.getPushed(opXV, opYV);
+    // if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
+    this->carObj.getPushed(opXV, opYV);
     timeSinceCollision.restart();
 }
 
 void CarSprite::push(float opXV, float opYV)
 {
-    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
-        this->carObj.push(opXV, opYV);
+    // if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
+    this->carObj.push(opXV, opYV);
     timeSinceCollision.restart();
 }
 
@@ -153,6 +157,8 @@ void CarSprite::resetCar()
     setPosition(carObj.getStartX(), carObj.getStartY());
     setTexture(textures[initialTextureCode - 1]);
     carObj.reset();
+    carObj.resetBaseStats();
+    reversed = 0;
 }
 
 std::string CarSprite::toLowerCase(const std::string &str)
@@ -231,4 +237,17 @@ void CarSprite::usedItem(sf::Time time)
 void CarSprite::reverseSteering()
 {
     reversed = true;
+}
+
+void CarSprite::stop()
+{
+    carObj.stop();
+}
+
+void CarSprite::setPos(float x, float y)
+{
+    this->x = x;
+    this->y = y;
+    carObj.setX(x);
+    carObj.setY(y);
 }
