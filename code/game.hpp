@@ -22,7 +22,9 @@ public:
     void drawObjects();
     void loadObjectsRound();
     void handleEvent(sf::Event &event);
+    void checkCarCollisions();
     void handleCarCollision();
+    void handleItemAction();
     void countDown();
     bool carCrossedLine(const CarSprite &car);
     void checkPointCondition();
@@ -80,7 +82,7 @@ private:
     std::vector<Item> itemsOnMap;
     sf::Clock sinceLastItemSpawn;
 
-    unsigned int itemCap = 4;
+    unsigned int itemCap = 10;
 };
 
 #endif

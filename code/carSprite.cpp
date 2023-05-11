@@ -197,3 +197,22 @@ bool CarSprite::checkCollision(const sf::Sprite &other)
     }
     return false; // No collision detected
 }
+
+void CarSprite::checkItemReset()
+{
+    if (activeItem)
+    {
+        if (activeItemClock.getElapsedTime().asMilliseconds() > timeItem.asMilliseconds())
+        {
+            carObj.resetBaseStats();
+            activeItem = 0;
+        }
+    }
+}
+
+void CarSprite::usedItem(sf::Time time)
+{
+    activeItem = true;
+    timeItem = time;
+    activeItemClock.restart();
+}

@@ -61,27 +61,32 @@ void Item::refreshTexture()
     setTexture(texture);
 }
 
-bool Item::getExplode()
+bool Item::getExplode() const
 {
     return explode;
 }
 
-bool Item::getReverseSteering()
+bool Item::getReverseSteering() const
 {
     return reverseSteering;
 }
 
-float Item::getMaxSpeed()
+float Item::getMaxSpeed() const
 {
     return changeMaxSpeed;
 }
 
-float Item::getAcceleration()
+float Item::getAcceleration() const
 {
     return changeAcc;
 }
 
-bool Item::getUseOnSelf()
+bool Item::getUseOnSelf() const
 {
     return useOnSelf;
+}
+
+sf::Time Item::getDuration() const
+{
+    return duration;
 }

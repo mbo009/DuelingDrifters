@@ -36,6 +36,8 @@ public:
     void push(float opXV, float opYV);
     void resetCar();
     void explosion();
+    void checkItemReset();
+    void usedItem(sf::Time timeItem);
 
 private:
     std::string toLowerCase(const std::string &str);

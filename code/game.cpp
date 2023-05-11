@@ -122,41 +122,21 @@ void Game::loadObjectsRound()
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
+
     if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 1 && itemsOnMap.size() < itemCap)
     {
         spawnItem();
         sinceLastItemSpawn.restart();
     }
+
+    car1.checkItemReset();
+    car2.checkItemReset();
     car1.move();
     car2.move();
-    checkPointCondition();
-    if (car1.checkCollision(car2))
-    {
-        crashSound.play();
-        handleCarCollision();
-    }
 
-    for (auto itemIt = itemsOnMap.begin(); itemIt != itemsOnMap.end(); itemIt++)
-    {
-        if (car1.checkCollision(*itemIt))
-        {
-            if (!itemIt->getUseOnSelf())
-                useItem(car2, *itemIt);
-            else
-                useItem(car1, *itemIt);
-            itemsOnMap.erase(itemIt);
-            break;
-        }
-        if (car2.checkCollision(*itemIt))
-        {
-            if (!itemIt->getUseOnSelf())
-                useItem(car1, *itemIt);
-            else
-                useItem(car2, *itemIt);
-            itemsOnMap.erase(itemIt);
-            break;
-        }
-    }
+    checkCarCollisions();
+    handleItemAction();
+    checkPointCondition();
 
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->clear(sf::Color::Black);
@@ -193,6 +173,15 @@ void Game::handleEvent(sf::Event &event)
         car2.noMovementKeyPressed(); // Stop the car
 }
 
+void Game::checkCarCollisions()
+{
+    if (car1.checkCollision(car2))
+    {
+        crashSound.play();
+        handleCarCollision();
+    }
+}
+
 void Game::handleCarCollision()
 {
     sf::Vector2f relPosition = car2.getPosition() - car1.getPosition();
@@ -225,6 +214,31 @@ void Game::handleCarCollision()
             sf::Vector2f temp = car1.getVelocity();
             car1.getPushed(car2.getVelocity().x, car2.getVelocity().y);
             car2.push(temp.x, temp.y);
+        }
+    }
+}
+
+void Game::handleItemAction()
+{
+    for (auto itemIt = itemsOnMap.begin(); itemIt != itemsOnMap.end(); itemIt++)
+    {
+        if (car1.checkCollision(*itemIt))
+        {
+            if (!itemIt->getUseOnSelf())
+                useItem(car2, *itemIt);
+            else
+                useItem(car1, *itemIt);
+            itemsOnMap.erase(itemIt);
+            break;
+        }
+        if (car2.checkCollision(*itemIt))
+        {
+            if (!itemIt->getUseOnSelf())
+                useItem(car1, *itemIt);
+            else
+                useItem(car2, *itemIt);
+            itemsOnMap.erase(itemIt);
+            break;
         }
     }
 }
@@ -295,17 +309,14 @@ void Game::useItem(CarSprite &car, Item &item)
 {
     if (item.getExplode())
         car.explosion();
-
-    if (item.getMaxSpeed() >= 0)
+    else
     {
-        std::cout << item.getMaxSpeed() << " ";
-        car.getCarObj().setMaxSpeed(item.getMaxSpeed());
-    }
+        if (item.getMaxSpeed() >= 0)
+            car.getCarObj().setMaxSpeed(item.getMaxSpeed());
 
-    if (item.getAcceleration() >= 0)
-    {
-        std::cout << item.getAcceleration();
-        car.getCarObj().setAcceleration(item.getAcceleration());
+        if (item.getAcceleration() >= 0)
+            car.getCarObj().setAcceleration(item.getAcceleration());
+
+        car.usedItem(item.getDuration());
     }
-    std::cout << std::endl;
 }

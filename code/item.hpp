@@ -14,6 +14,7 @@ class Item : public sf::Sprite
 {
 public:
     Item(const std::string &name, float x, float y, sf::Time duration, bool useOnself = 1, float acc = -1, float maxSpeed = -1, bool reverse = 0, bool explode = 0);
+    ~Item(){};
     std::string getName() const;
     float getX() const;
     void setX(float x);
@@ -21,11 +22,12 @@ public:
     void setY(float y);
     void setPos(float x, float y);
     void refreshTexture();
-    bool getExplode();
-    bool getReverseSteering();
-    float getMaxSpeed();
-    float getAcceleration();
-    bool getUseOnSelf();
+    bool getExplode() const;
+    bool getReverseSteering() const;
+    float getMaxSpeed() const;
+    float getAcceleration() const;
+    bool getUseOnSelf() const;
+    sf::Time getDuration() const;
 
 private:
     sf::Texture texture;
