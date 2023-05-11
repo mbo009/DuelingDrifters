@@ -23,7 +23,9 @@ public:
     float getYVelocity();
     void setPoint(int inc = 1);
     unsigned int getPoint();
-    
+    void setMaxSpeed(float newMax);
+    void setAcceleration(float newMax);
+    void resetBaseStats();
     void setVelocity(TriStateBool xAcc, TriStateBool yAcc);
     void resetVelocity();
     void resetPosition();
@@ -43,7 +45,9 @@ private:
     float xVelocity = 0;
     float yVelocity = 0;
     float maxSpeed = 6;
+    float baseMaxSpeed = 6;
     float acceleration = 0.2;
+    float baseAcceleration = 0.2;
 };
 
 #endif

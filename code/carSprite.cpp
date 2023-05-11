@@ -124,7 +124,41 @@ void CarSprite::move()
     this->y = carObj.getY();
 }
 
-bool CarSprite::checkCollision(const CarSprite &other)
+void CarSprite::getPushed(float opXV, float opYV)
+{
+    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
+        this->carObj.getPushed(opXV, opYV);
+    timeSinceCollision.restart();
+}
+
+void CarSprite::push(float opXV, float opYV)
+{
+    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
+        this->carObj.push(opXV, opYV);
+    timeSinceCollision.restart();
+}
+
+void CarSprite::resetCar()
+{
+    setPosition(carObj.getStartX(), carObj.getStartY());
+    setTexture(textures[initialTextureCode - 1]);
+    carObj.reset();
+}
+
+std::string CarSprite::toLowerCase(const std::string &str)
+{
+    std::string result(str);
+    std::transform(str.begin(), str.end(), result.begin(), [](unsigned char c)
+                   { return std::tolower(c); });
+    return result;
+}
+
+void CarSprite::explosion()
+{
+    getPushed(-2 * carObj.getXVelocity(), -2 * carObj.getYVelocity());
+}
+
+bool CarSprite::checkCollision(const sf::Sprite &other)
 {
     // Get the current texture for each sprite
     const std::shared_ptr<sf::Texture> texture1 = std::make_shared<sf::Texture>(*this->getTexture());
@@ -162,33 +196,4 @@ bool CarSprite::checkCollision(const CarSprite &other)
         }
     }
     return false; // No collision detected
-}
-
-void CarSprite::getPushed(float opXV, float opYV)
-{
-    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
-        this->carObj.getPushed(opXV, opYV);
-    timeSinceCollision.restart();
-}
-
-void CarSprite::push(float opXV, float opYV)
-{
-    if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
-        this->carObj.push(opXV, opYV);
-    timeSinceCollision.restart();
-}
-
-void CarSprite::resetCar()
-{
-    setPosition(carObj.getStartX(), carObj.getStartY());
-    setTexture(textures[initialTextureCode - 1]);
-    carObj.reset();
-}
-
-std::string CarSprite::toLowerCase(const std::string &str)
-{
-    std::string result(str);
-    std::transform(str.begin(), str.end(), result.begin(), [](unsigned char c)
-                   { return std::tolower(c); });
-    return result;
 }

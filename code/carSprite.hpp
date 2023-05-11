@@ -31,10 +31,11 @@ public:
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed);
     void noMovementKeyPressed();
     void move();
-    bool checkCollision(const CarSprite &other);
+    bool checkCollision(const sf::Sprite &other);
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
     void resetCar();
+    void explosion();
 
 private:
     std::string toLowerCase(const std::string &str);
@@ -47,6 +48,9 @@ private:
     std::vector<sf::Texture> textures;
     sf::Texture initialTexture;
     sf::Clock timeSinceCollision;
+    sf::Clock activeItemClock;
+    bool activeItem;
+    sf::Time timeItem;
     unsigned int initialTextureCode = 1;
 };
 

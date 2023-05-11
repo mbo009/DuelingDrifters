@@ -8,9 +8,12 @@ void createTextureMap()
     itemTextures["SpeedUp"] = ASSET_PATHS_HPP::SPEED_ORB;
     itemTextures["OpponentSlow"] = ASSET_PATHS_HPP::OPPONENT_SLOW_ORB;
     itemTextures["Bomb"] = ASSET_PATHS_HPP::BOMB_ORB;
+    itemTextures["Dash"] = ASSET_PATHS_HPP::DASH_ORB;
 }
 
-Item::Item(const std::string &name, float x, float y) : name(name), xPos(x), yPos(y)
+Item::Item(const std::string &name, float x, float y, sf::Time duration, float acc, float maxSpeed, bool reverse, bool explode) : name(name), xPos(x), yPos(y), duration(duration),
+                                                                                                                                  changeAcc(acc), changeMaxSpeed(maxSpeed),
+                                                                                                                                  reverseSteering(reverse), explode(explode)
 {
     createTextureMap();
     texture.loadFromFile(itemTextures[name]);
@@ -45,7 +48,39 @@ void Item::setY(float y)
     yPos = y;
 }
 
+void Item::setPos(float x, float y)
+{
+    setX(x);
+    setY(y);
+    setPosition(x, y);
+}
+
 void Item::refreshTexture()
 {
     setTexture(texture);
+}
+
+bool Item::getExplode()
+{
+    return explode;
+}
+
+bool Item::getReverseSteering()
+{
+    return reverseSteering;
+}
+
+float Item::getMaxSpeed()
+{
+    return changeMaxSpeed;
+}
+
+float Item::getAcceleration()
+{
+    return changeAcc;
+}
+
+bool Item::getUseOnSelf()
+{
+    return useOnSelf;
 }

@@ -2,8 +2,14 @@
 
 Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
 {
+    // set cap FPS to
     window->setFramerateLimit(60);
-    itemTypes = {"SpeedUp", "OpponentSlow", "Bomb", "Dash"};
+    // set available items
+    itemTypes = {Item("SpeedUp", 1000, 1000, sf::seconds(2), 0.4, 9),
+                 Item("OpponentSlow", 1000, 1000, sf::seconds(2), 0.1, 3),
+                 Item("Bomb", 1000, 1000, sf::seconds(0), -1, -1, 0, 1),
+                 Item("Dash", 1000, 1000, sf::milliseconds(100), 2, 20)};
+
     car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
@@ -26,7 +32,9 @@ void Game::spawnItem()
         float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
         std::srand(std::time(nullptr));
         float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
-        itemsOnMap.push_back(Item(itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % 3], xItemPos, yItemPos));
+        itemsOnMap.push_back((itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % 4]));
+        // itemsOnMap.push_back(std::make_unique<Item>(itemTypes[]));
+        itemsOnMap[itemsOnMap.size() - 1].setPos(xItemPos, yItemPos);
         for (auto &item : itemsOnMap)
             item.refreshTexture();
     }
@@ -86,7 +94,6 @@ void Game::loadMusic()
     // Load crash sound
     crashSoundBuffer.loadFromFile(ASSET_PATHS_HPP::CRASH_SOUND);
     crashSound.setBuffer(crashSoundBuffer);
-    crashSound.setVolume(60);
     // Play music
     music.play();
 }
@@ -115,7 +122,7 @@ void Game::loadObjectsRound()
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
-    if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 1)
+    if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 1 && itemsOnMap.size() < itemCap)
     {
         spawnItem();
         sinceLastItemSpawn.restart();
@@ -128,6 +135,29 @@ void Game::loadObjectsRound()
         crashSound.play();
         handleCarCollision();
     }
+
+    for (auto itemIt = itemsOnMap.begin(); itemIt != itemsOnMap.end(); itemIt++)
+    {
+        if (car1.checkCollision(*itemIt))
+        {
+            if (!itemIt->getUseOnSelf())
+                useItem(car2, *itemIt);
+            else
+                useItem(car1, *itemIt);
+            itemsOnMap.erase(itemIt);
+            break;
+        }
+        if (car2.checkCollision(*itemIt))
+        {
+            if (!itemIt->getUseOnSelf())
+                useItem(car1, *itemIt);
+            else
+                useItem(car2, *itemIt);
+            itemsOnMap.erase(itemIt);
+            break;
+        }
+    }
+
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->clear(sf::Color::Black);
     window->setView(view);
@@ -259,4 +289,20 @@ void Game::nextRound()
     car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
     car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
     countDown();
+}
+
+void Game::useItem(CarSprite &car, Item item)
+{
+    if (item.getExplode())
+        car.explosion();
+
+    if (item.getMaxSpeed() >= 0)
+    {
+        car.getCarObj().setMaxSpeed(item.getMaxSpeed());
+    }
+
+    if (item.getAcceleration() >= 0)
+    {
+        car.getCarObj().setAcceleration(item.getAcceleration());
+    }
 }

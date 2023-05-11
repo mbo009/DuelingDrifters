@@ -91,6 +91,7 @@ const std::string CRASH_SOUND = SOUND_EFFECTS_PATH + "crash.ogg";
 const std::string SPEED_ORB = ITEM_PATH + "speedOrb.png";
 const std::string OPPONENT_SLOW_ORB = ITEM_PATH + "opponentSlow.png";
 const std::string BOMB_ORB = ITEM_PATH + "bomb.png";
+const std::string DASH_ORB = ITEM_PATH + "dash.png";
 const std::vector<std::string> CAR_LIST = loadFolderList(CAR_PATH);
 const std::vector<std::string> MAP_LIST = loadFileList(MAP_PATH);
 const std::vector<std::string> MUSIC_LIST = loadFileList(MUSIC_PATH);

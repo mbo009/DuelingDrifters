@@ -56,6 +56,22 @@ unsigned int CarObj::getPoint()
     return points;
 }
 
+void CarObj::setMaxSpeed(float newMax)
+{
+    maxSpeed = newMax;
+}
+
+void CarObj::setAcceleration(float newAcc)
+{
+    acceleration = newAcc;
+}
+
+void CarObj::resetBaseStats()
+{
+    acceleration = baseAcceleration;
+    maxSpeed = baseMaxSpeed;
+}
+
 void CarObj::setVelocity(TriStateBool xAcc, TriStateBool yAcc)
 {
     if (xVelocity + acceleration < maxSpeed && xAcc == 2) // Right

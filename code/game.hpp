@@ -29,6 +29,7 @@ public:
     void resetCarsPosition();
     void nextRound();
     void spawnItem();
+    void useItem(CarSprite &car, Item item);
 
 private:
     // Constants
@@ -75,9 +76,11 @@ private:
     std::shared_ptr<sf::RenderWindow> window;
     CarSprite car1, car2;
 
-    std::vector<std::string> itemTypes;
+    std::vector<Item> itemTypes;
     std::vector<Item> itemsOnMap;
     sf::Clock sinceLastItemSpawn;
+
+    unsigned int itemCap = 4;
 };
 
 #endif
