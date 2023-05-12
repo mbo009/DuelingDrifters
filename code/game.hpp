@@ -12,7 +12,7 @@
 class Game
 {
 public:
-    Game(std::shared_ptr<sf::RenderWindow> window);
+    Game(std::shared_ptr<sf::RenderWindow> &window);
     void loadAssets();
     void loadFont();
     void loadMap();
