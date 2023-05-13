@@ -1,11 +1,8 @@
 #include "carSprite.hpp"
 
-CarSprite::CarSprite(const std::string &color, float x, float y, float scale, unsigned int initTextureCode)
+CarSprite::CarSprite(const std::string &color, float x, float y, float scale, unsigned int initTextureCode) : scale(scale), x(x), y(y)
 {
-    this->scale = scale;
     sf::Transformable::setScale(sf::Vector2f(scale, scale));
-    this->x = x;
-    this->y = y;
     this->carObj = CarObj(x, y);
     setColor(color);
     this->initialTextureCode = initTextureCode;

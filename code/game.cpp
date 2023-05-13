@@ -1,6 +1,6 @@
 #include "game.hpp"
 
-Game::Game(std::shared_ptr<sf::RenderWindow> window) : window(window)
+Game::Game(std::shared_ptr<sf::RenderWindow> &window) : window(window)
 {
     // set cap FPS to
     window->setFramerateLimit(60);

@@ -2,7 +2,6 @@
 #include <iostream>
 
 // TODO
-// * countdown before starting game
 // * hp system for cars, hp meter in bottom corners of screen
 
 int main()
