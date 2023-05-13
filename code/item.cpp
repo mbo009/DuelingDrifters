@@ -103,3 +103,8 @@ bool Item::getSwap() const
 {
     return swap;
 }
+
+sf::Texture &Item::getTexture()
+{
+    return texture;
+}

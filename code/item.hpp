@@ -30,6 +30,7 @@ public:
     sf::Time getDuration() const;
     bool getStun() const;
     bool getSwap() const;
+    sf::Texture &getTexture();
 
 private:
     sf::Texture texture;
