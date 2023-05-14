@@ -23,19 +23,16 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window) : window(window)
 
 void Game::spawnItem()
 {
-    std::srand(std::time(nullptr));
-    // std::cout << itemsOnMap.size() << std::endl;
-
     // TODO: not spawn on player or other item
     std::srand(std::time(nullptr));
     float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
-    std::srand(std::time(nullptr));
     float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
+
     itemsOnMap.push_back((itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()]));
-    // itemsOnMap.push_back(itemTypes[6]);
     itemsOnMap[itemsOnMap.size() - 1].setPos(xItemPos, yItemPos);
-    for (auto &item : itemsOnMap)
-        item.refreshTexture();
+
+    // this somehow prevents error when copying texture
+    itemsOnMap[itemsOnMap.size() - 1].setTexture(itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()].getTexture());
 }
 
 void Game::loadAssets()
