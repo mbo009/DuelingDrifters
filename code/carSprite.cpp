@@ -119,7 +119,6 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
     else if (LeftPressed) // Go west
         this->keyAction = 6;
     updateTexture(other);
-    return;
 }
 
 void CarSprite::noMovementKeyPressed()

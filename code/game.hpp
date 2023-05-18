@@ -12,7 +12,7 @@
 class Game
 {
 public:
-    Game(std::shared_ptr<sf::RenderWindow> &window);
+    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font);
     void loadAssets();
     void loadFont();
     void loadMap();
@@ -21,7 +21,7 @@ public:
     void nextMusic();
     void drawObjects();
     void loadObjectsRound();
-    void handleEvent(sf::Event &event);
+    void handleEvent();
     void checkCarCollisions();
     void handleCarCollision();
     void handleItemAction();
@@ -34,6 +34,8 @@ public:
     void useItem(CarSprite &car, Item &item);
 
 private:
+    std::shared_ptr<sf::RenderWindow> window;
+
     // Constants
     const int VIEW_WIDTH = 1024;
     const int VIEW_HEIGHT = 1024;
@@ -49,7 +51,7 @@ private:
     // PLAYGROUND BORDERS
     const float BORDER_LEFT = 40;
     const float BORDER_RIGHT = 900;
-    const float BORDER_TOP = 10;
+    const float BORDER_TOP = 5;
     const float BORDER_BOTTOM = 900;
 
     sf::Font font;
@@ -75,7 +77,6 @@ private:
 
     sf::Clock clock;
     sf::Time roundTimeToSubtract;
-    std::shared_ptr<sf::RenderWindow> window;
     CarSprite car1, car2;
 
     std::vector<Item> itemTypes;

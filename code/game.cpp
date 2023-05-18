@@ -1,9 +1,7 @@
 #include "game.hpp"
 
-Game::Game(std::shared_ptr<sf::RenderWindow> &window) : window(window)
+Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font) : window(window), font(font)
 {
-    // set cap FPS to
-    window->setFramerateLimit(60);
     // set available items
     itemTypes = {Item("SpeedUp", 1000, 1000, sf::seconds(2), 1, 0.4, 9),
                  Item("OpponentSlow", 1000, 1000, sf::seconds(2), 0, 0.1, 3),
@@ -48,8 +46,6 @@ void Game::loadAssets()
 
 void Game::loadFont()
 {
-    // Load font
-    font.loadFromFile(ASSET_PATHS_HPP::STATS_FONT);
     // Create text
     timerText = sf::Text("", font, STATS_FONT_SIZE);
     timerText.setPosition(TIMER_X, TIMER_Y);
@@ -140,11 +136,8 @@ void Game::loadObjectsRound()
     window->display();
 }
 
-void Game::handleEvent(sf::Event &event)
+void Game::handleEvent()
 {
-    if (event.type == sf::Event::Closed)
-        window->close();
-
     bool UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
