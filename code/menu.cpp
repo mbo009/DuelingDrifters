@@ -25,6 +25,8 @@ void Menu::loadAssets()
     loadMusic();
     loadMap();
     buttons[currentPosition].highlight();
+    // REMAKE TO REFRESH TEXTURES FOR ALL BUTTONS IN FIRST FRAME
+    buttons[currentPosition + 1].highlightOff();
 }
 
 void Menu::loadMusic()
