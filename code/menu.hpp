@@ -15,12 +15,13 @@ public:
     void loadMusic();
     void loadMap();
     void mainMenu();
+    void gameModeMenu();
     void pickCarMenu();
     void settingsMenu();
     void handleEvent(sf::Event &event);
     void loadObjectsRound();
     void makeCarMove(CarSprite &car, CarSprite &other, unsigned int range);
-    void buttonPressed();
+    void buttonPressed(std::vector <Button> &buttonsList);
 
 private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -43,6 +44,7 @@ private:
     sf::Sound music;
     sf::SoundBuffer musicBuffer;
     std::vector<Button> buttons;
+    std::vector<Button> gameModeButtons;
     std::shared_ptr<Game> game;
     sf::Clock wait;
 };

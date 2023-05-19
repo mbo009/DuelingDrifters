@@ -21,10 +21,14 @@ void Menu::loadAssets()
 {
     buttons.push_back(Button(300, 250, "start"));
     buttons.push_back(Button(300, 600, "exit"));
+    gameModeButtons.push_back(Button(300, 250, "normal"));
+    gameModeButtons.push_back(Button(300, 600, "tag"));
+    // gameModeButtons.push_back(Button(300, 600, "custom"));
     loadFont();
     loadMusic();
     loadMap();
     buttons[currentPosition].highlight();
+    gameModeButtons[currentPosition].highlight();
     // REMAKE TO REFRESH TEXTURES FOR ALL BUTTONS IN FIRST FRAME
     buttons[currentPosition + 1].highlightOff();
 }
@@ -68,7 +72,7 @@ void Menu::mainMenu()
 {
     if (acceptPressed)
     {
-        buttonPressed();
+        buttonPressed(buttons);
     }
 
     if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 100)
@@ -95,6 +99,34 @@ void Menu::mainMenu()
     window->draw(car1);
     window->draw(car2);
     window->display();
+}
+#include <iostream>
+#include <Windows.h>
+void Menu::gameModeMenu()
+{
+    std::cout << "I'm in";
+    if (acceptPressed)
+    {
+        buttonPressed(gameModeButtons);
+    }
+
+    if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 100)
+    {
+        gameModeButtons[currentPosition].highlightOff();
+        if (upPressed)
+            currentPosition = (currentPosition - 1) % gameModeButtons.size();
+        if (downPressed)
+            currentPosition = (currentPosition + 1) % gameModeButtons.size();
+        gameModeButtons[currentPosition].highlight();
+        wait.restart();
+    }
+    for (auto &button : gameModeButtons)
+    {
+        window->draw(button);
+    }
+    window->display();
+    Sleep(1000);
+    std::cout << "I'm out";
 }
 
 void Menu::pickCarMenu()
@@ -134,16 +166,21 @@ void Menu::loadObjectsRound()
         game->loadObjectsRound();
 }
 
-void Menu::buttonPressed()
+void Menu::buttonPressed(std::vector <Button> &buttonsList)
 {
-    if (buttons[currentPosition].getName() == "start")
+    if (buttonsList[currentPosition].getName() == "start")
+    {
+        gameModeMenu();
+    }
+
+    if (buttonsList[currentPosition].getName() == "exit")
+    {
+        window->close();
+    }
+
+    if (buttonsList[currentPosition].getName() == "normal")
     {
         makeGame();
         music.stop();
-    }
-
-    if (buttons[currentPosition].getName() == "exit")
-    {
-        window->close();
     }
 }
