@@ -74,16 +74,20 @@ inline const std::map<std::string, std::vector<std::string>> mapVectorList(const
 }
 // Directory level 1
 const std::string GENERAL_PATH = "assets/";
+
 // Directory level 2
 const std::string FONTS_PATH = GENERAL_PATH + "fonts/";
 const std::string IMAGES_PATH = GENERAL_PATH + "images/";
 const std::string SOUNDS_PATH = GENERAL_PATH + "sounds/";
+
 // Directory level 3
 const std::string CAR_PATH = IMAGES_PATH + "cars/";
 const std::string MAP_PATH = IMAGES_PATH + "maps/";
 const std::string ITEM_PATH = IMAGES_PATH + "items/";
 const std::string MUSIC_PATH = SOUNDS_PATH + "music/";
+const std::string BUTTON_PATH = IMAGES_PATH + "buttons/";
 const std::string SOUND_EFFECTS_PATH = SOUNDS_PATH + "sound_effects/";
+
 // Directory level 4
 const std::string STATS_FONT = FONTS_PATH + "PixeloidMono.ttf";
 const std::string GAMESTART_SOUND = SOUND_EFFECTS_PATH + "gameStart.ogg";
@@ -95,10 +99,15 @@ const std::string DASH_ORB = ITEM_PATH + "dash.png";
 const std::string REVERSE_ORB = ITEM_PATH + "reverse.png";
 const std::string STUN_ORB = ITEM_PATH + "stun.png";
 const std::string SWAP_ORB = ITEM_PATH + "swap.png";
+const std::string START = BUTTON_PATH + "baseStart.png";
+const std::string HIGHLIGHTED_START = BUTTON_PATH + "highlightedStart.png";
+const std::string EXIT = BUTTON_PATH + "baseExit.png";
+const std::string HIGHLIGHTED_EXIT = BUTTON_PATH + "highlightedExit.png";
 
 const std::vector<std::string> CAR_LIST = loadFolderList(CAR_PATH);
 const std::vector<std::string> MAP_LIST = loadFileList(MAP_PATH);
 const std::vector<std::string> MUSIC_LIST = loadFileList(MUSIC_PATH);
+
 // Directory level 5
 const std::map<std::string, std::vector<std::string>> CAR_SPRITE_LIST = mapVectorList(CAR_LIST);
 

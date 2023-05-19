@@ -1,4 +1,4 @@
-#include "game.hpp"
+#include "menu.hpp"
 #include <iostream>
 
 // TODO
@@ -7,16 +7,17 @@
 int main()
 {
     std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1024, 1024), "CARBRAWL");
-    Game game = Game(window);
+    // Game game = Game(window, font);
+    Menu menu = Menu(window);
 
     while (window->isOpen())
     {
         sf::Event event;
         while (window->pollEvent(event))
         {
-            game.handleEvent(event);
+            menu.handleEvent(event);
         }
-        game.loadObjectsRound();
+        menu.loadObjectsRound();
     }
 
     return 0;
