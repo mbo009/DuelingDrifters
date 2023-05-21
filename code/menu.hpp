@@ -33,6 +33,8 @@ private:
     const float NAME_FONT_SIZE = 90;
 
     bool gameActive = 0;
+    bool choosingGameMode = 0;
+    bool choosingCar = 0;
     bool upPressed;
     bool downPressed;
     bool acceptPressed;

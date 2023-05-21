@@ -31,6 +31,8 @@ void Menu::loadAssets()
     gameModeButtons[currentPosition].highlight();
     // REMAKE TO REFRESH TEXTURES FOR ALL BUTTONS IN FIRST FRAME
     buttons[currentPosition + 1].highlightOff();
+    gameModeButtons[currentPosition + 1].highlightOff();
+
 }
 
 void Menu::loadMusic()
@@ -104,7 +106,7 @@ void Menu::mainMenu()
 #include <Windows.h>
 void Menu::gameModeMenu()
 {
-    std::cout << "I'm in";
+    // std::cout << "I'm in";
     if (acceptPressed)
     {
         buttonPressed(gameModeButtons);
@@ -125,8 +127,7 @@ void Menu::gameModeMenu()
         window->draw(button);
     }
     window->display();
-    Sleep(1000);
-    std::cout << "I'm out";
+    // std::cout << "I'm out";
 }
 
 void Menu::pickCarMenu()
@@ -160,8 +161,14 @@ void Menu::handleEvent(sf::Event &event)
 
 void Menu::loadObjectsRound()
 {
-    if (!gameActive)
-        mainMenu();
+    if (!gameActive) {
+        if (choosingGameMode)
+            gameModeMenu();
+        else if (choosingCar)
+            pickCarMenu();
+        else
+            mainMenu();
+    }
     else
         game->loadObjectsRound();
 }
@@ -170,6 +177,8 @@ void Menu::buttonPressed(std::vector <Button> &buttonsList)
 {
     if (buttonsList[currentPosition].getName() == "start")
     {
+        acceptPressed = 0;
+        choosingGameMode = 1;
         gameModeMenu();
     }
 
@@ -180,6 +189,7 @@ void Menu::buttonPressed(std::vector <Button> &buttonsList)
 
     if (buttonsList[currentPosition].getName() == "normal")
     {
+        std::cout << "I'm in";
         makeGame();
         music.stop();
     }

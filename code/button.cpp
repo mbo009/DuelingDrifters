@@ -10,8 +10,8 @@ void createBaseMap()
     baseTextures["exit"] = ASSET_PATHS_HPP::EXIT;
     // TODO: Change this when we have a new button
     baseTextures["normal"] = ASSET_PATHS_HPP::START; // ::NORMAL;
-    baseTextures["tag"] = ASSET_PATHS_HPP::START;   // ::TAG;
-    baseTextures["custom"] = ASSET_PATHS_HPP::START; // ::CUSTOM;
+    baseTextures["tag"] = ASSET_PATHS_HPP::EXIT;   // ::TAG;
+    // baseTextures["custom"] = ASSET_PATHS_HPP::START; // ::CUSTOM;
 }
 
 void createHighlightedMap()
@@ -20,8 +20,8 @@ void createHighlightedMap()
     highlightedTextures["exit"] = ASSET_PATHS_HPP::HIGHLIGHTED_EXIT;
     // TODO: Change this when we have a new button
     highlightedTextures["normal"] = ASSET_PATHS_HPP::HIGHLIGHTED_START; // ::NORMAL;
-    highlightedTextures["tag"] = ASSET_PATHS_HPP::HIGHLIGHTED_START;   // ::TAG;
-    highlightedTextures["custom"] = ASSET_PATHS_HPP::HIGHLIGHTED_START; // ::CUSTOM;
+    highlightedTextures["tag"] = ASSET_PATHS_HPP::HIGHLIGHTED_EXIT;   // ::TAG;
+    // highlightedTextures["custom"] = ASSET_PATHS_HPP::HIGHLIGHTED_START; // ::CUSTOM;
 }
 
 Button::Button(float x, float y, std::string name) : x(x), y(y), name(name)
