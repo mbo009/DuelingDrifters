@@ -35,16 +35,13 @@ Button::Button(float x, float y, std::string name) : x(x), y(y), name(name)
     setScale(2, 2);
 }
 
-void Button::highlight()
+void Button::highlight(bool state)
 {
-    setTexture(highlightedTexture);
-    highlighted = 1;
-}
-
-void Button::highlightOff()
-{
-    setTexture(baseTexture);
-    highlighted = 0;
+    highlighted = state;
+    if (highlighted)
+        setTexture(highlightedTexture);
+    else
+        setTexture(baseTexture);
 }
 
 std::string Button::getName()

@@ -42,6 +42,7 @@ private:
     sf::Sprite map;
     sf::Font font;
     sf::Text mainMenuName;
+    sf::Text gameModeMenuName;
     sf::Texture mapTexture;
     sf::Sound music;
     sf::SoundBuffer musicBuffer;
