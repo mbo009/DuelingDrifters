@@ -94,12 +94,8 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
 {
     if (reversed)
     {
-        bool temp = UpPressed;
-        UpPressed = DownPressed;
-        DownPressed = temp;
-        temp = LeftPressed;
-        LeftPressed = RightPressed;
-        RightPressed = temp;
+        std::swap(UpPressed, DownPressed);
+        std::swap(LeftPressed, RightPressed);
     }
 
     if (UpPressed && RightPressed) // Go north-east

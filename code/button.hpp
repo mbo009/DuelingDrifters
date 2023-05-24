@@ -8,8 +8,7 @@ class Button : public sf::Sprite
 {
 public:
     Button(float x, float y, std::string name);
-    void highlight();
-    void highlightOff();
+    void highlight(bool state);
     void click();
     std::string getName();
 

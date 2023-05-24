@@ -21,12 +21,16 @@ void Menu::loadAssets()
 {
     buttons.push_back(Button(300, 250, "start"));
     buttons.push_back(Button(300, 600, "exit"));
+    gameModeButtons.push_back(Button(300, 250, "normal"));
+    gameModeButtons.push_back(Button(300, 600, "tag"));
+    // gameModeButtons.push_back(Button(300, 600, "custom"));
     loadFont();
     loadMusic();
     loadMap();
-    buttons[currentPosition].highlight();
-    // REMAKE TO REFRESH TEXTURES FOR ALL BUTTONS IN FIRST FRAME
-    buttons[currentPosition + 1].highlightOff();
+    buttons[currentPosition].highlight(1);
+    gameModeButtons[currentPosition].highlight(1);
+    buttons[currentPosition + 1].highlight(0);
+    gameModeButtons[currentPosition + 1].highlight(0);
 }
 
 void Menu::loadMusic()
@@ -49,8 +53,10 @@ void Menu::loadFont()
     // Load from file
     font.loadFromFile(ASSET_PATHS_HPP::STATS_FONT);
     // Create text
-    mainMenuName = sf::Text("DuelingDrifters", font, NAME_FONT_SIZE);
+    mainMenuName = sf::Text("Dueling Drifters", font, NAME_FONT_SIZE);
     mainMenuName.setPosition(60, 70);
+    gameModeMenuName = sf::Text("Choose Game Mode", font, NAME_FONT_SIZE);
+    gameModeMenuName.setPosition(60, 70);
 }
 
 void Menu::makeCarMove(CarSprite &car, CarSprite &other, unsigned int range = 512)
@@ -68,17 +74,17 @@ void Menu::mainMenu()
 {
     if (acceptPressed)
     {
-        buttonPressed();
+        buttonPressed(buttons);
     }
 
     if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 100)
     {
-        buttons[currentPosition].highlightOff();
+        buttons[currentPosition].highlight(0);
         if (upPressed)
             currentPosition = (currentPosition - 1) % buttons.size();
         if (downPressed)
             currentPosition = (currentPosition + 1) % buttons.size();
-        buttons[currentPosition].highlight();
+        buttons[currentPosition].highlight(1);
         wait.restart();
     }
 
@@ -92,6 +98,38 @@ void Menu::mainMenu()
         window->draw(button);
     }
     window->draw(mainMenuName);
+    window->draw(car1);
+    window->draw(car2);
+    window->display();
+}
+
+void Menu::gameModeMenu()
+{
+    if (acceptPressed)
+    {
+        buttonPressed(gameModeButtons);
+    }
+
+    if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 100)
+    {
+        gameModeButtons[currentPosition].highlight(0);
+        if (upPressed)
+            currentPosition = (currentPosition - 1) % gameModeButtons.size();
+        if (downPressed)
+            currentPosition = (currentPosition + 1) % gameModeButtons.size();
+        gameModeButtons[currentPosition].highlight(1);
+        wait.restart();
+    }
+    makeCarMove(car1, car2);
+    makeCarMove(car2, car1);
+    
+    window->clear(sf::Color::Black);
+    window->draw(map);
+    for (auto &button : gameModeButtons)
+    {
+        window->draw(button);
+    }
+    window->draw(gameModeMenuName);
     window->draw(car1);
     window->draw(car2);
     window->display();
@@ -128,22 +166,36 @@ void Menu::handleEvent(sf::Event &event)
 
 void Menu::loadObjectsRound()
 {
-    if (!gameActive)
-        mainMenu();
+    if (!gameActive) {
+        if (choosingGameMode)
+            gameModeMenu();
+        else if (choosingCar)
+            pickCarMenu();
+        else
+            mainMenu();
+    }
     else
         game->loadObjectsRound();
 }
 
-void Menu::buttonPressed()
+void Menu::buttonPressed(std::vector <Button> &buttonsList)
 {
-    if (buttons[currentPosition].getName() == "start")
+    if (buttonsList[currentPosition].getName() == "start")
     {
-        makeGame();
-        music.stop();
+        acceptPressed = 0;
+        choosingGameMode = 1;
+        gameModeMenu();
     }
 
-    if (buttons[currentPosition].getName() == "exit")
+    if (buttonsList[currentPosition].getName() == "exit")
     {
         window->close();
+    }
+
+    if (buttonsList[currentPosition].getName() == "normal")
+    {
+        std::cout << "I'm in";
+        makeGame();
+        music.stop();
     }
 }
