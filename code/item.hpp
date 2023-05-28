@@ -15,9 +15,8 @@
 class Item : public sf::Sprite
 {
 public:
-    Item(const std::string &name, float x, float y, sf::Time duration, bool useOnself = 1, float acc = -1, float maxSpeed = -1, bool reverse = 0, bool explode = 0, bool stun = 0, bool swap = 0);
+    Item(float x, float y, sf::Time duration, bool useOnself = 1, float acc = -1, float maxSpeed = -1, bool reverse = 0, bool explode = 0, bool stun = 0, bool swap = 0);
     ~Item(){};
-    std::string getName() const;
     float getX() const;
     void setX(float x);
     float getY() const;
@@ -35,9 +34,7 @@ public:
     sf::Texture &getTexture();
 
 protected:
-    std::map<std::string, std::string> itemTextures;
     sf::Texture texture;
-    std::string name;
     float xPos;
     float yPos;
     sf::Time duration;
@@ -48,8 +45,55 @@ protected:
     bool explode;
     bool stun;
     bool swap;
+};
 
-    void createTextureMap();
+class SpeedUp : public Item
+{
+public:
+    SpeedUp(float x = 1000, float y = 1000, sf::Time duration = sf::seconds(3));
+    ~SpeedUp(){};
+};
+
+class OpponentSlow : public Item
+{
+public:
+    OpponentSlow(float x = 1000, float y = 1000, sf::Time duration = sf::seconds(2));
+    ~OpponentSlow(){};
+};
+
+class Bomb : public Item
+{
+public:
+    Bomb(float x = 1000, float y = 1000, sf::Time duration = sf::seconds(0));
+    ~Bomb(){};
+};
+
+class Dash : public Item
+{
+public:
+    Dash(float x = 1000, float y = 1000, sf::Time duration = sf::milliseconds(100));
+    ~Dash(){};
+};
+
+class Reverse : public Item
+{
+public:
+    Reverse(float x = 1000, float y = 1000, sf::Time duration = sf::seconds(1));
+    ~Reverse(){};
+};
+
+class Stun : public Item
+{
+public:
+    Stun(float x = 1000, float y = 1000, sf::Time duration = sf::seconds(0));
+    ~Stun(){};
+};
+
+class Swap : public Item
+{
+public:
+    Swap(float x = 1000, float y = 1000, sf::Time duration = sf::seconds(0));
+    ~Swap(){};
 };
 
 #endif

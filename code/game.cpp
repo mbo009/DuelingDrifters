@@ -3,13 +3,7 @@
 Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font) : window(window), font(font)
 {
     // set available items
-    itemTypes = {Item("SpeedUp", 1000, 1000, sf::seconds(2), 1, 0.4, 9),
-                 Item("OpponentSlow", 1000, 1000, sf::seconds(2), 0, 0.1, 3),
-                 Item("Bomb", 1000, 1000, sf::seconds(0), 1, -1, -1, 0, 1),
-                 Item("Dash", 1000, 1000, sf::milliseconds(100), 1, 2, 20),
-                 Item("Reverse", 1000, 1000, sf::seconds(1), 0, -1, -1, 1),
-                 Item("Stun", 1000, 1000, sf::seconds(0), 0, -1, -1, 0, 0, 1),
-                 Item("Swap", 1000, 1000, sf::seconds(0), 0, -1, -1, 0, 0, 0, 1)};
+    itemTypes = {SpeedUp(), OpponentSlow(), Bomb(), Dash(), Reverse(), Stun(), Swap()};
 
     car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
