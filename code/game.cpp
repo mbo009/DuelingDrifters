@@ -73,7 +73,7 @@ void Game::nextMap()
 void Game::loadMusic()
 {
     // Load game start sound
-    startSoundBuffer.loadFromFile(ASSET_PATHS_HPP::GAMESTART_SOUND);
+    startSoundBuffer.loadFromFile(ASSET_PATHS_HPP::GAMESTART_SFX);
     startSound.setBuffer(startSoundBuffer);
     startSound.setVolume(60);
     startSound.play();
@@ -83,7 +83,7 @@ void Game::loadMusic()
     music.setLoop(true);
     music.setVolume(20);
     // Load crash sound
-    crashSoundBuffer.loadFromFile(ASSET_PATHS_HPP::CRASH_SOUND);
+    crashSoundBuffer.loadFromFile(ASSET_PATHS_HPP::CRASH_SFX);
     crashSound.setBuffer(crashSoundBuffer);
     // Play music
     music.play();

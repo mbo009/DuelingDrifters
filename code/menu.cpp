@@ -51,7 +51,7 @@ void Menu::loadMap()
 void Menu::loadFont()
 {
     // Load from file
-    font.loadFromFile(ASSET_PATHS_HPP::STATS_FONT);
+    font.loadFromFile(ASSET_PATHS_HPP::POM_FONT);
     // Create text
     mainMenuName = sf::Text("Dueling Drifters", font, NAME_FONT_SIZE);
     mainMenuName.setPosition(60, 70);
@@ -194,7 +194,6 @@ void Menu::buttonPressed(std::vector <Button> &buttonsList)
 
     if (buttonsList[currentPosition].getName() == "normal")
     {
-        std::cout << "I'm in";
         makeGame();
         music.stop();
     }

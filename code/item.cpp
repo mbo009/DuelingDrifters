@@ -5,13 +5,13 @@ std::map<std::string, std::string> itemTextures;
 
 void createTextureMap()
 {
-    itemTextures["SpeedUp"] = ASSET_PATHS_HPP::SPEED_ORB;
-    itemTextures["OpponentSlow"] = ASSET_PATHS_HPP::OPPONENT_SLOW_ORB;
-    itemTextures["Bomb"] = ASSET_PATHS_HPP::BOMB_ORB;
-    itemTextures["Dash"] = ASSET_PATHS_HPP::DASH_ORB;
-    itemTextures["Reverse"] = ASSET_PATHS_HPP::REVERSE_ORB;
-    itemTextures["Stun"] = ASSET_PATHS_HPP::STUN_ORB;
-    itemTextures["Swap"] = ASSET_PATHS_HPP::SWAP_ORB;
+    itemTextures["SpeedUp"] = ASSET_PATHS_HPP::SPEED_ITM;
+    itemTextures["OpponentSlow"] = ASSET_PATHS_HPP::OPP_SLOW_ITM;
+    itemTextures["Bomb"] = ASSET_PATHS_HPP::BOMB_ITM;
+    itemTextures["Dash"] = ASSET_PATHS_HPP::DASH_ITM;
+    itemTextures["Reverse"] = ASSET_PATHS_HPP::REVERSE_ITM;
+    itemTextures["Stun"] = ASSET_PATHS_HPP::STUN_ITM;
+    itemTextures["Swap"] = ASSET_PATHS_HPP::SWAP_ITM;
 }
 
 Item::Item(const std::string &name, float x, float y, sf::Time duration, bool useOnSelf, float acc, float maxSpeed, bool reverse, bool explode, bool stun, bool swap) : name(name), xPos(x), yPos(y), duration(duration),
