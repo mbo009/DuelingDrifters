@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <ctime>
+#include <utility>
 #include "carSprite.hpp"
 #include "assetPaths.hpp"
 
@@ -80,7 +81,7 @@ private:
     CarSprite car1, car2;
 
     std::vector<Item> itemTypes;
-    std::vector<Item> itemsOnMap;
+    std::vector<std::pair<Item, sf::Clock>> itemsOnMap; // first is item, second is clock for item expiration
     sf::Clock sinceLastItemSpawn;
 
     unsigned int itemCap = 5;

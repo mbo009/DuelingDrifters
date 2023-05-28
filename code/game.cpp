@@ -19,12 +19,18 @@ void Game::spawnItem()
     std::srand(std::time(nullptr));
     float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
     float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
+    sf::Clock itemClock = sf::Clock();
 
-    itemsOnMap.push_back((itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()]));
-    itemsOnMap[itemsOnMap.size() - 1].setPos(xItemPos, yItemPos);
+    itemsOnMap.push_back(
+        {
+            itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()],
+            itemClock
+        }
+            );
+    itemsOnMap[itemsOnMap.size() - 1].first.setPosition(xItemPos, yItemPos);
 
     // this somehow prevents error when copying texture
-    itemsOnMap[itemsOnMap.size() - 1].setTexture(itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()].getTexture());
+    itemsOnMap[itemsOnMap.size() - 1].first.setTexture(itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()].getTexture());
 }
 
 void Game::loadAssets()
@@ -98,7 +104,7 @@ void Game::drawObjects()
     window->draw(car1);
     window->draw(car2);
     for (auto &item : itemsOnMap)
-        window->draw(item);
+        window->draw(item.first);
 }
 
 void Game::loadObjectsRound()
@@ -204,21 +210,26 @@ void Game::handleItemAction()
 {
     for (auto itemIt = itemsOnMap.begin(); itemIt != itemsOnMap.end(); itemIt++)
     {
-        if (car1.checkCollision(*itemIt))
+        if (itemIt->second.getElapsedTime().asSeconds() > 10) // if item is on map for more than 5 seconds
         {
-            if (!itemIt->getUseOnSelf())
-                useItem(car2, *itemIt);
-            else
-                useItem(car1, *itemIt);
             itemsOnMap.erase(itemIt);
             break;
         }
-        if (car2.checkCollision(*itemIt))
+        if (car1.checkCollision(itemIt->first))
         {
-            if (!itemIt->getUseOnSelf())
-                useItem(car1, *itemIt);
+            if (!itemIt->first.getUseOnSelf())
+                useItem(car2, itemIt->first);
             else
-                useItem(car2, *itemIt);
+                useItem(car1, itemIt->first);
+            itemsOnMap.erase(itemIt);
+            break;
+        }
+        if (car2.checkCollision(itemIt->first))
+        {
+            if (!itemIt->first.getUseOnSelf())
+                useItem(car1, itemIt->first);
+            else
+                useItem(car2, itemIt->first);
             itemsOnMap.erase(itemIt);
             break;
         }
