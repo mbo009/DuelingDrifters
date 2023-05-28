@@ -8,14 +8,14 @@ all: build launch clean
 build: compile link
 
 compile:
-	${CXX} ${CXX_FLAGS} -Isrc/include -c code/*.cpp
+	${CXX} ${CXX_FLAGS} -IExtLibs/include -c code/*.cpp
 
 link:
-	${CXX} ${CXX_FLAGS} *.o -o carbrawl -Lsrc/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	${CXX} ${CXX_FLAGS} *.o -o carbrawl -LExtLibs/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 launch:
 	./carbrawl
 
 clean:
-	del *.o
-	del *.exe
+	rm *.o
+	rm *.exe
