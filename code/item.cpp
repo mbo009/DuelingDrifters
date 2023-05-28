@@ -1,9 +1,6 @@
 #include "item.hpp"
-#include <map>
-#include <string>
-std::map<std::string, std::string> itemTextures;
 
-void createTextureMap()
+void Item::createTextureMap()
 {
     itemTextures["SpeedUp"] = ASSET_PATHS_HPP::SPEED_ITM;
     itemTextures["OpponentSlow"] = ASSET_PATHS_HPP::OPP_SLOW_ITM;
@@ -14,17 +11,18 @@ void createTextureMap()
     itemTextures["Swap"] = ASSET_PATHS_HPP::SWAP_ITM;
 }
 
-Item::Item(const std::string &name, float x, float y, sf::Time duration, bool useOnSelf, float acc, float maxSpeed, bool reverse, bool explode, bool stun, bool swap) : name(name), xPos(x), yPos(y), duration(duration),
-                                                                                                                                                                        useOnSelf(useOnSelf), changeAcc(acc),
-                                                                                                                                                                        changeMaxSpeed(maxSpeed), reverseSteering(reverse),
-                                                                                                                                                                        explode(explode), stun(stun), swap(swap)
+Item::Item(const std::string &name, float x, float y,
+           sf::Time duration, bool useOnSelf, float acc,
+           float maxSpeed, bool reverse, bool explode,
+           bool stun, bool swap) : name(name), xPos(x), yPos(y), duration(duration),
+                                   useOnSelf(useOnSelf), changeAcc(acc),
+                                   changeMaxSpeed(maxSpeed), reverseSteering(reverse),
+                                   explode(explode), stun(stun), swap(swap)
 {
     createTextureMap();
     texture.loadFromFile(itemTextures[name]);
-    // texture.loadFromFile("assets/images/items/bomb.png");
     setTexture(texture);
     setPosition(x, y);
-    // sf::Transformable::setScale(sf::Vector2f(10, 10));
 }
 
 std::string Item::getName() const

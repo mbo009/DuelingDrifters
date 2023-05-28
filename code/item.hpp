@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "assetPaths.hpp"
+#include <map>
+#include <string>
 
 // item variants to implement:
 // 2x speed 3 seconds
@@ -32,7 +34,8 @@ public:
     bool getSwap() const;
     sf::Texture &getTexture();
 
-private:
+protected:
+    std::map<std::string, std::string> itemTextures;
     sf::Texture texture;
     std::string name;
     float xPos;
@@ -45,6 +48,8 @@ private:
     bool explode;
     bool stun;
     bool swap;
+
+    void createTextureMap();
 };
 
 #endif
