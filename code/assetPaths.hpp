@@ -8,8 +8,6 @@
 #include <map>
 #include <filesystem>
 
-const unsigned int MAX_FILES = 500;
-
 // Get all list of strings (paths) from a directory (DIR)
 inline const std::vector<std::string> loadFileList(const std::string &DIR)
 {
@@ -60,7 +58,7 @@ inline const std::vector<std::string> loadFolderList(const std::string &DIR)
     }
     return folderList;
 }
-#include <iostream>
+
 inline const std::map<std::string, std::vector<std::string>> mapVectorList(const std::vector<std::string> &DIRS)
 {
     std::map<std::string, std::vector<std::string>> mapList;
@@ -72,43 +70,67 @@ inline const std::map<std::string, std::vector<std::string>> mapVectorList(const
     }
     return mapList;
 }
-// Directory level 1
-const std::string GENERAL_PATH = "assets/";
 
-// Directory level 2
-const std::string FONTS_PATH = GENERAL_PATH + "fonts/";
-const std::string IMAGES_PATH = GENERAL_PATH + "images/";
-const std::string SOUNDS_PATH = GENERAL_PATH + "sounds/";
+// Directory to Assets
+const std::string GENERAL = "assets/";
 
-// Directory level 3
-const std::string CAR_PATH = IMAGES_PATH + "cars/";
-const std::string MAP_PATH = IMAGES_PATH + "maps/";
-const std::string ITEM_PATH = IMAGES_PATH + "items/";
-const std::string MUSIC_PATH = SOUNDS_PATH + "music/";
-const std::string BUTTON_PATH = IMAGES_PATH + "buttons/";
-const std::string SOUND_EFFECTS_PATH = SOUNDS_PATH + "sound_effects/";
+// Type of Assets
+const std::string FONTS = GENERAL + "fonts/";
+const std::string IMAGES = GENERAL + "images/";
+const std::string SOUNDS = GENERAL + "sounds/";
 
-// Directory level 4
-const std::string STATS_FONT = FONTS_PATH + "PixeloidMono.ttf";
-const std::string GAMESTART_SOUND = SOUND_EFFECTS_PATH + "gameStart.ogg";
-const std::string CRASH_SOUND = SOUND_EFFECTS_PATH + "crash.ogg";
-const std::string SPEED_ORB = ITEM_PATH + "speedOrb.png";
-const std::string OPPONENT_SLOW_ORB = ITEM_PATH + "opponentSlow.png";
-const std::string BOMB_ORB = ITEM_PATH + "bomb.png";
-const std::string DASH_ORB = ITEM_PATH + "dash.png";
-const std::string REVERSE_ORB = ITEM_PATH + "reverse.png";
-const std::string STUN_ORB = ITEM_PATH + "stun.png";
-const std::string SWAP_ORB = ITEM_PATH + "swap.png";
-const std::string START = BUTTON_PATH + "baseStart.png";
-const std::string HIGHLIGHTED_START = BUTTON_PATH + "highlightedStart.png";
-const std::string EXIT = BUTTON_PATH + "baseExit.png";
-const std::string HIGHLIGHTED_EXIT = BUTTON_PATH + "highlightedExit.png";
+// Type of Objects
+const std::string BUTTONS = IMAGES + "buttons/";
+const std::string ITEMS = IMAGES + "items/";
+const std::string SOUND_EFFECTS = SOUNDS + "sound_effects/";
+const std::string MAPS = IMAGES + "maps/";
+const std::string MUSIC = SOUNDS + "music/";
+const std::string CARS = IMAGES + "cars/";
 
-const std::vector<std::string> CAR_LIST = loadFolderList(CAR_PATH);
-const std::vector<std::string> MAP_LIST = loadFileList(MAP_PATH);
-const std::vector<std::string> MUSIC_LIST = loadFileList(MUSIC_PATH);
+//==================================================================================================//
+//                                                Font                                              //
+//==================================================================================================//
+const std::string POM_FONT = FONTS + "PixeloidMono.ttf"; // PixeloidMono font
 
-// Directory level 5
+//==================================================================================================//
+//                                               Buttons                                            //
+//==================================================================================================//
+const std::string START_BTN = BUTTONS + "baseStart.png";
+const std::string HLT_START_BTN = BUTTONS + "highlightedStart.png";
+const std::string EXIT_BTN = BUTTONS + "baseExit.png";
+const std::string HLT_EXIT_BTN = BUTTONS + "highlightedExit.png";
+
+//==================================================================================================//
+//                                                Items                                             //
+//==================================================================================================//
+const std::string SPEED_ITM = ITEMS + "speedOrb.png";
+const std::string OPP_SLOW_ITM = ITEMS + "opponentSlow.png";
+const std::string BOMB_ITM = ITEMS + "bomb.png";
+const std::string DASH_ITM = ITEMS + "dash.png";
+const std::string REVERSE_ITM = ITEMS + "reverse.png";
+const std::string STUN_ITM = ITEMS + "stun.png";
+const std::string SWAP_ITM = ITEMS + "swap.png";
+
+//==================================================================================================//
+//                                            Sound Effects                                         //
+//==================================================================================================//
+const std::string GAMESTART_SFX = SOUND_EFFECTS + "gameStart.ogg";
+const std::string CRASH_SFX = SOUND_EFFECTS + "crash.ogg";
+
+//==================================================================================================//
+//                                                Maps                                              //
+//==================================================================================================//
+const std::vector<std::string> MAP_LIST = loadFileList(MAPS);
+
+//==================================================================================================//
+//                                                Music                                             //
+//==================================================================================================//
+const std::vector<std::string> MUSIC_LIST = loadFileList(MUSIC);
+
+//==================================================================================================//
+//                                                Cars                                              //
+//==================================================================================================//
+const std::vector<std::string> CAR_LIST = loadFolderList(CARS);
 const std::map<std::string, std::vector<std::string>> CAR_SPRITE_LIST = mapVectorList(CAR_LIST);
 
 #endif
