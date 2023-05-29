@@ -96,4 +96,11 @@ public:
     ~Swap(){};
 };
 
+class Flag : public Item
+{
+public:
+    Flag(float x = 1000, float y = 1000, sf::Time duration = sf::seconds(0));
+    ~Flag(){};
+};
+
 #endif

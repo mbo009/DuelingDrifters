@@ -138,3 +138,10 @@ Swap::Swap(float x, float y, sf::Time duration) : Item(x, y, duration)
     texture.loadFromFile(ASSET_PATHS_HPP::SWAP_ITM);
     setTexture(texture);
 }
+
+Flag::Flag(float x, float y, sf::Time duration) : Item(x, y, duration)
+{
+    useOnSelf = 0;
+    texture.loadFromFile(ASSET_PATHS_HPP::FLAG_ITM);
+    setTexture(texture);
+}
