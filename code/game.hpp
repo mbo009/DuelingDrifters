@@ -27,23 +27,24 @@ public:
     void spawnItem();
     void drawObjects(bool drawCar = 1, bool drawTimer = 1, bool drawPoints = 1, bool drawFlag = 1, bool drawItems = 1);
     // Game Properties Modifiers
-    void checkCarCollisions();
+    bool checkCarCollisions();
     void handleCarCollision();
     void handleItemAction();
     void useItem(CarSprite &car, Item &item);
     bool carCrossedLine(const CarSprite &car);
     void countDown();
 
-    void checkPointCondition();
+    void normalEndCondition();
     void loadNormalRound();
     
     void checkBounceCondition();
+    void checkFlag();
+    void tagEndCondition();
     void loadTagRound();
 
+    // Game Communication with Menu
     void handleEvent();
     void loadObjectsRound();
-    // Game Communication with Menu
-    
 
 private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -92,7 +93,9 @@ private:
     sf::Time roundTimeToSubtract;
     CarSprite car1, car2;
 
-    std::pair<Item, int> flag = {Item(1000, 1000, sf::seconds(0)), 0}; // first is item, second is which car has it
+    int flagHolder = 0;
+    Flag flag;
+    sf::Time timeLimit;
     std::vector<Item> itemTypes;
     std::vector<std::pair<Item, sf::Clock>> itemsOnMap; // first is item, second is clock for item expiration
     sf::Clock sinceLastItemSpawn;

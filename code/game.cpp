@@ -6,14 +6,15 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
     itemTypes = {SpeedUp(), OpponentSlow(), Bomb(), Dash(), Reverse(), Stun(), Swap()};
     car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
-    if (gameMode == 1) {
-        flag.first = Flag(480, 470, sf::seconds(0));
-        // set texture and scale
-        flag.first.setTexture(flag.first.getTexture());
-        flag.first.setScale(1.5, 1.5);
-    }
     loadAssets();
     resetCarsPosition();
+    if (gameMode == 1) {
+        flag = Flag(480, 470);
+        flagHolder = 0;
+        timeLimit = sf::seconds(30);
+        flag.setTexture(flag.getTexture());
+        flag.setScale(1.75, 1.75);
+    }
     clock.restart();
     sinceLastItemSpawn.restart();
 }
@@ -97,13 +98,6 @@ void Game::nextRound()
 
 void Game::spawnItem()
 {
-    if (gameMode == 1) {
-        // Some car takes the flag
-        if (flag.second != 0) {
-            // make position of flag on top of car
-            flag.first.setPosition(car1.getX() + 5, car1.getY() + 5);
-        }
-    }
     // TODO: not spawn on player or other item
     std::srand(std::time(nullptr));
     float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
@@ -135,7 +129,7 @@ void Game::drawObjects(bool drawCar, bool drawTimer, bool drawPoints, bool drawF
         window->draw(car2PointsText);
     }
     if(drawFlag)
-        window->draw(this->flag.first);
+        window->draw(this->flag);
     if(drawItems)
     {
         for (auto &item : itemsOnMap)
@@ -143,13 +137,15 @@ void Game::drawObjects(bool drawCar, bool drawTimer, bool drawPoints, bool drawF
     }
 }
 
-void Game::checkCarCollisions()
+bool Game::checkCarCollisions()
 {
     if (car1.checkCollision(car2))
     {
         crashSound.play();
         handleCarCollision();
+        return true;
     }
+    return false;
 }
 
 void Game::handleCarCollision()
@@ -272,9 +268,10 @@ void Game::countDown()
         sf::sleep(sf::milliseconds(500));
     }
     crashSound.setPitch(1);
+    clock.restart();
 }
 
-void Game::checkPointCondition()
+void Game::normalEndCondition()
 {
     bool car1CrossedLine = carCrossedLine(car1);
     bool car2CrossedLine = carCrossedLine(car2);
@@ -283,19 +280,17 @@ void Game::checkPointCondition()
         if (!car2CrossedLine)
             car2.getCarObj().setPoint();
         nextRound();
-        roundTimeToSubtract += sf::milliseconds(1500);
     }
     else if (car2CrossedLine)
     {
         car1.getCarObj().setPoint();
         nextRound();
-        roundTimeToSubtract += sf::milliseconds(1500);
     }
 }
 
 void Game::loadNormalRound()
 {
-    sf::Time elapsed = clock.getElapsedTime() - roundTimeToSubtract;
+    sf::Time elapsed = clock.getElapsedTime();
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
@@ -313,7 +308,7 @@ void Game::loadNormalRound()
 
     checkCarCollisions();
     handleItemAction();
-    checkPointCondition();
+    normalEndCondition();
 
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->clear(sf::Color::Black);
@@ -331,8 +326,47 @@ void Game::checkBounceCondition()
         car2.getPushed(-car2.getVelocity().x, -car2.getVelocity().y);
 }
 
+void Game::checkFlag() {
+    
+    if (flagHolder != 0) {
+        if (flagHolder == 1) {
+            flag.setPosition(car1.getX(), car1.getY());
+        }
+        else {
+            flag.setPosition(car2.getX(), car2.getY());
+        }
+        return;
+    }
+    if (car1.checkCollision(flag)) {
+        flagHolder = 1;
+    }
+    if (car2.checkCollision(flag)) {
+        flagHolder = 2;
+    }
+}
+
+void Game::tagEndCondition()
+{
+    if (flagHolder == 1)
+        car1.getCarObj().setPoint();
+    else if (flagHolder == 2)
+        car2.getCarObj().setPoint();
+    
+    flag.setPosition(480, 470);
+    flagHolder = 0;
+    nextRound();
+}
+
 void Game::loadTagRound()
 {
+    sf::Time elapsed = clock.getElapsedTime();
+    // calculate time left
+    int min = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) / 60;
+    int sec = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) % 60 + 1;
+    if (min == 0 && sec < 0) 
+        tagEndCondition();
+
+    timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
     if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 2 && itemsOnMap.size() < itemCap)
     {
         spawnItem();
@@ -344,14 +378,17 @@ void Game::loadTagRound()
     car1.move();
     car2.move();
 
-    checkCarCollisions();
+    // if car1 hit car2, and flag is belong to someone, give the flag to other car
+    if(checkCarCollisions() && flagHolder != 0)
+        flagHolder = 3 - flagHolder;
     handleItemAction();
+    checkFlag();
     checkBounceCondition();
 
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->clear(sf::Color::Black);
     window->setView(view);
-    drawObjects(1, 0, 1, 1, 1);
+    drawObjects(1, 1, 1, 1, 1);
     window->display();
 }
 
