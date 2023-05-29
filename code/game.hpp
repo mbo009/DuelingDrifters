@@ -13,26 +13,37 @@
 class Game
 {
 public:
-    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font);
+    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode);
+    // Load all assets
     void loadAssets();
     void loadFont();
     void loadMap();
+    void loadSound();
+    // Update game properties
     void nextMap();
-    void loadMusic();
     void nextMusic();
-    void drawObjects();
-    void loadObjectsRound();
-    void handleEvent();
-    void checkCarCollisions();
-    void handleCarCollision();
-    void handleItemAction();
-    void countDown();
-    bool carCrossedLine(const CarSprite &car);
-    void checkPointCondition();
     void resetCarsPosition();
     void nextRound();
     void spawnItem();
+    void drawObjects(bool drawCar = 1, bool drawTimer = 1, bool drawPoints = 1, bool drawFlag = 1, bool drawItems = 1);
+    // Game Properties Modifiers
+    void checkCarCollisions();
+    void handleCarCollision();
+    void handleItemAction();
     void useItem(CarSprite &car, Item &item);
+    bool carCrossedLine(const CarSprite &car);
+    void countDown();
+
+    void checkPointCondition();
+    void loadNormalRound();
+    
+    void checkBounceCondition();
+    void loadTagRound();
+
+    void handleEvent();
+    void loadObjectsRound();
+    // Game Communication with Menu
+    
 
 private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -75,11 +86,13 @@ private:
 
     unsigned int musicIndex = 0;
     unsigned int mapIndex = 0;
+    unsigned int gameMode = 0; // 0 - normal, 1 - tag, 2 - custom
 
     sf::Clock clock;
     sf::Time roundTimeToSubtract;
     CarSprite car1, car2;
 
+    std::pair<Item, int> flag = {Item(1000, 1000, sf::seconds(0)), 0}; // first is item, second is which car has it
     std::vector<Item> itemTypes;
     std::vector<std::pair<Item, sf::Clock>> itemsOnMap; // first is item, second is clock for item expiration
     sf::Clock sinceLastItemSpawn;
