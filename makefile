@@ -3,7 +3,7 @@ CXX_FLAGS = -Wall -Wextra -Werror -pedantic -std=c++17
 SRC_DIR = code
 TEST_DIR = tests
 
-all: build launch clean
+all: build launch
 
 build: compile link
 

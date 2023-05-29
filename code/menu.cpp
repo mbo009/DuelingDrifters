@@ -11,12 +11,6 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> &window) : window(window)
     car2.getCarObj().setMaxSpeed(9);
 }
 
-void Menu::makeGame()
-{
-    game = std::make_shared<Game>(window, font);
-    gameActive = 1;
-}
-
 void Menu::loadAssets()
 {
     buttons.push_back(Button(300, 250, "start"));
@@ -194,7 +188,14 @@ void Menu::buttonPressed(std::vector <Button> &buttonsList)
 
     if (buttonsList[currentPosition].getName() == "normal")
     {
-        makeGame();
+        game = std::make_shared<Game>(window, font, 0);
+        gameActive = 1;
+        music.stop();
+    }
+    if (buttonsList[currentPosition].getName() == "tag")
+    {
+        game = std::make_shared<Game>(window, font, 1);
+        gameActive = 1;
         music.stop();
     }
 }

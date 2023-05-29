@@ -110,6 +110,7 @@ const std::string DASH_ITM = ITEMS + "dash.png";
 const std::string REVERSE_ITM = ITEMS + "reverse.png";
 const std::string STUN_ITM = ITEMS + "stun.png";
 const std::string SWAP_ITM = ITEMS + "swap.png";
+const std::string FLAG_ITM = ITEMS + "flag.png";
 
 //==================================================================================================//
 //                                            Sound Effects                                         //
