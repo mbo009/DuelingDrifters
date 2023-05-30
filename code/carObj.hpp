@@ -17,6 +17,7 @@ public:
     float getX() const;
     void setY(float y);
     float getY() const;
+    void setPosition(float x, float y);
     float getStartX() const;
     float getStartY() const;
     float getXVelocity();

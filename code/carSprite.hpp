@@ -1,14 +1,11 @@
 #ifndef CARSPRITE_H
 #define CARSPRITE_H
 
-// #include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
 #include <cctype>
-// #include <string>
 #include <memory>
 #include "carObj.hpp"
-// #include "assetPaths.hpp"
 #include "exception.hpp"
 #include "item.hpp"
 
@@ -25,12 +22,15 @@ public:
     void setColor(const std::string &color);
     std::string getColor() const;
     CarObj &getCarObj();
+    sf::Sprite &getDummy();
+    void resetDummyPosition();
 
     void loadTextures();
-    void updateTexture(CarSprite &other);
+    void updateTexture(CarSprite &other, unsigned int lastAction);
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed, CarSprite &other);
     void noMovementKeyPressed();
     void move();
+    void preMove();
     bool checkCollision(const sf::Sprite &other);
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
@@ -45,19 +45,20 @@ public:
 private:
     std::string toLowerCase(const std::string &str);
     unsigned int keyAction = 8;
-    float scale = 1.0;
-    float x = 300;
-    float y = 300;
+    float scale;
+    float x;
+    float y;
     CarObj carObj;
-    std::string color = "";
+    std::string color;
     std::vector<sf::Texture> textures;
     sf::Texture initialTexture;
-    sf::Clock timeSinceCollision;
     sf::Clock activeItemClock;
     bool activeItem;
     bool reversed = false;
     sf::Time timeItem;
     unsigned int initialTextureCode = 1;
+    CarObj dummyCar;
+    sf::Sprite dummyCarSprite;
 };
 
 #endif

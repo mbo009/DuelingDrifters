@@ -36,7 +36,7 @@ public:
 
     void normalEndCondition();
     void loadNormalRound();
-    
+
     void checkBounceCondition();
     void checkFlag();
     void tagEndCondition();

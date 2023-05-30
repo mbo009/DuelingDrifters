@@ -8,7 +8,8 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
     resetCarsPosition();
-    if (gameMode == 1) {
+    if (gameMode == 1)
+    {
         flag = Flag(480, 470);
         flagHolder = 0;
         timeLimit = sf::seconds(30);
@@ -116,30 +117,36 @@ void Game::spawnItem()
 void Game::drawObjects(bool drawCar, bool drawTimer, bool drawPoints, bool drawFlag, bool drawItems)
 {
     window->draw(map);
-    if(drawCar)
+    if (drawCar)
     {
         window->draw(car1);
         window->draw(car2);
     }
-    if(drawTimer)
-        window->draw(timerText);
-    if(drawPoints)
-    {
-        window->draw(car1PointsText);
-        window->draw(car2PointsText);
-    }
-    if(drawFlag)
+
+    if (drawFlag)
         window->draw(this->flag);
-    if(drawItems)
+
+    if (drawItems)
     {
         for (auto &item : itemsOnMap)
             window->draw(item.first);
     }
+
+    if (drawTimer)
+        window->draw(timerText);
+
+    if (drawPoints)
+    {
+        window->draw(car1PointsText);
+        window->draw(car2PointsText);
+    }
+    window->draw(car2.getDummy());
+    window->draw(car1.getDummy());
 }
 
 bool Game::checkCarCollisions()
 {
-    if (car1.checkCollision(car2))
+    if (car1.checkCollision(car2.getDummy()))
     {
         crashSound.play();
         handleCarCollision();
@@ -150,7 +157,7 @@ bool Game::checkCarCollisions()
 
 void Game::handleCarCollision()
 {
-    sf::Vector2f relPosition = car2.getPosition() - car1.getPosition();
+    sf::Vector2f relPosition = car2.getDummy().getPosition() - car1.getPosition();
     sf::Vector2f relVelocity = car1.getVelocity() - car2.getVelocity();
 
     // Compute the dot product of the relative velocity and the relative position vectors
@@ -268,7 +275,10 @@ void Game::countDown()
         sf::sleep(sf::milliseconds(500));
     }
     crashSound.setPitch(1);
-    clock.restart();
+    if (gameMode == 0)
+        roundTimeToSubtract += sf::milliseconds(1500);
+    else if (gameMode == 1)
+        clock.restart();
 }
 
 void Game::normalEndCondition()
@@ -290,26 +300,31 @@ void Game::normalEndCondition()
 
 void Game::loadNormalRound()
 {
-    sf::Time elapsed = clock.getElapsedTime();
+    sf::Time elapsed = clock.getElapsedTime() - roundTimeToSubtract;
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
 
     if (sinceLastItemSpawn.getElapsedTime().asSeconds() > 2 && itemsOnMap.size() < itemCap)
     {
-        spawnItem();
+        // spawnItem();
         sinceLastItemSpawn.restart();
     }
 
     car1.checkItemReset();
     car2.checkItemReset();
-    car1.move();
-    car2.move();
-
+    car1.preMove();
+    car2.preMove();
     checkCarCollisions();
+    // if (!checkCarCollisions())
+    {
+        car1.move();
+        car2.move();
+    }
+    car2.resetDummyPosition();
+    car1.resetDummyPosition();
     handleItemAction();
     normalEndCondition();
-
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->clear(sf::Color::Black);
     window->setView(view);
@@ -326,21 +341,27 @@ void Game::checkBounceCondition()
         car2.getPushed(-car2.getVelocity().x, -car2.getVelocity().y);
 }
 
-void Game::checkFlag() {
-    
-    if (flagHolder != 0) {
-        if (flagHolder == 1) {
+void Game::checkFlag()
+{
+
+    if (flagHolder != 0)
+    {
+        if (flagHolder == 1)
+        {
             flag.setPosition(car1.getX(), car1.getY());
         }
-        else {
+        else
+        {
             flag.setPosition(car2.getX(), car2.getY());
         }
         return;
     }
-    if (car1.checkCollision(flag)) {
+    if (car1.checkCollision(flag))
+    {
         flagHolder = 1;
     }
-    if (car2.checkCollision(flag)) {
+    if (car2.checkCollision(flag))
+    {
         flagHolder = 2;
     }
 }
@@ -351,7 +372,7 @@ void Game::tagEndCondition()
         car1.getCarObj().setPoint();
     else if (flagHolder == 2)
         car2.getCarObj().setPoint();
-    
+
     flag.setPosition(480, 470);
     flagHolder = 0;
     nextRound();
@@ -363,7 +384,7 @@ void Game::loadTagRound()
     // calculate time left
     int min = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) % 60 + 1;
-    if (min == 0 && sec < 0) 
+    if (min == 0 && sec < 0)
         tagEndCondition();
 
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
@@ -379,7 +400,7 @@ void Game::loadTagRound()
     car2.move();
 
     // if car1 hit car2, and flag is belong to someone, give the flag to other car
-    if(checkCarCollisions() && flagHolder != 0)
+    if (checkCarCollisions() && flagHolder != 0)
         flagHolder = 3 - flagHolder;
     handleItemAction();
     checkFlag();
@@ -415,6 +436,8 @@ void Game::handleEvent()
     }
     else
         car2.noMovementKeyPressed(); // Stop the car
+    car2.resetDummyPosition();
+    car1.resetDummyPosition();
 }
 
 void Game::loadObjectsRound()

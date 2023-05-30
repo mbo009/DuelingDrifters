@@ -26,6 +26,12 @@ float CarObj::getY() const
     return y;
 }
 
+void CarObj::setPosition(float x, float y)
+{
+    setX(x);
+    setY(y);
+}
+
 float CarObj::getStartX() const
 {
     return startX;

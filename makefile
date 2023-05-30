@@ -3,7 +3,7 @@ CXX_FLAGS = -Wall -Wextra -Werror -pedantic -std=c++17
 SRC_DIR = code
 TEST_DIR = tests
 
-all: build launch
+all: build launch clean
 
 build: compile link
 
@@ -17,5 +17,5 @@ launch:
 	./carbrawl
 
 clean:
-	rm *.o
-	rm *.exe
+	del *.o
+	del *.exe

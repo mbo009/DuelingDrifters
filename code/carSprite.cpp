@@ -2,11 +2,17 @@
 
 CarSprite::CarSprite(const std::string &color, float x, float y, float scale, unsigned int initTextureCode) : scale(scale), x(x), y(y)
 {
-    sf::Transformable::setScale(sf::Vector2f(scale, scale));
+    // sf::Transformable::setScale(sf::Vector2f(scale, scale));
     this->carObj = CarObj(x, y);
     setColor(color);
     this->initialTextureCode = initTextureCode;
     setTexture(textures[initialTextureCode - 1]);
+    this->dummyCar = CarObj(x, y);
+    this->dummyCarSprite = sf::Sprite(textures[initialTextureCode - 1]);
+    this->dummyCarSprite.setScale(scale, scale);
+    this->dummyCarSprite.setPosition(x, y);
+    this->dummyCar.setX(x);
+    this->dummyCar.setY(y);
 }
 
 CarSprite &CarSprite::operator=(const CarSprite &other)
@@ -64,9 +70,21 @@ std::string CarSprite::getColor() const
     return color;
 }
 
-CarObj &CarSprite ::getCarObj()
+CarObj &CarSprite::getCarObj()
 {
     return carObj;
+}
+
+sf::Sprite &CarSprite::getDummy()
+{
+    return dummyCarSprite;
+}
+
+void CarSprite::resetDummyPosition()
+{
+    dummyCarSprite.setPosition(x, y);
+    dummyCar.setPosition(x, y);
+    dummyCarSprite.setScale(scale, scale);
 }
 
 void CarSprite::loadTextures()
@@ -81,17 +99,19 @@ void CarSprite::loadTextures()
     }
 }
 
-void CarSprite::updateTexture(CarSprite &other)
+void CarSprite::updateTexture(CarSprite &other, unsigned int lastAction)
 {
-    sf::Sprite test;
-    test.setPosition(x, y);
-    test.setTexture(textures[keyAction]);
-    if (!other.checkCollision(test))
+    dummyCarSprite.setPosition(x, y);
+    dummyCarSprite.setTexture(textures[keyAction]);
+    if (!other.checkCollision(dummyCarSprite))
         setTexture(textures[keyAction]);
+    else
+        dummyCarSprite.setTexture(textures[lastAction]);
 }
 
 void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed, CarSprite &other)
 {
+    unsigned int lastAction = keyAction;
     if (reversed)
     {
         std::swap(UpPressed, DownPressed);
@@ -114,7 +134,7 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
         this->keyAction = 4;
     else if (LeftPressed) // Go west
         this->keyAction = 6;
-    updateTexture(other);
+    updateTexture(other, lastAction);
 }
 
 void CarSprite::noMovementKeyPressed()
@@ -130,18 +150,20 @@ void CarSprite::move()
     this->y = carObj.getY();
 }
 
+void CarSprite::preMove()
+{
+    dummyCar.move(keyAction);
+    dummyCarSprite.setPosition(dummyCar.getX(), dummyCar.getY());
+}
+
 void CarSprite::getPushed(float opXV, float opYV)
 {
-    // if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
     this->carObj.getPushed(opXV, opYV);
-    timeSinceCollision.restart();
 }
 
 void CarSprite::push(float opXV, float opYV)
 {
-    // if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
     this->carObj.push(opXV, opYV);
-    timeSinceCollision.restart();
 }
 
 void CarSprite::resetCar()
@@ -169,7 +191,7 @@ void CarSprite::explosion()
 bool CarSprite::checkCollision(const sf::Sprite &other)
 {
     // Get the current texture for each sprite
-    const std::shared_ptr<sf::Texture> texture1 = std::make_shared<sf::Texture>(*this->getTexture());
+    const std::shared_ptr<sf::Texture> texture1 = std::make_shared<sf::Texture>(*this->dummyCarSprite.getTexture());
     const std::shared_ptr<sf::Texture> texture2 = std::make_shared<sf::Texture>(*other.getTexture());
     if (!texture1 || !texture2) // Make sure both sprites have textures
     {
