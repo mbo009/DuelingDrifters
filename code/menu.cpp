@@ -17,7 +17,6 @@ void Menu::loadAssets()
     buttons.push_back(Button(300, 600, "exit"));
     gameModeButtons.push_back(Button(300, 250, "normal"));
     gameModeButtons.push_back(Button(300, 600, "tag"));
-    // gameModeButtons.push_back(Button(300, 600, "custom"));
     loadFont();
     loadMusic();
     loadMap();

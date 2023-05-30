@@ -11,10 +11,10 @@ compile:
 	${CXX} ${CXX_FLAGS} -IExtLibs/include -c code/*.cpp
 
 link:
-	${CXX} ${CXX_FLAGS} *.o -o carbrawl -LExtLibs/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	${CXX} ${CXX_FLAGS} *.o -o DuelingDrifters -LExtLibs/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 launch:
-	./carbrawl
+	./DuelingDrifters
 
 test_main:
 	$(CXX) $(CXX_FLAGS) $(TEST_DIR)/test_main.cpp -c
