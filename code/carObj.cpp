@@ -1,5 +1,7 @@
 #include "carObj.hpp"
 
+#include <iostream>
+
 CarObj::CarObj(float startX, float startY) : startX(startX), startY(startY)
 {
     this->x = this->startX;
@@ -95,6 +97,8 @@ void CarObj::setVelocity(TriStateBool xAcc, TriStateBool yAcc)
         xVelocity = 0;
     if (std::abs(yVelocity) < 0.1)
         yVelocity = 0;
+    if (acceleration == 0) // Reset acceleration after preventing gainning speed from pushing or getting pushed
+        acceleration = baseAcceleration;
 }
 
 void CarObj::resetVelocity()
@@ -145,6 +149,7 @@ void CarObj::getPushed(float opXV, float opYV)
     this->xVelocity += 2 * opXV;
     this->yVelocity += 2 * opYV;
     this->capVelocity(2);
+    acceleration = 0;  // Prevent gainning speed from getting pushed
 }
 
 void CarObj::push(float opXV, float opYV)
@@ -152,6 +157,7 @@ void CarObj::push(float opXV, float opYV)
     this->xVelocity -= opXV / 2;
     this->yVelocity -= opYV / 2;
     this->capVelocity(2);
+    acceleration = 0;   // Prevent gainning speed from pushing
 }
 
 void CarObj::capVelocity(float multiplier)
