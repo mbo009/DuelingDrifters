@@ -8,6 +8,9 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
     resetCarsPosition();
+    if(gameMode == 0) {
+        totalPlayTime = sf::seconds(0);
+    }
     if (gameMode == 1) {
         flag = Flag(480, 470);
         flagHolder = 0;
@@ -39,6 +42,7 @@ void Game::loadFont()
     car1PointsText.setPosition(CAR1_POINTS_X, CAR1_POINTS_Y);
     car2PointsText = sf::Text("", font, STATS_FONT_SIZE);
     car2PointsText.setPosition(CAR2_POINTS_X, CAR2_POINTS_Y);
+    message = sf::Text("", font, STATS_FONT_SIZE);
 }
 
 void Game::loadMap()
@@ -271,26 +275,43 @@ void Game::countDown()
     clock.restart();
 }
 
+void Game::printMsg(const std::string &msg, float x, float y)
+{
+    message.setString(msg);
+    message.setPosition(x, y);
+    message.setFillColor(sf::Color::Black);
+    window->draw(message);
+    window->display();
+    sf::sleep(sf::seconds(1));
+}
+
 void Game::normalEndCondition()
 {
     bool car1CrossedLine = carCrossedLine(car1);
     bool car2CrossedLine = carCrossedLine(car2);
     if (car1CrossedLine)
     {
-        if (!car2CrossedLine)
+        totalPlayTime += clock.getElapsedTime();
+        if (!car2CrossedLine) {
             car2.getCarObj().setPoint();
+            printMsg("Point for Player 2", 210, 450);
+        }
+        else
+            printMsg("Tieeeeeeeeeeeee!!!", 210, 450);
         nextRound();
     }
     else if (car2CrossedLine)
     {
+        totalPlayTime += clock.getElapsedTime();
         car1.getCarObj().setPoint();
+        printMsg("Point for Player 1", 210, 450);
         nextRound();
     }
 }
 
 void Game::loadNormalRound()
 {
-    sf::Time elapsed = clock.getElapsedTime();
+    sf::Time elapsed = clock.getElapsedTime() + totalPlayTime;
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
@@ -347,11 +368,17 @@ void Game::checkFlag() {
 
 void Game::tagEndCondition()
 {
-    if (flagHolder == 1)
+    if (flagHolder == 1) {
         car1.getCarObj().setPoint();
-    else if (flagHolder == 2)
+        printMsg("Point for Player 1", 210, 450);
+    }
+    else if (flagHolder == 2) {
         car2.getCarObj().setPoint();
-    
+        printMsg("Point for Player 2", 210, 450);
+    }
+    else {
+        printMsg("Tieeeeeeeeeeeee!!!", 210, 450);
+    }
     flag.setPosition(480, 470);
     flagHolder = 0;
     nextRound();

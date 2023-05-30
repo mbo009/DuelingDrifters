@@ -77,7 +77,7 @@ void CarSprite::loadTextures()
         if (temp.loadFromFile(ASSET_PATHS_HPP::CAR_SPRITE_LIST.at(color)[i]))
             textures.push_back(temp);
         else
-            throw loadingTexturesError();
+            throw failedToLoadTexture();
     }
 }
 

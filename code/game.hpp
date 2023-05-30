@@ -33,6 +33,7 @@ public:
     void useItem(CarSprite &car, Item &item);
     bool carCrossedLine(const CarSprite &car);
     void countDown();
+    void printMsg(const std::string &msg, float x, float y);
 
     void normalEndCondition();
     void loadNormalRound();
@@ -74,6 +75,7 @@ private:
     sf::Text timerText;
     sf::Text car1PointsText;
     sf::Text car2PointsText;
+    sf::Text message;
 
     sf::Sprite map;
     sf::Texture mapTexture;
@@ -95,6 +97,7 @@ private:
 
     int flagHolder = 0;
     Flag flag;
+    sf::Time totalPlayTime;
     sf::Time timeLimit;
     std::vector<Item> itemTypes;
     std::vector<std::pair<Item, sf::Clock>> itemsOnMap; // first is item, second is clock for item expiration
