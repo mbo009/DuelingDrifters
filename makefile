@@ -3,7 +3,7 @@ CXX_FLAGS = -Wall -Wextra -Werror -pedantic -std=c++17
 SRC_DIR = code
 TEST_DIR = tests
 
-all: build launch
+all: build launch clean
 
 build: compile link
 
@@ -23,5 +23,5 @@ test_carObj:
 	$(CXX) $(CXX_FLAGS) test_carObj.o  $(SRC_DIR)*.cpp $(TEST_DIR)/test_carObj.cpp -o TestCarObj && ./TestCarObj --success
 
 clean:
-	rm *.o
-	rm *.exe
+	del *.o
+	del *.exe

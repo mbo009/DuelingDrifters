@@ -23,7 +23,7 @@ public:
     void nextMap();
     void nextMusic();
     void resetCarsPosition();
-    void nextRound();
+    void nextRound(unsigned int winner);
     void spawnItem();
     void drawObjects(bool drawCar = 1, bool drawTimer = 1, bool drawPoints = 1, bool drawFlag = 1, bool drawItems = 1);
     // Game Properties Modifiers
@@ -32,12 +32,12 @@ public:
     void handleItemAction();
     void useItem(CarSprite &car, Item &item);
     bool carCrossedLine(const CarSprite &car);
-    void countDown();
+    void countDown(unsigned int winner);
     void printMsg(const std::string &msg, float x, float y);
 
     void normalEndCondition();
     void loadNormalRound();
-    
+
     void checkBounceCondition();
     void checkFlag();
     void tagEndCondition();

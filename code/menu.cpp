@@ -70,7 +70,7 @@ void Menu::mainMenu()
         buttonPressed(buttons);
     }
 
-    if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 100)
+    if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 300)
     {
         buttons[currentPosition].highlight(0);
         if (upPressed)
@@ -103,7 +103,7 @@ void Menu::gameModeMenu()
         buttonPressed(gameModeButtons);
     }
 
-    if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 100)
+    if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 300)
     {
         gameModeButtons[currentPosition].highlight(0);
         if (upPressed)
@@ -115,7 +115,7 @@ void Menu::gameModeMenu()
     }
     makeCarMove(car1, car2);
     makeCarMove(car2, car1);
-    
+
     window->clear(sf::Color::Black);
     window->draw(map);
     for (auto &button : gameModeButtons)
@@ -159,7 +159,8 @@ void Menu::handleEvent(sf::Event &event)
 
 void Menu::loadObjectsRound()
 {
-    if (!gameActive) {
+    if (!gameActive)
+    {
         if (choosingGameMode)
             gameModeMenu();
         else if (choosingCar)
@@ -171,7 +172,7 @@ void Menu::loadObjectsRound()
         game->loadObjectsRound();
 }
 
-void Menu::buttonPressed(std::vector <Button> &buttonsList)
+void Menu::buttonPressed(std::vector<Button> &buttonsList)
 {
     if (buttonsList[currentPosition].getName() == "start")
     {

@@ -148,16 +148,16 @@ void CarObj::getPushed(float opXV, float opYV)
 {
     this->xVelocity += 2 * opXV;
     this->yVelocity += 2 * opYV;
-    this->capVelocity(2);
-    acceleration = 0;  // Prevent gainning speed from getting pushed
+    this->capVelocity(3);
+    acceleration = 0; // Prevent gainning speed from getting pushed
 }
 
 void CarObj::push(float opXV, float opYV)
 {
     this->xVelocity -= opXV / 2;
     this->yVelocity -= opYV / 2;
-    this->capVelocity(2);
-    acceleration = 0;   // Prevent gainning speed from pushing
+    this->capVelocity(3);
+    acceleration = 0; // Prevent gainning speed from pushing
 }
 
 void CarObj::capVelocity(float multiplier)

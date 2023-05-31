@@ -4,14 +4,16 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
 {
     // set available items
     itemTypes = {SpeedUp(), OpponentSlow(), Bomb(), Dash(), Reverse(), Stun(), Swap()};
-    car1 = CarSprite("Blue", 80, 50, 2.5, 4);
+    car1 = CarSprite("Black", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
     resetCarsPosition();
-    if(gameMode == 0) {
+    if (gameMode == 0)
+    {
         totalPlayTime = sf::seconds(0);
     }
-    if (gameMode == 1) {
+    if (gameMode == 1)
+    {
         flag = Flag(480, 470);
         flagHolder = 0;
         timeLimit = sf::seconds(30);
@@ -91,13 +93,13 @@ void Game::resetCarsPosition()
     car2.resetCar();
 }
 
-void Game::nextRound()
+void Game::nextRound(unsigned int winner)
 {
     resetCarsPosition();
     startSound.play();
     car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
     car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
-    countDown();
+    countDown(winner);
 }
 
 void Game::spawnItem()
@@ -120,21 +122,21 @@ void Game::spawnItem()
 void Game::drawObjects(bool drawCar, bool drawTimer, bool drawPoints, bool drawFlag, bool drawItems)
 {
     window->draw(map);
-    if(drawCar)
+    if (drawCar)
     {
         window->draw(car1);
         window->draw(car2);
     }
-    if(drawTimer)
+    if (drawTimer)
         window->draw(timerText);
-    if(drawPoints)
+    if (drawPoints)
     {
         window->draw(car1PointsText);
         window->draw(car2PointsText);
     }
-    if(drawFlag)
+    if (drawFlag)
         window->draw(this->flag);
-    if(drawItems)
+    if (drawItems)
     {
         for (auto &item : itemsOnMap)
             window->draw(item.first);
@@ -251,11 +253,19 @@ bool Game::carCrossedLine(const CarSprite &car)
     return !(car.getX() > BORDER_LEFT && car.getY() > BORDER_TOP && car.getX() < BORDER_RIGHT && car.getY() < BORDER_BOTTOM);
 }
 
-void Game::countDown()
+void Game::countDown(unsigned int winner)
 {
     sf::Text countDownText;
+    sf::Text winnerText;
     countDownText.setCharacterSize(300);
     countDownText.setFont(font);
+    if (winner > 0)
+        winnerText.setString(" Point\n  for  \nPlayer " + std::to_string(winner));
+    else if (winner == 0)
+        winnerText.setString("Tieeeeeeeeeeeee!!!");
+    winnerText.setCharacterSize(50);
+    winnerText.setFont(font);
+    winnerText.setPosition(388, 135);
     crashSound.setPitch(2);
     view.setCenter((3090 + 80 + 850) / 8, (3000 + 50 + 850) / 8);
     window->setView(view);
@@ -267,6 +277,7 @@ void Game::countDown()
         window->clear(sf::Color::Black);
         drawObjects();
         window->draw(countDownText);
+        window->draw(winnerText);
         window->display();
         crashSound.play();
         sf::sleep(sf::milliseconds(500));
@@ -289,23 +300,23 @@ void Game::normalEndCondition()
 {
     bool car1CrossedLine = carCrossedLine(car1);
     bool car2CrossedLine = carCrossedLine(car2);
+    unsigned int winner = 0;
     if (car1CrossedLine)
     {
-        totalPlayTime += clock.getElapsedTime();
-        if (!car2CrossedLine) {
+        if (!car2CrossedLine)
+        {
             car2.getCarObj().setPoint();
-            printMsg("Point for Player 2", 210, 450);
+            winner = 2;
         }
-        else
-            printMsg("Tieeeeeeeeeeeee!!!", 210, 450);
-        nextRound();
+        totalPlayTime += clock.getElapsedTime();
+        nextRound(winner);
     }
     else if (car2CrossedLine)
     {
         totalPlayTime += clock.getElapsedTime();
         car1.getCarObj().setPoint();
-        printMsg("Point for Player 1", 210, 450);
-        nextRound();
+        winner = 1;
+        nextRound(winner);
     }
 }
 
@@ -347,41 +358,44 @@ void Game::checkBounceCondition()
         car2.getPushed(-car2.getVelocity().x, -car2.getVelocity().y);
 }
 
-void Game::checkFlag() {
-    
-    if (flagHolder != 0) {
-        if (flagHolder == 1) {
+void Game::checkFlag()
+{
+
+    if (flagHolder != 0)
+    {
+        if (flagHolder == 1)
+        {
             flag.setPosition(car1.getX(), car1.getY());
         }
-        else {
+        else
+        {
             flag.setPosition(car2.getX(), car2.getY());
         }
         return;
     }
-    if (car1.checkCollision(flag)) {
+    if (car1.checkCollision(flag))
+    {
         flagHolder = 1;
     }
-    if (car2.checkCollision(flag)) {
+    if (car2.checkCollision(flag))
+    {
         flagHolder = 2;
     }
 }
 
 void Game::tagEndCondition()
 {
-    if (flagHolder == 1) {
+
+    if (flagHolder == 1)
         car1.getCarObj().setPoint();
-        printMsg("Point for Player 1", 210, 450);
-    }
-    else if (flagHolder == 2) {
+
+    else if (flagHolder == 2)
         car2.getCarObj().setPoint();
-        printMsg("Point for Player 2", 210, 450);
-    }
-    else {
-        printMsg("Tieeeeeeeeeeeee!!!", 210, 450);
-    }
+
     flag.setPosition(480, 470);
+
     flagHolder = 0;
-    nextRound();
+    nextRound(flagHolder);
 }
 
 void Game::loadTagRound()
@@ -390,7 +404,7 @@ void Game::loadTagRound()
     // calculate time left
     int min = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) % 60 + 1;
-    if (min == 0 && sec < 0) 
+    if (min == 0 && sec < 0)
         tagEndCondition();
 
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
@@ -406,7 +420,7 @@ void Game::loadTagRound()
     car2.move();
 
     // if car1 hit car2, and flag is belong to someone, give the flag to other car
-    if(checkCarCollisions() && flagHolder != 0)
+    if (checkCarCollisions() && flagHolder != 0)
         flagHolder = 3 - flagHolder;
     handleItemAction();
     checkFlag();
