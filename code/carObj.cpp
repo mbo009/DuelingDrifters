@@ -1,9 +1,3 @@
-/**
- * @file carObj.cpp
- * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
- * @brief Class that represents the car object, stores the position, velocity, acceleration, and the points of the car
- * @date 2023-06-03
- */
 #include "carObj.hpp"
 
 /**
