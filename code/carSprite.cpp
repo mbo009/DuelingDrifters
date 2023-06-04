@@ -1,5 +1,14 @@
 #include "carSprite.hpp"
 
+/**
+ * @brief Construct a new Car Sprite:: Car Sprite object
+ * 
+ * @param color color to indicate which texture to load
+ * @param x position of the sprite on the x-axis
+ * @param y position of the sprite on the y-axis
+ * @param scale scale original size of the texture
+ * @param initTextureCode direction texture of the car
+ */
 CarSprite::CarSprite(const std::string &color, float x, float y, float scale, unsigned int initTextureCode) : scale(scale), x(x), y(y)
 {
     sf::Transformable::setScale(sf::Vector2f(scale, scale));
@@ -9,6 +18,12 @@ CarSprite::CarSprite(const std::string &color, float x, float y, float scale, un
     setTexture(textures[initialTextureCode - 1]);
 }
 
+/**
+ * @brief Overloaded assignment operator.
+ * 
+ * @param other 
+ * @return CarSprite& 
+ */
 CarSprite &CarSprite::operator=(const CarSprite &other)
 {
     if (this != &other)
@@ -27,31 +42,62 @@ CarSprite &CarSprite::operator=(const CarSprite &other)
     return *this;
 }
 
+/**
+ * @brief Return the key action of the car, which is the direction it is moving in.
+ * 
+ * @return int 
+ */
 int CarSprite::getKeyAction() const
 {
     return keyAction;
 }
+
+/**
+ * @brief Return the scale of the car sprite.
+ * 
+ * @return int 
+ */
 
 int CarSprite::getScale() const
 {
     return scale;
 }
 
+/**
+ * @brief Return position of the car sprite on the x-axis.
+ * 
+ * @return float 
+ */
 float CarSprite::getX() const
 {
     return carObj.getX();
 }
 
+/**
+ * @brief Return position of the car sprite on the y-axis.
+ * 
+ * @return float 
+ */
 float CarSprite::getY() const
 {
     return carObj.getY();
 }
 
+/**
+ * @brief Return the velocity of the car object containing the car sprite.
+ * 
+ * @return sf::Vector2f 
+ */
 sf::Vector2f CarSprite::getVelocity()
 {
     return sf::Vector2f(carObj.getXVelocity(), carObj.getYVelocity());
 }
 
+/**
+ * @brief Set the color of the car sprite.
+ * 
+ * @param color 
+ */
 void CarSprite::setColor(const std::string &color)
 {
     this->color = toLowerCase(color);
@@ -59,16 +105,30 @@ void CarSprite::setColor(const std::string &color)
     loadTextures();
 }
 
+/**
+ * @brief Return the color of the car sprite.
+ * 
+ * @return std::string 
+ */
 std::string CarSprite::getColor() const
 {
     return color;
 }
 
+/**
+ * @brief Return the car object containing the car sprite.
+ * 
+ * @return CarObj& 
+ */
 CarObj &CarSprite ::getCarObj()
 {
     return carObj;
 }
 
+/**
+ * @brief Load the textures for the car sprite.
+ * @return exception if failed to load texture.
+ */
 void CarSprite::loadTextures()
 {
     sf::Texture temp;
@@ -81,6 +141,11 @@ void CarSprite::loadTextures()
     }
 }
 
+/**
+ * @brief 
+ * 
+ * @param other 
+ */
 void CarSprite::updateTexture(CarSprite &other)
 {
     sf::Sprite test;
@@ -90,6 +155,15 @@ void CarSprite::updateTexture(CarSprite &other)
         setTexture(textures[keyAction]);
 }
 
+/**
+ * @brief 
+ * 
+ * @param UpPressed 
+ * @param LeftPressed 
+ * @param DownPressed 
+ * @param RightPressed 
+ * @param other 
+ */
 void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed, CarSprite &other)
 {
     if (reversed)
@@ -117,11 +191,19 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
     updateTexture(other);
 }
 
+/**
+ * @brief Hold direction of the car sprite when no movement key is pressed.
+ * 
+ */
 void CarSprite::noMovementKeyPressed()
 {
     keyAction = 8;
 }
 
+/**
+ * @brief Move the car sprite by updating the position of the car object.
+ * 
+ */
 void CarSprite::move()
 {
     carObj.move(keyAction);
@@ -130,20 +212,35 @@ void CarSprite::move()
     this->y = carObj.getY();
 }
 
+/**
+ * @brief Check if the car sprite is colliding with another sprite.
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
 void CarSprite::getPushed(float opXV, float opYV)
 {
-    // if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
     this->carObj.getPushed(opXV, opYV);
     timeSinceCollision.restart();
 }
 
+/**
+ * @brief Push the car sprite by updating the velocity of the car object.
+ * 
+ * @param opXV 
+ * @param opYV 
+ */
 void CarSprite::push(float opXV, float opYV)
 {
-    // if (timeSinceCollision.getElapsedTime().asMilliseconds() > 10)
     this->carObj.push(opXV, opYV);
     timeSinceCollision.restart();
 }
 
+/**
+ * @brief Reset the car sprite to its original position and texture.
+ * 
+ */
 void CarSprite::resetCar()
 {
     setPosition(carObj.getStartX(), carObj.getStartY());
@@ -153,6 +250,12 @@ void CarSprite::resetCar()
     reversed = 0;
 }
 
+/**
+ * @brief Nomalize the string to lower case.
+ * 
+ * @param str 
+ * @return std::string 
+ */
 std::string CarSprite::toLowerCase(const std::string &str)
 {
     std::string result(str);
@@ -161,11 +264,21 @@ std::string CarSprite::toLowerCase(const std::string &str)
     return result;
 }
 
+/**
+ * @brief Add explosion effect to the car sprite.
+ * 
+ */
 void CarSprite::explosion()
 {
     getPushed(-2 * carObj.getXVelocity(), -2 * carObj.getYVelocity());
 }
 
+/**
+ * @brief Check if the car sprite is colliding with another sprite. Compare overlapping pixels of the two sprites.
+ * If there is two pixel from each sprite that overlap and neither of them are transparent, then there is a collision.
+ * @param other 
+ * @return 
+ */
 bool CarSprite::checkCollision(const sf::Sprite &other)
 {
     // Get the current texture for each sprite
@@ -206,6 +319,10 @@ bool CarSprite::checkCollision(const sf::Sprite &other)
     return false; // No collision detected
 }
 
+/**
+ * @brief Clear effect of the item after a certain amount of time.
+ * 
+ */
 void CarSprite::checkItemReset()
 {
     if (activeItem)
@@ -219,6 +336,11 @@ void CarSprite::checkItemReset()
     }
 }
 
+/**
+ * @brief Apply effect of the item to the car sprite.
+ * 
+ * @param time 
+ */
 void CarSprite::usedItem(sf::Time time)
 {
     activeItem = true;
@@ -226,16 +348,30 @@ void CarSprite::usedItem(sf::Time time)
     activeItemClock.restart();
 }
 
+/**
+ * @brief Add reverse steering effect to the car sprite.
+ * 
+ */
 void CarSprite::reverseSteering()
 {
     reversed = true;
 }
 
+/**
+ * @brief Stop the car.
+ * 
+ */
 void CarSprite::stop()
 {
     carObj.stop();
 }
 
+/**
+ * @brief Set the position of the car sprite.
+ * 
+ * @param x 
+ * @param y 
+ */
 void CarSprite::setPos(float x, float y)
 {
     this->x = x;

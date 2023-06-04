@@ -1,14 +1,20 @@
+/**
+ * @file carSprite.hpp
+ * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
+ * @brief Class that represents the car sprite, with the texture, position, and the car object
+ * @date 2023-06-03
+ */
 #ifndef CARSPRITE_H
 #define CARSPRITE_H
 
-// #include <SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
 #include <cctype>
-// #include <string>
+#include <string>
 #include <memory>
 #include "carObj.hpp"
-// #include "assetPaths.hpp"
+#include "assetPaths.hpp"
 #include "exception.hpp"
 #include "item.hpp"
 
