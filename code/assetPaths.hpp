@@ -99,6 +99,11 @@ const std::string START_BTN = BUTTONS + "baseStart.png";
 const std::string HLT_START_BTN = BUTTONS + "highlightedStart.png";
 const std::string EXIT_BTN = BUTTONS + "baseExit.png";
 const std::string HLT_EXIT_BTN = BUTTONS + "highlightedExit.png";
+const std::string DUEL_BTN = BUTTONS + "baseDuel.png";
+const std::string HLT_DUEL_BTN = BUTTONS + "highlightedDuel.png";
+const std::string FLAG_BTN = BUTTONS + "baseFlag.png";
+const std::string HLT_FLAG_BTN = BUTTONS + "highlightedFlag.png";
+
 
 //==================================================================================================//
 //                                                Items                                             //

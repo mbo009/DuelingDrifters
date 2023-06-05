@@ -15,8 +15,8 @@ void Menu::loadAssets()
 {
     buttons.push_back(Button(300, 250, "start"));
     buttons.push_back(Button(300, 600, "exit"));
-    gameModeButtons.push_back(Button(300, 250, "normal"));
-    gameModeButtons.push_back(Button(300, 600, "tag"));
+    gameModeButtons.push_back(Button(100, 300, "duel"));
+    gameModeButtons.push_back(Button(500, 300, "flag"));
     loadFont();
     loadMusic();
     loadMap();
@@ -186,13 +186,13 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
         window->close();
     }
 
-    if (buttonsList[currentPosition].getName() == "normal")
+    if (buttonsList[currentPosition].getName() == "duel")
     {
         game = std::make_shared<Game>(window, font, 0);
         gameActive = 1;
         music.stop();
     }
-    if (buttonsList[currentPosition].getName() == "tag")
+    if (buttonsList[currentPosition].getName() == "flag")
     {
         game = std::make_shared<Game>(window, font, 1);
         gameActive = 1;
