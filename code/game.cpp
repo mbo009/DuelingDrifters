@@ -296,7 +296,7 @@ void Game::printMsg(const std::string &msg, float x, float y)
     sf::sleep(sf::seconds(1));
 }
 
-void Game::normalEndCondition()
+void Game::duelEndCondition()
 {
     bool car1CrossedLine = carCrossedLine(car1);
     bool car2CrossedLine = carCrossedLine(car2);
@@ -320,7 +320,7 @@ void Game::normalEndCondition()
     }
 }
 
-void Game::loadNormalRound()
+void Game::loadDuelRound()
 {
     sf::Time elapsed = clock.getElapsedTime() + totalPlayTime;
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
@@ -340,7 +340,7 @@ void Game::loadNormalRound()
 
     checkCarCollisions();
     handleItemAction();
-    normalEndCondition();
+    duelEndCondition();
 
     view.setCenter((car1.getX() + car2.getX() + 3090) / 8, (car1.getY() + car2.getY() + 3000) / 8);
     window->clear(sf::Color::Black);
@@ -433,8 +433,11 @@ void Game::loadTagRound()
     window->display();
 }
 
-void Game::handleEvent()
+int Game::handleEvent()
 {
+    // Check if ESC key is pressed
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        return 0;
     bool UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -456,16 +459,10 @@ void Game::handleEvent()
     }
     else
         car2.noMovementKeyPressed(); // Stop the car
+    return 1;
 }
 
 void Game::loadObjectsRound()
 {
-    if (gameMode == 0)
-    {
-        loadNormalRound();
-    }
-    else
-    {
-        loadTagRound();
-    }
+    gameMode == 0 ? loadDuelRound() : loadTagRound();
 }

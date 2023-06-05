@@ -35,8 +35,8 @@ public:
     void countDown(unsigned int winner);
     void printMsg(const std::string &msg, float x, float y);
 
-    void normalEndCondition();
-    void loadNormalRound();
+    void duelEndCondition();
+    void loadDuelRound();
 
     void checkBounceCondition();
     void checkFlag();
@@ -44,7 +44,7 @@ public:
     void loadTagRound();
 
     // Game Communication with Menu
-    void handleEvent();
+    int handleEvent();
     void loadObjectsRound();
 
 private:
@@ -89,7 +89,7 @@ private:
 
     unsigned int musicIndex = 0;
     unsigned int mapIndex = 0;
-    unsigned int gameMode = 0; // 0 - normal, 1 - tag, 2 - custom
+    unsigned int gameMode = 0; // 0 - duel, 1 - tag
 
     sf::Clock clock;
     sf::Time roundTimeToSubtract;
