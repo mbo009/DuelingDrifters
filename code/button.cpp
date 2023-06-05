@@ -1,6 +1,12 @@
 #include "button.hpp"
-#include <map>
 
+/**
+ * @brief Construct a new Button
+ * 
+ * @param x Postion of button on x-axis
+ * @param y Postion of button on y-axis
+ * @param name Name of button for loading textures
+ */
 Button::Button(float x, float y, std::string name) : x(x), y(y), name(name)
 {
     baseTexture.loadFromFile(texturePaths[name].first);
@@ -10,6 +16,11 @@ Button::Button(float x, float y, std::string name) : x(x), y(y), name(name)
     setScale(2, 2);
 }
 
+/**
+ * @brief Set the highlight state of the button.
+ * By changing the texture of the button from base to highlighted.
+ * @param state State of highlight
+ */
 void Button::highlight(bool state)
 {
     highlighted = state;
@@ -19,6 +30,10 @@ void Button::highlight(bool state)
         setTexture(baseTexture);
 }
 
+/**
+ * @brief Get the name of the button
+ * 
+ */
 std::string Button::getName()
 {
     return name;

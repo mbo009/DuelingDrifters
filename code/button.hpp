@@ -1,8 +1,16 @@
+/**
+ * @file button.hpp
+ * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
+ * @brief Class for the buttons
+ * @date 2023-06-04
+ * 
+ */
 #ifndef BUTTON_H
 #define BUTTON_H
 #pragma once
 
 #include <utility>
+#include <map>
 #include "SFML/Graphics.hpp"
 #include "assetPaths.hpp"
 
