@@ -1,3 +1,10 @@
+/**
+ * @file item.hpp
+ * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
+ * @brief Class for the items and its inherited classes
+ * @date 2023-06-04
+ * 
+ */
 #ifndef ITEM_H
 #define ITEM_H
 
@@ -5,12 +12,6 @@
 #include "assetPaths.hpp"
 #include <map>
 #include <string>
-
-// item variants to implement:
-// 2x speed 3 seconds
-// 0.5x speed enemy 3 seconds
-// dash
-// bomb
 
 class Item : public sf::Sprite
 {

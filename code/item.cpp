@@ -1,5 +1,19 @@
 #include "item.hpp"
 
+/**
+ * @brief Construct a new Item:: Item object
+ * 
+ * @param x 
+ * @param y 
+ * @param duration effect duration
+ * @param useOnSelf is the item used on self or on opponent
+ * @param acc acceleration change
+ * @param maxSpeed max speed change
+ * @param reverse reverse steering
+ * @param explode get exploded
+ * @param stun get stunned
+ * @param swap swap position with opponent
+ */
 Item::Item(float x, float y,
            sf::Time duration, bool useOnSelf, float acc,
            float maxSpeed, bool reverse, bool explode,
