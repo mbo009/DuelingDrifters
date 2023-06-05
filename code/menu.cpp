@@ -4,7 +4,9 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> &window) : window(window)
 {
     // set FPS cap
     window->setFramerateLimit(60);
+
     loadAssets();
+
     car1.setScale(2, 2);
     car2.setScale(2, 2);
     car1.getCarObj().setMaxSpeed(9);
@@ -15,11 +17,13 @@ void Menu::loadAssets()
 {
     buttons.push_back(Button(300, 250, "start"));
     buttons.push_back(Button(300, 600, "exit"));
-    gameModeButtons.push_back(Button(300, 250, "normal"));
-    gameModeButtons.push_back(Button(300, 600, "tag"));
+    gameModeButtons.push_back(Button(100, 300, "duel"));
+    gameModeButtons.push_back(Button(500, 300, "flag"));
+
     loadFont();
     loadMusic();
     loadMap();
+
     buttons[currentPosition].highlight(1);
     gameModeButtons[currentPosition].highlight(1);
     buttons[currentPosition + 1].highlight(0);
@@ -45,6 +49,7 @@ void Menu::loadFont()
 {
     // Load from file
     font.loadFromFile(ASSET_PATHS_HPP::POM_FONT);
+
     // Create text
     mainMenuName = sf::Text("Dueling Drifters", font, NAME_FONT_SIZE);
     mainMenuName.setPosition(60, 70);
@@ -86,10 +91,12 @@ void Menu::mainMenu()
 
     window->clear(sf::Color::Black);
     window->draw(map);
+
     for (auto &button : buttons)
     {
         window->draw(button);
     }
+
     window->draw(mainMenuName);
     window->draw(car1);
     window->draw(car2);
@@ -113,15 +120,18 @@ void Menu::gameModeMenu()
         gameModeButtons[currentPosition].highlight(1);
         wait.restart();
     }
+
     makeCarMove(car1, car2);
     makeCarMove(car2, car1);
 
     window->clear(sf::Color::Black);
     window->draw(map);
+
     for (auto &button : gameModeButtons)
     {
         window->draw(button);
     }
+
     window->draw(gameModeMenuName);
     window->draw(car1);
     window->draw(car2);
@@ -143,6 +153,7 @@ void Menu::handleEvent(sf::Event &event)
 
     if (gameActive)
         game->handleEvent();
+
     else
     {
         upPressed = (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
@@ -168,6 +179,7 @@ void Menu::loadObjectsRound()
         else
             mainMenu();
     }
+
     else
         game->loadObjectsRound();
 }
@@ -186,13 +198,14 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
         window->close();
     }
 
-    if (buttonsList[currentPosition].getName() == "normal")
+    if (buttonsList[currentPosition].getName() == "duel")
     {
         game = std::make_shared<Game>(window, font, 0);
         gameActive = 1;
         music.stop();
     }
-    if (buttonsList[currentPosition].getName() == "tag")
+
+    if (buttonsList[currentPosition].getName() == "flag")
     {
         game = std::make_shared<Game>(window, font, 1);
         gameActive = 1;
