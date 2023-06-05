@@ -1,3 +1,9 @@
+/**
+ * @file assetPaths.hpp
+ * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
+ * @brief This file contains all the paths to the assets used in the game.
+ * @date 2023-06-06
+ */
 #pragma once
 #ifndef ASSET_PATHS_HPP
 #define ASSET_PATHS_HPP
