@@ -21,7 +21,7 @@ public:
     void handleEvent(sf::Event &event);
     void loadObjectsRound();
     void makeCarMove(CarSprite &car, CarSprite &other, unsigned int range);
-    void buttonPressed(std::vector <Button> &buttonsList);
+    void buttonPressed(std::vector<Button> &buttonsList);
 
 private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -50,6 +50,9 @@ private:
     std::vector<Button> gameModeButtons;
     std::shared_ptr<Game> game;
     sf::Clock wait;
+
+    sf::Time chosenTimeLimit;
+    unsigned int chosenPointLimit;
 };
 
 #endif

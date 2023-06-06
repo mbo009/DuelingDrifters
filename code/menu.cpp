@@ -137,7 +137,9 @@ void Menu::gameModeMenu()
     window->draw(car2);
     window->display();
 }
-
+// void Menu::gameSettings(sf::Event &event)
+// {
+// }
 void Menu::handleEvent(sf::Event &event)
 {
     if (event.type == sf::Event::Closed)

@@ -300,23 +300,23 @@ void Game::duelEndCondition()
 {
     bool car1CrossedLine = carCrossedLine(car1);
     bool car2CrossedLine = carCrossedLine(car2);
-    unsigned int winner = 0;
+    unsigned int roundWinner = 0;
     if (car1CrossedLine)
     {
         if (!car2CrossedLine)
         {
             car2.getCarObj().setPoint();
-            winner = 2;
+            roundWinner = 2;
         }
         totalPlayTime += clock.getElapsedTime();
-        nextRound(winner);
+        nextRound(roundWinner);
     }
     else if (car2CrossedLine)
     {
         totalPlayTime += clock.getElapsedTime();
         car1.getCarObj().setPoint();
-        winner = 1;
-        nextRound(winner);
+        roundWinner = 1;
+        nextRound(roundWinner);
     }
 }
 
