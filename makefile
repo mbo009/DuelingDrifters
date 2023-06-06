@@ -1,3 +1,5 @@
+# Command using in makefile is for Windows OS only
+
 CXX = g++
 CXX_FLAGS = -Wall -Wextra -Werror -pedantic -std=c++17
 SFML_LIB = ExtLibs/lib
@@ -5,7 +7,7 @@ SFML_INCLUDE = ExtLibs/include
 SRC_DIR = code/
 TEST_DIR = tests/
 
-all: build launch clean
+all: release clean
 
 build: compile link
 
@@ -15,8 +17,11 @@ compile:
 link:
 	$(CXX) $(CXX_FLAGS) *.o -o DuelingDrifters -L$(SFML_LIB) -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
+release: build
+	move DuelingDrifters.exe ./release/
+
 launch:
-	./DuelingDrifters
+	./release/DuelingDrifters.exe
 
 test_main: 
 	$(CXX) $(CXX_FLAGS) $(TEST_DIR)test_main.cpp -c
