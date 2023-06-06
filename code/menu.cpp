@@ -143,13 +143,15 @@ void Menu::handleEvent(sf::Event &event)
     if (event.type == sf::Event::Closed)
         window->close();
 
-    if (!gameActive) {
-        if(choosingGameMode && event.key.code == sf::Keyboard::Escape)
+    if (!gameActive)
+    {
+
+        if (choosingGameMode && event.key.code == sf::Keyboard::Escape && wait.getElapsedTime().asMilliseconds() > 500)
         {
-            std::cout << "OK\n";
             choosingGameMode = 0;
             currentPosition = 0;
         }
+
         upPressed = (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
                      sf::Keyboard::isKeyPressed(sf::Keyboard::Up));
         downPressed = (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) ||
@@ -160,8 +162,15 @@ void Menu::handleEvent(sf::Event &event)
                          sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
                          sf::Keyboard::isKeyPressed(sf::Keyboard::Right));
     }
-    else {
+
+    else
+    {
         gameActive = game->handleEvent();
+
+        if (!gameActive)
+        {
+            wait.restart();
+        }
     }
 }
 

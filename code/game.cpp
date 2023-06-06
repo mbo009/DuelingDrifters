@@ -437,7 +437,11 @@ int Game::handleEvent()
 {
     // Check if ESC key is pressed
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+        view.setCenter(512, 512);
+        window->setView(view);
         return 0;
+    }
     bool UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
     bool LeftPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
     bool DownPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
