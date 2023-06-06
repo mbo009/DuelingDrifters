@@ -9,6 +9,7 @@
 #define CAROBJ_HPP
 
 #include <cmath>
+
 enum TriStateBool
 {
     False, // -
@@ -16,6 +17,9 @@ enum TriStateBool
     True   // +
 };
 
+/**
+ * @brief Class that represents the car object, stores the position, velocity, acceleration, and the points of the car.
+ */
 class CarObj
 {
 public:

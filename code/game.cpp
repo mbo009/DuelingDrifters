@@ -4,8 +4,8 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
 {
     // set available items
     itemTypes = {SpeedUp(), OpponentSlow(), Bomb(), Dash(), Reverse(), Stun(), Swap()};
-    car1 = CarSprite("Blue", 80, 50, 2.5, 4);
-    car2 = CarSprite("Red", 850, 850, 2.5, 8);
+    car1 = CarSprite("Blue", CAR1_START_POS.first, CAR1_START_POS.second, CAR_SCALE, 4);
+    car2 = CarSprite("Red", CAR2_START_POS.first, CAR2_START_POS.second, CAR_SCALE, 8);
     loadAssets();
     resetCarsPosition();
     if (gameMode == 0)

@@ -1,3 +1,7 @@
+/**
+ * @brief Return exception when the texture fails to load
+ * 
+ */
 class failedToLoadTexture : public std::exception
 {
 public:
@@ -7,6 +11,10 @@ public:
     }
 };
 
+/**
+ * @brief Return exception if the asset path is not found
+ * 
+ */
 class failedToGetAssetPath : public std::exception
 {
 public:
@@ -16,6 +24,10 @@ public:
     }
 };
 
+/**
+ * @brief Return exception when the font fails to load
+ * 
+ */
 class failedToLoadFont : public std::exception
 {
 public:
@@ -25,6 +37,10 @@ public:
     }
 };
 
+/**
+ * @brief Return exception when the sound fails to load
+ * 
+ */
 class failedToLoadSound : public std::exception
 {
 public:

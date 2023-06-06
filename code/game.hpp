@@ -1,3 +1,10 @@
+/**
+ * @file game.hpp
+ * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
+ * @brief Class that represents the game, control properties and handle events while in game.
+ * @date 2023-06-07
+ * 
+ */
 #ifndef GAME_HPP
 #define GAME_HPP
 
@@ -10,6 +17,10 @@
 #include "carSprite.hpp"
 #include "assetPaths.hpp"
 
+/**
+ * @brief Class that represents the game, control properties and handle events while in game.
+ * 
+ */
 class Game
 {
 public:
@@ -67,6 +78,9 @@ private:
     const float CAR2_POINTS_Y = 50;
     const float STATS_FONT_SIZE = 50;
     const float MAP_SCALE = 1.5;
+    const float CAR_SCALE = 2.5;
+    const std::pair <int, int> CAR1_START_POS = {80, 50};
+    const std::pair <int, int> CAR2_START_POS = {850, 850};
 
     // PLAYGROUND BORDERS
     const float BORDER_LEFT = 40;
