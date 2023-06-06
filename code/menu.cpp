@@ -138,24 +138,18 @@ void Menu::gameModeMenu()
     window->display();
 }
 
-void Menu::pickCarMenu()
-{
-}
-
-void Menu::settingsMenu()
-{
-}
-
 void Menu::handleEvent(sf::Event &event)
 {
     if (event.type == sf::Event::Closed)
         window->close();
 
-    if (gameActive)
-        game->handleEvent();
-
-    else
-    {
+    if (!gameActive) {
+        if(choosingGameMode && event.key.code == sf::Keyboard::Escape)
+        {
+            std::cout << "OK\n";
+            choosingGameMode = 0;
+            currentPosition = 0;
+        }
         upPressed = (sf::Keyboard::isKeyPressed(sf::Keyboard::W) ||
                      sf::Keyboard::isKeyPressed(sf::Keyboard::Up));
         downPressed = (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) ||
@@ -166,6 +160,9 @@ void Menu::handleEvent(sf::Event &event)
                          sf::Keyboard::isKeyPressed(sf::Keyboard::D) ||
                          sf::Keyboard::isKeyPressed(sf::Keyboard::Right));
     }
+    else {
+        gameActive = game->handleEvent();
+    }
 }
 
 void Menu::loadObjectsRound()
@@ -174,8 +171,6 @@ void Menu::loadObjectsRound()
     {
         if (choosingGameMode)
             gameModeMenu();
-        else if (choosingCar)
-            pickCarMenu();
         else
             mainMenu();
     }
