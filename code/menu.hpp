@@ -1,36 +1,48 @@
+/**
+ * @file menu.hpp
+ * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
+ * @brief Class that represents the menu, contains all type of menus settings and functions before the game starts
+ * @date 2023-06-07
+ */
 #ifndef MENU_H
 #define MENU_H
 
+#include <memory>
+#include <ultility>
 #include "button.hpp"
 #include "game.hpp"
-#include <memory>
 
+/**
+ * @brief Class that represents the menu, contains all type of menus settings and functions before the game starts
+ * 
+ */
 class Menu
 {
 public:
     Menu(std::shared_ptr<sf::RenderWindow> &window);
     void loadAssets();
-    void preloadTextures();
     void loadFont();
     void loadMusic();
-    void loadMap();
+    void loadBackground();
+    void preloadTextures();
     void updateButtonHighlights(std::vector<Button> &buttons);
     void updateTimeText();
-
+    
+    void drawButtons(std::vector<Button> buttons);
+    void drawBackground(sf::Text textToDraw);
+    void restartCameraPosition();
+    void makeCarMove(CarSprite &car, CarSprite &other, unsigned int range);
+    void moveCars();
     void mainMenu();
     void gameModeMenu();
     void gameSettings();
+
     void handleEvent(sf::Event &event);
     void loadObjectsRound();
-    void makeCarMove(CarSprite &car, CarSprite &other, unsigned int range);
     void buttonPressed(std::vector<Button> &buttonsList);
     bool areKeysPressed(std::vector<sf::Keyboard::Key> keys);
 
-    void restartCameraPosition();
     void resetAfterRound();
-    void drawBackground(sf::Text textToDraw);
-    void moveCars();
-    void drawButtons(std::vector<Button> buttons);
 
 private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -59,7 +71,7 @@ private:
     bool isRightPressed;
     bool isAcceptPressed;
 
-    sf::Sprite map;
+    sf::Sprite background;
 
     sf::Font font;
     sf::Text mainMenuName;
@@ -68,7 +80,7 @@ private:
     sf::Text timeText;
     sf::Text pointsText;
 
-    sf::Texture mapTexture;
+    sf::Texture backgroundTexture;
     sf::Sound music;
     sf::SoundBuffer musicBuffer;
     std::vector<Button> buttons;
