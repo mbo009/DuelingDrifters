@@ -71,7 +71,7 @@ void Game::loadFont()
 void Game::loadMap()
 {
     // Load map
-    mapTexture.loadFromFile(ASSET_PATHS_HPP::MAP_LIST[mapIndex]);
+    mapTexture.loadFromFile(ASSET_PATHS_HPP::MAP_LIST[0]);
     map.setTexture(mapTexture, true);
     map.setScale(sf::Vector2f(MAP_SCALE, MAP_SCALE));
     map.setOrigin(190, 230);    // Set origin to the center of the map
@@ -90,7 +90,7 @@ void Game::loadSound()
     startSound.play();
 
     // Load music
-    musicBuffer.loadFromFile(ASSET_PATHS_HPP::MUSIC_LIST[musicIndex]);
+    musicBuffer.loadFromFile(ASSET_PATHS_HPP::MUSIC_LIST[0]);
     music.setBuffer(musicBuffer);
     music.setLoop(true);
     music.setVolume(12);
