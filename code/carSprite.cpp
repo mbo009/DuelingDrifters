@@ -278,6 +278,12 @@ void CarSprite::explosion()
     getPushed(-2 * carObj.getXVelocity(), -2 * carObj.getYVelocity());
 }
 
+void CarSprite::rotateRight()
+{
+    setTexture(textures[keyAction % 8]);
+    keyAction++;
+}
+
 /**
  * @brief Check if the car sprite is colliding with another sprite. Compare overlapping pixels of the two sprites.
  * If there is two pixel from each sprite that overlap and neither of them are transparent, then there is a collision.

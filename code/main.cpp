@@ -4,7 +4,6 @@
 int main()
 {
     std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1024, 1024), "Dueling Drifters");
-    // Game game = Game(window, font);
     Menu menu = Menu(window);
 
     while (window->isOpen())

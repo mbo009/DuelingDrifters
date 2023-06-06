@@ -9,22 +9,28 @@ class Menu
 {
 public:
     Menu(std::shared_ptr<sf::RenderWindow> &window);
-    void makeGame();
     void loadAssets();
+    void preloadTextures();
     void loadFont();
     void loadMusic();
     void loadMap();
+    void updateButtonHighlights(std::vector<Button> &buttons);
+    void updateTimeText();
+
     void mainMenu();
     void gameModeMenu();
-    void pickCarMenu();
-    void settingsMenu();
+    void gameSettings();
     void handleEvent(sf::Event &event);
     void loadObjectsRound();
     void makeCarMove(CarSprite &car, CarSprite &other, unsigned int range);
     void buttonPressed(std::vector<Button> &buttonsList);
+    bool areKeysPressed(std::vector<sf::Keyboard::Key> keys);
 
     void restartCameraPosition();
     void resetAfterRound();
+    void drawBackground(sf::Text textToDraw);
+    void moveCars();
+    void drawButtons(std::vector<Button> buttons);
 
 private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -34,18 +40,34 @@ private:
     CarSprite car2 = CarSprite("blue", 850, 850);
 
     const float NAME_FONT_SIZE = 90;
+    const std::vector<sf::Keyboard::Key> UP_BUTTONS = {sf::Keyboard::W, sf::Keyboard::Up};
+    const std::vector<sf::Keyboard::Key> DOWN_BUTTONS = {sf::Keyboard::S, sf::Keyboard::Down};
+    const std::vector<sf::Keyboard::Key> LEFT_BUTTONS = {sf::Keyboard::A, sf::Keyboard::Left};
+    const std::vector<sf::Keyboard::Key> RIGHT_BUTTONS = {sf::Keyboard::D, sf::Keyboard::Right};
+    const std::vector<sf::Keyboard::Key> ACCEPT_BUTTONS = {sf::Keyboard::E, sf::Keyboard::Space, sf::Keyboard::Enter};
 
-    bool gameActive = 0;
-    bool choosingGameMode = 0;
-    bool choosingCar = 0;
-    bool upPressed;
-    bool downPressed;
-    bool acceptPressed;
+    const int TIME_BETWEEN_ACTIONS = 300;
+    const int TIME_BETWEEN_ESC = 500;
+
+    bool isGameActive = 0;
+    bool isChoosingGameMode = 0;
+    bool isSettingsMenu = 0;
+
+    bool isUpPressed;
+    bool isDownPressed;
+    bool isLeftPressed;
+    bool isRightPressed;
+    bool isAcceptPressed;
 
     sf::Sprite map;
+
     sf::Font font;
     sf::Text mainMenuName;
     sf::Text gameModeMenuName;
+    sf::Text settingsMenuName;
+    sf::Text timeText;
+    sf::Text pointsText;
+
     sf::Texture mapTexture;
     sf::Sound music;
     sf::SoundBuffer musicBuffer;
@@ -56,8 +78,11 @@ private:
     std::vector<Button> arrows;
     std::vector<Button> settingsButtons;
 
-    sf::Time chosenTimeLimit;
-    unsigned int chosenPointLimit;
+    sf::Time chosenTimeLimit = sf::seconds(300);
+    unsigned int chosenPointsLimit = 10;
+    unsigned int chosenGameMode;
+
+    void preloadButtonTexture(std::vector<Button> &buttons);
 };
 
 #endif

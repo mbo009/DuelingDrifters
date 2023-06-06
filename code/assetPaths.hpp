@@ -131,6 +131,7 @@ const std::string FLAG_ITM = ITEMS + "flag.png";
 //==================================================================================================//
 const std::string GAMESTART_SFX = SOUND_EFFECTS + "gameStart.ogg";
 const std::string CRASH_SFX = SOUND_EFFECTS + "crash.ogg";
+const std::string VICTORY_SFX = SOUND_EFFECTS + "victorySound.ogg";
 
 //==================================================================================================//
 //                                                Maps                                              //

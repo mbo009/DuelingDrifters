@@ -17,9 +17,8 @@
 class Button : public sf::Sprite
 {
 public:
-    Button(float x, float y, std::string name);
+    Button(float x, float y, std::string name, sf::Vector2f scale = sf::Vector2f(2, 2));
     void highlight(bool state);
-    void click();
     std::string getName();
 
 private:
@@ -30,7 +29,8 @@ private:
         {"flag", {ASSET_PATHS_HPP::FLAG_BTN, ASSET_PATHS_HPP::HLT_FLAG_BTN}},
         {"arrowLeft", {ASSET_PATHS_HPP::LEFT_ARROW, ASSET_PATHS_HPP::LEFT_ARROW}},
         {"arrowRight", {ASSET_PATHS_HPP::RIGHT_ARROW, ASSET_PATHS_HPP::RIGHT_ARROW}},
-        {"long", {ASSET_PATHS_HPP::LONG_BUTTON, ASSET_PATHS_HPP::HLT_LONG_BUTTON}}};
+        {"longTime", {ASSET_PATHS_HPP::LONG_BUTTON, ASSET_PATHS_HPP::HLT_LONG_BUTTON}},
+        {"longPoints", {ASSET_PATHS_HPP::LONG_BUTTON, ASSET_PATHS_HPP::HLT_LONG_BUTTON}}};
     sf::Texture baseTexture;
     sf::Texture highlightedTexture;
     bool highlighted = 0;

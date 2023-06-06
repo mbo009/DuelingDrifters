@@ -13,7 +13,7 @@
 class Game
 {
 public:
-    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit = 10, sf::Time timeLimit = sf::seconds(300));
+    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit = 1, sf::Time timeLimit = sf::seconds(5));
     // Load all assets
     void loadAssets();
     void loadFont();
@@ -33,6 +33,7 @@ public:
     void handleCarCollision();
     void handleItemAction();
     void endGame();
+    void rotateCars(sf::Text textToDisplay);
     void useItem(CarSprite &car, Item &item);
     bool carCrossedLine(const CarSprite &car);
     void countDown(unsigned int winner);
@@ -91,6 +92,8 @@ private:
     sf::SoundBuffer crashSoundBuffer;
     sf::Sound music;
     sf::SoundBuffer musicBuffer;
+    sf::Sound victorySound;
+    sf::SoundBuffer victorySoundBuffer;
 
     unsigned int musicIndex = 0;
     unsigned int mapIndex = 0;

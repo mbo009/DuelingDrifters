@@ -2,18 +2,18 @@
 
 /**
  * @brief Construct a new Button
- * 
+ *
  * @param x Postion of button on x-axis
  * @param y Postion of button on y-axis
  * @param name Name of button for loading textures
  */
-Button::Button(float x, float y, std::string name) : x(x), y(y), name(name)
+Button::Button(float x, float y, std::string name, sf::Vector2f scale) : x(x), y(y), name(name)
 {
     baseTexture.loadFromFile(texturePaths[name].first);
     highlightedTexture.loadFromFile(texturePaths[name].second);
     setTexture(baseTexture);
     setPosition(x, y);
-    setScale(2, 2);
+    setScale(scale);
 }
 
 /**
@@ -32,7 +32,7 @@ void Button::highlight(bool state)
 
 /**
  * @brief Get the name of the button
- * 
+ *
  */
 std::string Button::getName()
 {

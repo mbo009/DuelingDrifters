@@ -4,7 +4,7 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
 {
     // set available items
     itemTypes = {SpeedUp(), OpponentSlow(), Bomb(), Dash(), Reverse(), Stun(), Swap()};
-    car1 = CarSprite("Black", 80, 50, 2.5, 4);
+    car1 = CarSprite("Blue", 80, 50, 2.5, 4);
     car2 = CarSprite("Red", 850, 850, 2.5, 8);
     loadAssets();
     resetCarsPosition();
@@ -61,16 +61,24 @@ void Game::loadSound()
     // Load game start sound
     startSoundBuffer.loadFromFile(ASSET_PATHS_HPP::GAMESTART_SFX);
     startSound.setBuffer(startSoundBuffer);
-    startSound.setVolume(60);
+    startSound.setVolume(40);
     startSound.play();
+
     // Load music
     musicBuffer.loadFromFile(ASSET_PATHS_HPP::MUSIC_LIST[musicIndex]);
     music.setBuffer(musicBuffer);
     music.setLoop(true);
-    music.setVolume(20);
+    music.setVolume(12);
+
     // Load crash sound
     crashSoundBuffer.loadFromFile(ASSET_PATHS_HPP::CRASH_SFX);
     crashSound.setBuffer(crashSoundBuffer);
+
+    // Load victory sound
+    victorySoundBuffer.loadFromFile(ASSET_PATHS_HPP::VICTORY_SFX);
+    victorySound.setBuffer(victorySoundBuffer);
+    victorySound.setVolume(50);
+
     // Play music
     music.play();
 }
@@ -112,13 +120,55 @@ void Game::nextRound(unsigned int winner)
 
 void Game::endGame()
 {
-    // unsigned int winner = (car1.getPoints() < car2.getPoints()) ? 1 : (car1.getPoints() > car2.getPoints()) ? 2 : 0;
+    music.stop();
+    victorySound.play();
+
+    unsigned int winner = ((car1.getPoints() < car2.getPoints()) ? 1 : (car1.getPoints() == car2.getPoints()) ? 0
+                                                                                                              : 2);
+    sf::Text winnerText;
+    winnerText.setFont(font);
+    winnerText.setCharacterSize(50);
+    winnerText.setPosition(385, 135);
+
+    car1.setScale(5, 5);
+    car2.setScale(5, 5);
+
+    if (winner > 0)
+    {
+        winnerText.setString(" Winner\n   is  \nPlayer " + std::to_string(winner));
+        (winner - 1) ? car1.setPosition(430, 450) : car2.setPosition(430, 450);
+        (winner - 1) ? car2.setPosition(5000, 5000) : car1.setPosition(5000, 5000);
+        rotateCars(winnerText);
+    }
+
+    else if (winner == 0)
+    {
+        winnerText.setString("It's\n  a \n tie");
+        car1.setPosition(200, 450);
+        car2.setPosition(600, 450);
+        rotateCars(winnerText);
+    }
+
     gameEnded = 1;
+}
+
+void Game::rotateCars(sf::Text textToDisplay)
+{
+    for (int i = 0; i < 48; i++)
+    {
+        window->clear(sf::Color::Black);
+        car1.rotateRight();
+        car2.rotateRight();
+        window->draw(car1);
+        window->draw(car2);
+        window->draw(textToDisplay);
+        window->display();
+        sf::sleep(sf::milliseconds(100));
+    }
 }
 
 void Game::spawnItem()
 {
-    // TODO: not spawn on player or other item
     std::srand(std::time(nullptr));
     float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60));
     float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));
@@ -129,7 +179,6 @@ void Game::spawnItem()
          itemClock});
     itemsOnMap[itemsOnMap.size() - 1].first.setPosition(xItemPos, yItemPos);
 
-    // this somehow prevents error when copying texture
     itemsOnMap[itemsOnMap.size() - 1].first.setTexture(itemTypes[static_cast<int>(xItemPos) % static_cast<int>(yItemPos) % itemTypes.size()].getTexture());
 }
 
@@ -184,7 +233,8 @@ void Game::handleCarCollision()
         car1.getPushed(car2.getVelocity().x, car2.getVelocity().y);
         car2.getPushed(temp.x, temp.y);
     }
-    else // if (dotProduct2 > 0)
+
+    else
     {
         // not a head-on collision
         if (dotProduct >= 0)
@@ -436,7 +486,7 @@ void Game::loadTagRound()
     car1.move();
     car2.move();
 
-    // if car1 hit car2, and flag is belong to someone, give the flag to other car
+    // if cars collide, transfer the flag to other car
     if (checkCarCollisions() && flagHolder != 0)
         flagHolder = 3 - flagHolder;
     handleItemAction();
@@ -456,6 +506,7 @@ int Game::handleEvent()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
         gameEnded = 1;
+        music.stop();
         return 0;
     }
     bool UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);

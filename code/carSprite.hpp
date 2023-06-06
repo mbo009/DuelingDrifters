@@ -38,6 +38,7 @@ public:
     void setNextAction(bool &WPressed, bool &APressed, bool &SPressed, bool &DPressed, CarSprite &other);
     void noMovementKeyPressed();
     void move();
+    void rotateRight();
     bool checkCollision(const sf::Sprite &other);
     void getPushed(float opXV, float opYV);
     void push(float opXV, float opYV);
