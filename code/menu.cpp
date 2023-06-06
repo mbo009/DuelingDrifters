@@ -303,6 +303,7 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
             isChoosingGameMode = 1;
             gameModeMenu();
         }
+        currentPosition = 0;
     }
 
     else if (buttonsList[currentPosition].getName() == "exit")
@@ -315,6 +316,7 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
         chosenGameMode = 0;
         isChoosingGameMode = 0;
         isSettingsMenu = 1;
+        currentPosition = 0;
     }
 
     else if (buttonsList[currentPosition].getName() == "flag")
@@ -322,6 +324,7 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
         chosenGameMode = 1;
         isChoosingGameMode = 0;
         isSettingsMenu = 1;
+        currentPosition = 0;
     }
 
     else if (buttonsList[currentPosition].getName() == "longTime")

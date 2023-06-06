@@ -122,7 +122,8 @@ void Game::endGame()
 {
     music.stop();
     victorySound.play();
-
+    view.setCenter(512, 512);
+    window->setView(view);
     unsigned int winner = ((car1.getPoints() < car2.getPoints()) ? 1 : (car1.getPoints() == car2.getPoints()) ? 0
                                                                                                               : 2);
     sf::Text winnerText;
@@ -451,17 +452,21 @@ void Game::checkFlag()
 
 void Game::tagEndCondition()
 {
-
     if (flagHolder == 1)
         car1.getCarObj().setPoint();
 
     else if (flagHolder == 2)
         car2.getCarObj().setPoint();
 
+    if (clock.getElapsedTime().asSeconds() > timeLimit.asSeconds() ||
+        car1.getPoints() >= pointLimit || car2.getPoints() >= pointLimit)
+        endGame();
+    else
+    {
+        nextRound(flagHolder);
+        flagHolder = 0;
+    }
     flag.setPosition(480, 470);
-
-    nextRound(flagHolder);
-    flagHolder = 0;
 }
 
 void Game::loadTagRound()
