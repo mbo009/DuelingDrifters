@@ -50,6 +50,8 @@ private:
     std::vector<Button> gameModeButtons;
     std::shared_ptr<Game> game;
     sf::Clock wait;
+    std::vector<Button> arrows;
+    std::vector<Button> settingsButtons;
 
     sf::Time chosenTimeLimit;
     unsigned int chosenPointLimit;

@@ -109,7 +109,10 @@ const std::string DUEL_BTN = BUTTONS + "baseDuel.png";
 const std::string HLT_DUEL_BTN = BUTTONS + "highlightedDuel.png";
 const std::string FLAG_BTN = BUTTONS + "baseFlag.png";
 const std::string HLT_FLAG_BTN = BUTTONS + "highlightedFlag.png";
-
+const std::string LEFT_ARROW = BUTTONS + "leftArrow.png";
+const std::string RIGHT_ARROW = BUTTONS + "rightArrow.png";
+const std::string LONG_BUTTON = BUTTONS + "baseLongButton.png";
+const std::string HLT_LONG_BUTTON = BUTTONS + "highlightedLongButton.png";
 
 //==================================================================================================//
 //                                                Items                                             //

@@ -13,7 +13,7 @@
 class Game
 {
 public:
-    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode);
+    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit = 10, sf::Time timeLimit = sf::seconds(600));
     // Load all assets
     void loadAssets();
     void loadFont();
@@ -90,6 +90,7 @@ private:
     unsigned int musicIndex = 0;
     unsigned int mapIndex = 0;
     unsigned int gameMode = 0; // 0 - duel, 1 - tag
+    unsigned int pointLimit = 0;
 
     sf::Clock clock;
     sf::Time roundTimeToSubtract;

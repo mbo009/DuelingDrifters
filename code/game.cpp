@@ -1,6 +1,6 @@
 #include "game.hpp"
 
-Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode) : window(window), font(font), gameMode(gameMode)
+Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit, sf::Time timeLimit) : window(window), font(font), gameMode(gameMode), pointLimit(pointLimit), timeLimit(timeLimit)
 {
     // set available items
     itemTypes = {SpeedUp(), OpponentSlow(), Bomb(), Dash(), Reverse(), Stun(), Swap()};
@@ -95,6 +95,7 @@ void Game::resetCarsPosition()
 
 void Game::nextRound(unsigned int winner)
 {
+
     resetCarsPosition();
     startSound.play();
     car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
@@ -394,8 +395,8 @@ void Game::tagEndCondition()
 
     flag.setPosition(480, 470);
 
-    flagHolder = 0;
     nextRound(flagHolder);
+    flagHolder = 0;
 }
 
 void Game::loadTagRound()

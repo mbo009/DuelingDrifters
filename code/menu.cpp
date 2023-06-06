@@ -19,6 +19,11 @@ void Menu::loadAssets()
     buttons.push_back(Button(300, 600, "exit"));
     gameModeButtons.push_back(Button(100, 300, "duel"));
     gameModeButtons.push_back(Button(500, 300, "flag"));
+    arrows.push_back(Button(250, 250, "arrowLeft"));
+    arrows.push_back(Button(500, 250, "arrowRight"));
+    arrows.push_back(Button(250, 500, "arrowLeft"));
+    arrows.push_back(Button(500, 500, "arrowRight"));
+    settingsButtons.push_back(Button(270, 250, "long"));
 
     loadFont();
     loadMusic();
@@ -137,9 +142,11 @@ void Menu::gameModeMenu()
     window->draw(car2);
     window->display();
 }
+
 // void Menu::gameSettings(sf::Event &event)
 // {
 // }
+
 void Menu::handleEvent(sf::Event &event)
 {
     if (event.type == sf::Event::Closed)
