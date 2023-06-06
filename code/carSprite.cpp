@@ -2,7 +2,7 @@
 
 /**
  * @brief Construct a new Car Sprite:: Car Sprite object
- * 
+ *
  * @param color color to indicate which texture to load
  * @param x position of the sprite on the x-axis
  * @param y position of the sprite on the y-axis
@@ -20,9 +20,9 @@ CarSprite::CarSprite(const std::string &color, float x, float y, float scale, un
 
 /**
  * @brief Overloaded assignment operator.
- * 
- * @param other 
- * @return CarSprite& 
+ *
+ * @param other
+ * @return CarSprite&
  */
 CarSprite &CarSprite::operator=(const CarSprite &other)
 {
@@ -44,8 +44,8 @@ CarSprite &CarSprite::operator=(const CarSprite &other)
 
 /**
  * @brief Return the key action of the car, which is the direction it is moving in.
- * 
- * @return int 
+ *
+ * @return int
  */
 int CarSprite::getKeyAction() const
 {
@@ -54,8 +54,8 @@ int CarSprite::getKeyAction() const
 
 /**
  * @brief Return the scale of the car sprite.
- * 
- * @return int 
+ *
+ * @return int
  */
 
 int CarSprite::getScale() const
@@ -65,8 +65,8 @@ int CarSprite::getScale() const
 
 /**
  * @brief Return position of the car sprite on the x-axis.
- * 
- * @return float 
+ *
+ * @return float
  */
 float CarSprite::getX() const
 {
@@ -75,8 +75,8 @@ float CarSprite::getX() const
 
 /**
  * @brief Return position of the car sprite on the y-axis.
- * 
- * @return float 
+ *
+ * @return float
  */
 float CarSprite::getY() const
 {
@@ -85,8 +85,8 @@ float CarSprite::getY() const
 
 /**
  * @brief Return the velocity of the car object containing the car sprite.
- * 
- * @return sf::Vector2f 
+ *
+ * @return sf::Vector2f
  */
 sf::Vector2f CarSprite::getVelocity()
 {
@@ -95,8 +95,8 @@ sf::Vector2f CarSprite::getVelocity()
 
 /**
  * @brief Set the color of the car sprite.
- * 
- * @param color 
+ *
+ * @param color
  */
 void CarSprite::setColor(const std::string &color)
 {
@@ -107,8 +107,8 @@ void CarSprite::setColor(const std::string &color)
 
 /**
  * @brief Return the color of the car sprite.
- * 
- * @return std::string 
+ *
+ * @return std::string
  */
 std::string CarSprite::getColor() const
 {
@@ -117,12 +117,17 @@ std::string CarSprite::getColor() const
 
 /**
  * @brief Return the car object containing the car sprite.
- * 
- * @return CarObj& 
+ *
+ * @return CarObj&
  */
 CarObj &CarSprite ::getCarObj()
 {
     return carObj;
+}
+
+unsigned int CarSprite::getPoints()
+{
+    return carObj.getPoint();
 }
 
 /**
@@ -142,9 +147,9 @@ void CarSprite::loadTextures()
 }
 
 /**
- * @brief 
- * 
- * @param other 
+ * @brief
+ *
+ * @param other
  */
 void CarSprite::updateTexture(CarSprite &other)
 {
@@ -156,13 +161,13 @@ void CarSprite::updateTexture(CarSprite &other)
 }
 
 /**
- * @brief 
- * 
- * @param UpPressed 
- * @param LeftPressed 
- * @param DownPressed 
- * @param RightPressed 
- * @param other 
+ * @brief
+ *
+ * @param UpPressed
+ * @param LeftPressed
+ * @param DownPressed
+ * @param RightPressed
+ * @param other
  */
 void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPressed, bool &RightPressed, CarSprite &other)
 {
@@ -193,7 +198,7 @@ void CarSprite::setNextAction(bool &UpPressed, bool &LeftPressed, bool &DownPres
 
 /**
  * @brief Hold direction of the car sprite when no movement key is pressed.
- * 
+ *
  */
 void CarSprite::noMovementKeyPressed()
 {
@@ -202,7 +207,7 @@ void CarSprite::noMovementKeyPressed()
 
 /**
  * @brief Move the car sprite by updating the position of the car object.
- * 
+ *
  */
 void CarSprite::move()
 {
@@ -214,10 +219,10 @@ void CarSprite::move()
 
 /**
  * @brief Check if the car sprite is colliding with another sprite.
- * 
- * @param other 
- * @return true 
- * @return false 
+ *
+ * @param other
+ * @return true
+ * @return false
  */
 void CarSprite::getPushed(float opXV, float opYV)
 {
@@ -227,9 +232,9 @@ void CarSprite::getPushed(float opXV, float opYV)
 
 /**
  * @brief Push the car sprite by updating the velocity of the car object.
- * 
- * @param opXV 
- * @param opYV 
+ *
+ * @param opXV
+ * @param opYV
  */
 void CarSprite::push(float opXV, float opYV)
 {
@@ -239,7 +244,7 @@ void CarSprite::push(float opXV, float opYV)
 
 /**
  * @brief Reset the car sprite to its original position and texture.
- * 
+ *
  */
 void CarSprite::resetCar()
 {
@@ -252,9 +257,9 @@ void CarSprite::resetCar()
 
 /**
  * @brief Nomalize the string to lower case.
- * 
- * @param str 
- * @return std::string 
+ *
+ * @param str
+ * @return std::string
  */
 std::string CarSprite::toLowerCase(const std::string &str)
 {
@@ -266,7 +271,7 @@ std::string CarSprite::toLowerCase(const std::string &str)
 
 /**
  * @brief Add explosion effect to the car sprite.
- * 
+ *
  */
 void CarSprite::explosion()
 {
@@ -276,8 +281,8 @@ void CarSprite::explosion()
 /**
  * @brief Check if the car sprite is colliding with another sprite. Compare overlapping pixels of the two sprites.
  * If there is two pixel from each sprite that overlap and neither of them are transparent, then there is a collision.
- * @param other 
- * @return 
+ * @param other
+ * @return
  */
 bool CarSprite::checkCollision(const sf::Sprite &other)
 {
@@ -321,7 +326,7 @@ bool CarSprite::checkCollision(const sf::Sprite &other)
 
 /**
  * @brief Clear effect of the item after a certain amount of time.
- * 
+ *
  */
 void CarSprite::checkItemReset()
 {
@@ -338,8 +343,8 @@ void CarSprite::checkItemReset()
 
 /**
  * @brief Apply effect of the item to the car sprite.
- * 
- * @param time 
+ *
+ * @param time
  */
 void CarSprite::usedItem(sf::Time time)
 {
@@ -350,7 +355,7 @@ void CarSprite::usedItem(sf::Time time)
 
 /**
  * @brief Add reverse steering effect to the car sprite.
- * 
+ *
  */
 void CarSprite::reverseSteering()
 {
@@ -359,7 +364,7 @@ void CarSprite::reverseSteering()
 
 /**
  * @brief Stop the car.
- * 
+ *
  */
 void CarSprite::stop()
 {
@@ -368,9 +373,9 @@ void CarSprite::stop()
 
 /**
  * @brief Set the position of the car sprite.
- * 
- * @param x 
- * @param y 
+ *
+ * @param x
+ * @param y
  */
 void CarSprite::setPos(float x, float y)
 {

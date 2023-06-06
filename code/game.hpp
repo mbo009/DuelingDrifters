@@ -13,12 +13,13 @@
 class Game
 {
 public:
-    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit = 10, sf::Time timeLimit = sf::seconds(600));
+    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit = 1, sf::Time timeLimit = sf::seconds(600));
     // Load all assets
     void loadAssets();
     void loadFont();
     void loadMap();
     void loadSound();
+
     // Update game properties
     void nextMap();
     void nextMusic();
@@ -26,10 +27,12 @@ public:
     void nextRound(unsigned int winner);
     void spawnItem();
     void drawObjects(bool drawCar = 1, bool drawTimer = 1, bool drawPoints = 1, bool drawFlag = 1, bool drawItems = 1);
+
     // Game Properties Modifiers
     bool checkCarCollisions();
     void handleCarCollision();
     void handleItemAction();
+    void endGame();
     void useItem(CarSprite &car, Item &item);
     bool carCrossedLine(const CarSprite &car);
     void countDown(unsigned int winner);
@@ -46,6 +49,8 @@ public:
     // Game Communication with Menu
     int handleEvent();
     void loadObjectsRound();
+
+    bool isEnded();
 
 private:
     std::shared_ptr<sf::RenderWindow> window;
@@ -92,6 +97,8 @@ private:
     unsigned int gameMode = 0; // 0 - duel, 1 - tag
     unsigned int pointLimit = 0;
 
+    bool gameEnded = 0;
+
     sf::Clock clock;
     sf::Time roundTimeToSubtract;
     CarSprite car1, car2;
@@ -100,6 +107,7 @@ private:
     Flag flag;
     sf::Time totalPlayTime;
     sf::Time timeLimit;
+    sf::Time roundTimeLimit = sf::seconds(30);
     std::vector<Item> itemTypes;
     std::vector<std::pair<Item, sf::Clock>> itemsOnMap; // first is item, second is clock for item expiration
     sf::Clock sinceLastItemSpawn;

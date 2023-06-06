@@ -16,7 +16,7 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
     {
         flag = Flag(480, 470);
         flagHolder = 0;
-        timeLimit = sf::seconds(30);
+        roundTimeLimit = sf::seconds(30);
         flag.setTexture(flag.getTexture());
         flag.setScale(1.75, 1.75);
     }
@@ -95,12 +95,26 @@ void Game::resetCarsPosition()
 
 void Game::nextRound(unsigned int winner)
 {
+    if (gameMode == 0 && (car1.getCarObj().getPoint() >= pointLimit || car2.getCarObj().getPoint() >= pointLimit || clock.getElapsedTime() + totalPlayTime > timeLimit))
+    {
+        endGame();
+    }
 
-    resetCarsPosition();
-    startSound.play();
-    car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
-    car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
-    countDown(winner);
+    else
+    {
+        resetCarsPosition();
+        startSound.play();
+        car1PointsText.setString(std::to_string(car1.getCarObj().getPoint()));
+        car2PointsText.setString(std::to_string(car2.getCarObj().getPoint()));
+        countDown(winner);
+    }
+}
+
+void Game::endGame()
+{
+    // unsigned int winner = (car1.getPoints() < car2.getPoints()) ? 1 : (car1.getPoints() > car2.getPoints()) ? 2 : 0;
+    gameEnded = 1;
+    // handleEvent();
 }
 
 void Game::spawnItem()
@@ -403,8 +417,8 @@ void Game::loadTagRound()
 {
     sf::Time elapsed = clock.getElapsedTime();
     // calculate time left
-    int min = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) / 60;
-    int sec = static_cast<int>(timeLimit.asSeconds() - elapsed.asSeconds()) % 60 + 1;
+    int min = static_cast<int>(roundTimeLimit.asSeconds() - elapsed.asSeconds()) / 60;
+    int sec = static_cast<int>(roundTimeLimit.asSeconds() - elapsed.asSeconds()) % 60 + 1;
     if (min == 0 && sec < 0)
         tagEndCondition();
 
@@ -439,8 +453,7 @@ int Game::handleEvent()
     // Check if ESC key is pressed
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
     {
-        view.setCenter(512, 512);
-        window->setView(view);
+        gameEnded = 1;
         return 0;
     }
     bool UpPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
@@ -451,6 +464,7 @@ int Game::handleEvent()
     {
         car1.setNextAction(UpPressed, LeftPressed, DownPressed, RightPressed, car2);
     }
+
     else
         car1.noMovementKeyPressed(); // Stop the car
 
@@ -470,4 +484,9 @@ int Game::handleEvent()
 void Game::loadObjectsRound()
 {
     gameMode == 0 ? loadDuelRound() : loadTagRound();
+}
+
+bool Game::isEnded()
+{
+    return gameEnded;
 }

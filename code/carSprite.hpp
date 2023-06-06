@@ -31,6 +31,7 @@ public:
     void setColor(const std::string &color);
     std::string getColor() const;
     CarObj &getCarObj();
+    unsigned int getPoints();
 
     void loadTextures();
     void updateTexture(CarSprite &other);

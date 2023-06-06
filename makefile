@@ -5,7 +5,7 @@ SFML_INCLUDE = ExtLibs/include
 SRC_DIR = code/
 TEST_DIR = tests/
 
-all: build launch clean
+all: build launch #clean
 
 build: compile link
 
@@ -18,11 +18,11 @@ link:
 launch:
 	./DuelingDrifters
 
-test_main: 
+test_main:
 	$(CXX) $(CXX_FLAGS) $(TEST_DIR)test_main.cpp -c
 
 test_carObj: test_main
-	$(CXX) $(CXX_FLAGS) test_main.o carObj.o $(TEST_DIR)test_carObj.cpp -o TestCarObj 
+	$(CXX) $(CXX_FLAGS) test_main.o carObj.o $(TEST_DIR)test_carObj.cpp -o TestCarObj
 	./TestCarObj --success
 
 clean:

@@ -29,7 +29,8 @@ private:
         {"duel", {ASSET_PATHS_HPP::DUEL_BTN, ASSET_PATHS_HPP::HLT_DUEL_BTN}},
         {"flag", {ASSET_PATHS_HPP::FLAG_BTN, ASSET_PATHS_HPP::HLT_FLAG_BTN}},
         {"arrowLeft", {ASSET_PATHS_HPP::LEFT_ARROW, ASSET_PATHS_HPP::LEFT_ARROW}},
-        {"arrowRight", {ASSET_PATHS_HPP::RIGHT_ARROW, ASSET_PATHS_HPP::RIGHT_ARROW}}};
+        {"arrowRight", {ASSET_PATHS_HPP::RIGHT_ARROW, ASSET_PATHS_HPP::RIGHT_ARROW}},
+        {"long", {ASSET_PATHS_HPP::LONG_BUTTON, ASSET_PATHS_HPP::HLT_LONG_BUTTON}}};
     sf::Texture baseTexture;
     sf::Texture highlightedTexture;
     bool highlighted = 0;

@@ -23,6 +23,8 @@ public:
     void makeCarMove(CarSprite &car, CarSprite &other, unsigned int range);
     void buttonPressed(std::vector<Button> &buttonsList);
 
+    void restartCameraPosition();
+
 private:
     std::shared_ptr<sf::RenderWindow> window;
     unsigned int currentPosition = 0;

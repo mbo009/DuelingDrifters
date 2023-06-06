@@ -1,4 +1,5 @@
 #include "menu.hpp"
+#include <iostream>
 
 Menu::Menu(std::shared_ptr<sf::RenderWindow> &window) : window(window)
 {
@@ -24,6 +25,7 @@ void Menu::loadAssets()
     arrows.push_back(Button(250, 500, "arrowLeft"));
     arrows.push_back(Button(500, 500, "arrowRight"));
     settingsButtons.push_back(Button(270, 250, "long"));
+    settingsButtons.push_back(Button(270, 500, "long"));
 
     loadFont();
     loadMusic();
@@ -174,13 +176,22 @@ void Menu::handleEvent(sf::Event &event)
 
     else
     {
-        gameActive = game->handleEvent();
-
+        gameActive = !game->isEnded();
         if (!gameActive)
         {
             wait.restart();
+            restartCameraPosition();
         }
+        else
+            game->handleEvent();
     }
+}
+
+void Menu::restartCameraPosition()
+{
+    sf::View view;
+    view.setCenter(512, 512);
+    window->setView(view);
 }
 
 void Menu::loadObjectsRound()
@@ -188,13 +199,21 @@ void Menu::loadObjectsRound()
     if (!gameActive)
     {
         if (choosingGameMode)
+        {
             gameModeMenu();
+        }
         else
             mainMenu();
     }
 
     else
-        game->loadObjectsRound();
+    {
+        gameActive = !game->isEnded();
+        if (gameActive)
+            game->loadObjectsRound();
+        else
+            restartCameraPosition();
+    }
 }
 
 void Menu::buttonPressed(std::vector<Button> &buttonsList)
@@ -215,6 +234,7 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
     {
         game = std::make_shared<Game>(window, font, 0);
         gameActive = 1;
+        choosingGameMode = 0;
         music.stop();
     }
 
@@ -222,6 +242,7 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
     {
         game = std::make_shared<Game>(window, font, 1);
         gameActive = 1;
+        choosingGameMode = 0;
         music.stop();
     }
 }
