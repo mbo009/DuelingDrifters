@@ -25,7 +25,7 @@ This is the final project for Object Oriented Programming. Apply knowledge of th
 ## **How to use?**
 * For users:
     * Run the executable file `DuelingDrifters.exe` in folder [release](release).
-    * More information about the game can be found in the `README.txt` file.
+    * More information about the game can be found in the [README.txt](/release/README.md) file.
 * For developers:
     * Feel free to modify the source code in folder [src](src).
     * Navigate to repository folder and run the command `make all` to build the project in a terminal. (Support for Windows OS only)
