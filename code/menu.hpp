@@ -24,6 +24,7 @@ public:
     void buttonPressed(std::vector<Button> &buttonsList);
 
     void restartCameraPosition();
+    void resetAfterRound();
 
 private:
     std::shared_ptr<sf::RenderWindow> window;

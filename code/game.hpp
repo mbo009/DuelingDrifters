@@ -13,7 +13,7 @@
 class Game
 {
 public:
-    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit = 1, sf::Time timeLimit = sf::seconds(600));
+    Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned int gameMode, unsigned int pointLimit = 10, sf::Time timeLimit = sf::seconds(300));
     // Load all assets
     void loadAssets();
     void loadFont();

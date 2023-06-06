@@ -95,7 +95,7 @@ void Game::resetCarsPosition()
 
 void Game::nextRound(unsigned int winner)
 {
-    if (gameMode == 0 && (car1.getCarObj().getPoint() >= pointLimit || car2.getCarObj().getPoint() >= pointLimit || clock.getElapsedTime() + totalPlayTime > timeLimit))
+    if (gameMode == 0 && (car1.getCarObj().getPoint() >= pointLimit || car2.getCarObj().getPoint() >= pointLimit))
     {
         endGame();
     }
@@ -114,7 +114,6 @@ void Game::endGame()
 {
     // unsigned int winner = (car1.getPoints() < car2.getPoints()) ? 1 : (car1.getPoints() > car2.getPoints()) ? 2 : 0;
     gameEnded = 1;
-    // handleEvent();
 }
 
 void Game::spawnItem()
@@ -338,6 +337,8 @@ void Game::duelEndCondition()
 void Game::loadDuelRound()
 {
     sf::Time elapsed = clock.getElapsedTime() + totalPlayTime;
+    if (elapsed.asSeconds() > timeLimit.asSeconds())
+        endGame();
     int min = static_cast<int>(elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(elapsed.asSeconds()) % 60;
     timerText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
@@ -416,6 +417,7 @@ void Game::tagEndCondition()
 void Game::loadTagRound()
 {
     sf::Time elapsed = clock.getElapsedTime();
+
     // calculate time left
     int min = static_cast<int>(roundTimeLimit.asSeconds() - elapsed.asSeconds()) / 60;
     int sec = static_cast<int>(roundTimeLimit.asSeconds() - elapsed.asSeconds()) % 60 + 1;

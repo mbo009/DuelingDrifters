@@ -115,9 +115,10 @@ void Menu::gameModeMenu()
     if (acceptPressed)
     {
         buttonPressed(gameModeButtons);
+        acceptPressed = 0;
     }
 
-    if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 300)
+    else if ((upPressed || downPressed) && wait.getElapsedTime().asMilliseconds() > 300)
     {
         gameModeButtons[currentPosition].highlight(0);
         if (upPressed)
@@ -179,8 +180,7 @@ void Menu::handleEvent(sf::Event &event)
         gameActive = !game->isEnded();
         if (!gameActive)
         {
-            wait.restart();
-            restartCameraPosition();
+            resetAfterRound();
         }
         else
             game->handleEvent();
@@ -192,6 +192,17 @@ void Menu::restartCameraPosition()
     sf::View view;
     view.setCenter(512, 512);
     window->setView(view);
+}
+
+void Menu::resetAfterRound()
+{
+    wait.restart();
+    restartCameraPosition();
+    buttons[currentPosition].highlight(0);
+    gameModeButtons[currentPosition].highlight(0);
+    currentPosition = 0;
+    buttons[currentPosition].highlight(1);
+    gameModeButtons[currentPosition].highlight(1);
 }
 
 void Menu::loadObjectsRound()
@@ -212,7 +223,7 @@ void Menu::loadObjectsRound()
         if (gameActive)
             game->loadObjectsRound();
         else
-            restartCameraPosition();
+            resetAfterRound();
     }
 }
 
