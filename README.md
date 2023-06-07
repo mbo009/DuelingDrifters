@@ -42,7 +42,7 @@ This is the final project for Object Oriented Programming. Apply knowledge of th
     
 ## **Documentation**
 * The project mostly be self-documented by using the Doxygen tool. Hover over the function name to see the documentation.
-* Class diagram and object relationship diagram can be found in the [documentation](documentation) folder.
+* Class diagram and object relationship diagram can be found in the [documentation](documentation) folder. **(Coming soon)**
 ## **Testing**
 * Unit tests are written in the [test](test) folder using the Catch2 library.
 * Tests are using to test the logic of the game and also how an object change it state through specific scenarios. It don't guarantee the UI will work correctly since there is no efficient way to test it.

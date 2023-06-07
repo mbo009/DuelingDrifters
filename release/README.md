@@ -15,3 +15,16 @@ Dueling Drifters is a 2D car game where you can compete with your friends in a d
     * ![Reverse](/assets/images/items/reverse.png) **Reverse:** This is actually a bottle of alcohol to make you drunk. You try to go forward and hit your opponent but drive backward and fly out of the map instead.
     * ![Stun](/assets/images/items/stun.png) **Stun:** Use the force to stun your opponent for a short period of time.
     * ![Swap](/assets/images/items/swap.png) **Swap:** Swap your position with your opponent. 
+* About the controls:
+    * Player 1: 
+        * **W** - Accelerate
+        * **S** - Brake
+        * **A** - Turn left
+        * **D** - Turn right
+    * Player 2:
+        * **Up Arrow** - Accelerate
+        * **Down Arrow** - Brake
+        * **Left Arrow** - Turn left
+        * **Right Arrow** - Turn right
+    * At anytime during the game, you can press **Esc** to exit the game and return to the main menu.
+    * In menu, you can press WASD or arrow keys to navigate and **Enter** to select.
