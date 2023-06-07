@@ -19,6 +19,7 @@ link:
 
 release: build
 	move DuelingDrifters.exe ./release/
+	xcopy /E /I /Y assets release\assets
 
 launch:
 	./release/DuelingDrifters.exe
