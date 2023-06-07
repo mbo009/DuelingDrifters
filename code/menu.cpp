@@ -58,8 +58,10 @@ void Menu::loadFont()
     // Create text
     mainMenuName = sf::Text("Dueling Drifters", font, NAME_FONT_SIZE);
     mainMenuName.setPosition(60, 70);
+
     gameModeMenuName = sf::Text("Choose Game Mode", font, NAME_FONT_SIZE);
     gameModeMenuName.setPosition(60, 70);
+
     settingsMenuName = sf::Text("Choose Game Settings", font, NAME_FONT_SIZE - 20);
     settingsMenuName.setPosition(60, 70);
 
@@ -289,6 +291,7 @@ void Menu::handleEvent(sf::Event &event)
         if (event.key.code == sf::Keyboard::Escape && wait.getElapsedTime().asMilliseconds() > TIME_BETWEEN_ESC)
         {
             currentPosition = 0;
+            preloadTextures();
 
             if (isSettingsMenu)
             {
@@ -296,11 +299,9 @@ void Menu::handleEvent(sf::Event &event)
                 isSettingsMenu = 0;
                 wait.restart();
             }
-            else
-            {
-                if (isChoosingGameMode)
-                    isChoosingGameMode = 0;
-            }
+
+            else if (isChoosingGameMode)
+                isChoosingGameMode = 0;
         }
 
         isUpPressed = areKeysPressed(UP_BUTTONS);
@@ -438,6 +439,7 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
 bool Menu::areKeysPressed(std::vector<sf::Keyboard::Key> keys)
 {
     bool output = False;
+
     for (auto &key : keys)
         output = output || sf::Keyboard::isKeyPressed(key);
     return output;

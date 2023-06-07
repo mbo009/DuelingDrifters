@@ -13,6 +13,7 @@ int main()
         {
             menu.handleEvent(event);
         }
+
         menu.loadObjectsRound();
     }
 
