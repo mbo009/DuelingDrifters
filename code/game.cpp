@@ -518,8 +518,8 @@ void Game::checkBounceCondition()
 {
     // If car hit the wall, bounce it back to the map using getPushed function
     std::map<unsigned int, std::vector<float>> bounceDirectionMultipliers = {
-        {1, {0.75, -0.75}},
-        {2, {-0.75, 0.75}}};
+        {1, {0, -1}},
+        {2, {-1, 0}}};
     if (carCrossedLine(car1) > 0)
     {
         unsigned int situation = carCrossedLine(car1);
