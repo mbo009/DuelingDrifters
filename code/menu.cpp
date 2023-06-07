@@ -295,13 +295,12 @@ void Menu::handleEvent(sf::Event &event)
             {
                 isChoosingGameMode = 1;
                 isSettingsMenu = 0;
+                wait.restart();
             }
-
-            if (isChoosingGameMode)
-                isChoosingGameMode = 0;
-
-            else
-                window->close();
+            else {
+                if (isChoosingGameMode)
+                    isChoosingGameMode = 0;
+            }
         }
 
         isUpPressed = areKeysPressed(UP_BUTTONS);
@@ -451,11 +450,11 @@ bool Menu::areKeysPressed(std::vector<sf::Keyboard::Key> keys)
  */
 void Menu::resetAfterRound()
 {
-    wait.restart();
     restartCameraPosition();
     buttons[currentPosition].highlight(0);
     gameModeButtons[currentPosition].highlight(0);
     currentPosition = 0;
     preloadTextures();
     music.play();
+    wait.restart();
 }
