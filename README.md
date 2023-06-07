@@ -30,9 +30,16 @@ This is the final project for Object Oriented Programming. Apply knowledge of th
     * Feel free to modify the source code in folder [src](src).
     * Navigate to repository folder and run the command `make all` to build the project in a terminal. (Support for Windows OS only)
     * The executable file will move update in folder [release](release). You can run it buy `make launch` command or click on it.
-    * Every information about the game can be found in the [documentation](documentation) folder.
+    * Information about the game can be found in the [documentation](documentation) folder.
 ## **Project Implementation**
-
+* The project is implemented in C++ language with the SFML library and developed in Visual Studio Code IDE and using makefile to build the project (with command support for Windows OS only).
+* We have 4 main folders: [code](code), [assets](assets), [test](test), [release](release).
+    * [code](code) folder contains the source code of the project.
+    * [assets](assets) folder contains the resources of the project.
+    * [test](test) folder contains the unit tests of the project.
+    * [release](release) folder contains the executable file of the project.
+* This project is implemented in OOP style with the MVC design pattern (most of the time). 
+    
 ## **Documentation**
 * The project mostly be self-documented by using the Doxygen tool. Hover over the function name to see the documentation.
 * Class diagram and object relationship diagram can be found in the [documentation](documentation) folder.
@@ -41,3 +48,9 @@ This is the final project for Object Oriented Programming. Apply knowledge of th
 * Tests are using to test the logic of the game and also how an object change it state through specific scenarios. It don't guarantee the UI will work correctly since there is no efficient way to test it.
 ## **Demo**
 * Below is some pictures and videos of the game in action. Enjoy it yourself and give us feedbacks at any time. Thank you!
+### **Game play:** ![gameplay](/documentation/img/gameplay.gif)
+### **Game main menu:** ![main menu](/documentation/img/main_menu.png)
+### **Game mode selection:** ![game mode](/documentation/img/game_mode.png)
+### **Game settings:** ![game settings](/documentation/img/game_setting.png)
+### **Playground in duel mode:** ![duel mode](/documentation/img/duel.png)
+### **Playground in tag mode:** ![tag mode](/documentation/img/tag.png)
