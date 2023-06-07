@@ -38,11 +38,18 @@ This is the final project for Object Oriented Programming. Apply knowledge of th
     * [assets](assets) folder contains the resources of the project.
     * [test](test) folder contains the unit tests of the project.
     * [release](release) folder contains the executable file of the project.
-* This project is implemented in OOP style with the MVC design pattern (most of the time). 
-    
+* This project is implemented in OOP style with the MVC design pattern (most of the time).
+* Class in the project:
+    * carObj (carObj.h, carObj.cpp): Represent the properties of a car in the game include it position, velocity, acceleration, direction.
+    * carSprite (carSprite.h, carSprite.cpp): Represent a car in 2D space with a texture and a carObj. 
+    * item (item.h, item.cpp):
+        * Class represent for items with unique effects in the game.
+        * Each type of item is a inherited class of this class with different texture and effect.
+    * button (button.h, button.cpp): This class is used to create a button in the game. It has 2 states: normal and chosen. Select the button using keyboard and hit enter to choose it.
+    * game (game.h, game.cpp): Handle event and update the game state.
+    * menu (menu.h, menu.cpp): Handle event and update the menu state. (include setting menu, main menu, game mode selection menu)
 ## **Documentation**
 * The project mostly be self-documented by using the Doxygen tool. Hover over the function name to see the documentation.
-* Class diagram and object relationship diagram can be found in the [documentation](documentation) folder. **(Coming soon)**
 ## **Testing**
 * Unit tests are written in the [test](test) folder using the Catch2 library.
 * Tests are using to test the logic of the game and also how an object change it state through specific scenarios. It don't guarantee the UI will work correctly since there is no efficient way to test it.
