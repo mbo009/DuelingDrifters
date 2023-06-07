@@ -24,10 +24,10 @@ release: build
 launch:
 	./release/DuelingDrifters.exe
 
-test_main:
+test_main: compile
 	$(CXX) $(CXX_FLAGS) $(TEST_DIR)test_main.cpp -c
 
-test_carObj: test_main
+test_carObj:
 	$(CXX) $(CXX_FLAGS) test_main.o carObj.o $(TEST_DIR)test_carObj.cpp -o TestCarObj
 	./TestCarObj --success
 
