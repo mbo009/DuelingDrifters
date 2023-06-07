@@ -2,7 +2,7 @@
 
 /**
  * @brief Construct a new Menu object
- * 
+ *
  * @param window pointer to the window
  */
 Menu::Menu(std::shared_ptr<sf::RenderWindow> &window) : window(window)
@@ -20,24 +20,24 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> &window) : window(window)
 
 /**
  * @brief Load all assets
- * 
+ *
  */
 void Menu::loadAssets()
 {
     buttons.push_back(Button(300, 250, "start")); // Default position of button
-    buttons.push_back(Button(300, 600, "exit")); // Default position of button
+    buttons.push_back(Button(300, 600, "exit"));  // Default position of button
 
     gameModeButtons.push_back(Button(100, 300, "duel")); // Default position of button
     gameModeButtons.push_back(Button(500, 300, "flag")); // Default position of button
 
-    arrows.push_back(Button(95, 340, "arrowLeft", sf::Vector2f(4, 4))); // Default position of button
+    arrows.push_back(Button(95, 340, "arrowLeft", sf::Vector2f(4, 4)));   // Default position of button
     arrows.push_back(Button(795, 340, "arrowRight", sf::Vector2f(4, 4))); // Default position of button
-    arrows.push_back(Button(95, 590, "arrowLeft", sf::Vector2f(4, 4))); // Default position of button
+    arrows.push_back(Button(95, 590, "arrowLeft", sf::Vector2f(4, 4)));   // Default position of button
     arrows.push_back(Button(795, 590, "arrowRight", sf::Vector2f(4, 4))); // Default position of button
 
-    settingsButtons.push_back(Button(107, 100, "longTime", sf::Vector2f(4, 3))); // Default position of button
+    settingsButtons.push_back(Button(107, 100, "longTime", sf::Vector2f(4, 3)));   // Default position of button
     settingsButtons.push_back(Button(107, 350, "longPoints", sf::Vector2f(4, 3))); // Default position of button
-    settingsButtons.push_back(Button(300, 680, "start")); // Default position of button
+    settingsButtons.push_back(Button(300, 680, "start"));                          // Default position of button
 
     loadFont();
     loadMusic();
@@ -48,7 +48,7 @@ void Menu::loadAssets()
 
 /**
  * @brief Load font
- * 
+ *
  */
 void Menu::loadFont()
 {
@@ -72,7 +72,7 @@ void Menu::loadFont()
 
 /**
  * @brief Load music
- * 
+ *
  */
 void Menu::loadMusic()
 {
@@ -85,7 +85,7 @@ void Menu::loadMusic()
 
 /**
  * @brief Load background
- * 
+ *
  */
 void Menu::loadBackground()
 {
@@ -95,7 +95,7 @@ void Menu::loadBackground()
 
 /**
  * @brief Preload textures for buttons for a type of buttons
- * 
+ *
  * @param buttons vector containing one type of buttons to preload textures
  */
 void Menu::preloadButtonTexture(std::vector<Button> &buttons)
@@ -109,7 +109,7 @@ void Menu::preloadButtonTexture(std::vector<Button> &buttons)
 
 /**
  * @brief preload textures for all buttons
- * 
+ *
  */
 void Menu::preloadTextures()
 {
@@ -121,7 +121,7 @@ void Menu::preloadTextures()
 
 /**
  * @brief Update button highlights while choosing buttons
- * 
+ *
  * @param buttons vector containing one type of buttons to update highlights
  */
 void Menu::updateButtonHighlights(std::vector<Button> &buttons)
@@ -140,7 +140,7 @@ void Menu::updateButtonHighlights(std::vector<Button> &buttons)
 
 /**
  * @brief Update time text while choosing time limit
- * 
+ *
  */
 void Menu::updateTimeText()
 {
@@ -151,8 +151,8 @@ void Menu::updateTimeText()
 
 /**
  * @brief Draw buttons
- * 
- * @param buttons 
+ *
+ * @param buttons
  */
 void Menu::drawButtons(std::vector<Button> buttons)
 {
@@ -164,8 +164,8 @@ void Menu::drawButtons(std::vector<Button> buttons)
 
 /**
  * @brief Draw background with title text
- * 
- * @param textToDraw 
+ *
+ * @param textToDraw
  */
 void Menu::drawBackground(sf::Text textToDraw)
 {
@@ -178,7 +178,7 @@ void Menu::drawBackground(sf::Text textToDraw)
 
 /**
  * @brief Restart camera position (reset view)
- * 
+ *
  */
 void Menu::restartCameraPosition()
 {
@@ -189,10 +189,10 @@ void Menu::restartCameraPosition()
 
 /**
  * @brief Make cars moving around the screen for decoration
- * 
- * @param car 
- * @param other 
- * @param range 
+ *
+ * @param car
+ * @param other
+ * @param range
  */
 void Menu::makeCarMove(CarSprite &car, CarSprite &other, unsigned int range = 512)
 {
@@ -207,7 +207,7 @@ void Menu::makeCarMove(CarSprite &car, CarSprite &other, unsigned int range = 51
 
 /**
  * @brief Make cars moving around the screen for decoration
- * 
+ *
  */
 void Menu::moveCars()
 {
@@ -217,7 +217,7 @@ void Menu::moveCars()
 
 /**
  * @brief Draw menu
- * 
+ *
  */
 void Menu::mainMenu()
 {
@@ -234,7 +234,7 @@ void Menu::mainMenu()
 
 /**
  * @brief Draw game mode choosing menu
- * 
+ *
  */
 void Menu::gameModeMenu()
 {
@@ -256,7 +256,7 @@ void Menu::gameModeMenu()
 
 /**
  * @brief Draw game settings menu
- * 
+ *
  */
 void Menu::gameSettings()
 {
@@ -274,11 +274,10 @@ void Menu::gameSettings()
     window->display();
 }
 
-
 /**
  * @brief Handle events when user interacts with the window (presses a key, clicks, etc.)
- * 
- * @param event 
+ *
+ * @param event
  */
 void Menu::handleEvent(sf::Event &event)
 {
@@ -297,7 +296,8 @@ void Menu::handleEvent(sf::Event &event)
                 isSettingsMenu = 0;
                 wait.restart();
             }
-            else {
+            else
+            {
                 if (isChoosingGameMode)
                     isChoosingGameMode = 0;
             }
@@ -324,7 +324,7 @@ void Menu::handleEvent(sf::Event &event)
 
 /**
  * @brief Draw objects and handle events on window
- * 
+ *
  */
 void Menu::loadObjectsRound()
 {
@@ -352,8 +352,8 @@ void Menu::loadObjectsRound()
 
 /**
  * @brief Make action after button is pressed
- * 
- * @param buttonsList 
+ *
+ * @param buttonsList
  */
 void Menu::buttonPressed(std::vector<Button> &buttonsList)
 {
@@ -371,7 +371,6 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
         {
             isAcceptPressed = 0;
             isChoosingGameMode = 1;
-            gameModeMenu();
         }
         currentPosition = 0;
     }
@@ -432,8 +431,8 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
 
 /**
  * @brief Check if any of the keys from the vector is pressed
- * 
- * @param keys 
+ *
+ * @param keys
  * @return true false
  */
 bool Menu::areKeysPressed(std::vector<sf::Keyboard::Key> keys)
@@ -446,7 +445,7 @@ bool Menu::areKeysPressed(std::vector<sf::Keyboard::Key> keys)
 
 /**
  * @brief Reset menu properties
- * 
+ *
  */
 void Menu::resetAfterRound()
 {

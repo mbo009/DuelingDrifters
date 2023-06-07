@@ -41,7 +41,7 @@ This is the final project for Object Oriented Programming. Apply knowledge of th
 * This project is implemented in OOP style with the MVC design pattern (most of the time).
 * Class in the project:
     * carObj (carObj.h, carObj.cpp): Represent the properties of a car in the game include it position, velocity, acceleration, direction.
-    * carSprite (carSprite.h, carSprite.cpp): Represent a car in 2D space with a texture and a carObj. 
+    * carSprite (carSprite.h, carSprite.cpp): Represent a car in 2D space with a texture and a carObj.
     * item (item.h, item.cpp):
         * Class represent for items with unique effects in the game.
         * Each type of item is a inherited class of this class with different texture and effect.
@@ -55,9 +55,15 @@ This is the final project for Object Oriented Programming. Apply knowledge of th
 * Tests are using to test the logic of the game and also how an object change it state through specific scenarios. It don't guarantee the UI will work correctly since there is no efficient way to test it.
 ## **Demo**
 * Below is some pictures and videos of the game in action. Enjoy it yourself and give us feedbacks at any time. Thank you!
-### **Game play:** ![gameplay](/documentation/img/gameplay.gif)
-### **Game main menu:** ![main menu](/documentation/img/main_menu.png)
-### **Game mode selection:** ![game mode](/documentation/img/game_mode.png)
-### **Game settings:** ![game settings](/documentation/img/game_setting.png)
-### **Playground in duel mode:** ![duel mode](/documentation/img/duel.png)
-### **Playground in tag mode:** ![tag mode](/documentation/img/tag.png)
+### **Game play:**
+![gameplay](/documentation/img/gameplay.gif)
+### **Game main menu:**
+![main menu](/documentation/img/main_menu.png)
+### **Game mode selection:**
+![game mode](/documentation/img/game_mode.png)
+### **Game settings:**
+![game settings](/documentation/img/game_setting.png)
+### **Playground in duel mode:**
+![duel mode](/documentation/img/duel.png)
+### **Playground in tag mode:**
+![tag mode](/documentation/img/tag.png)

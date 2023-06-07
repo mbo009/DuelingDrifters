@@ -7,7 +7,7 @@ SFML_INCLUDE = ExtLibs/include
 SRC_DIR = code/
 TEST_DIR = tests/
 
-all: release clean
+all: release clean launch
 
 build: compile link
 
