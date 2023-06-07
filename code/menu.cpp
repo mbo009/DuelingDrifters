@@ -1,6 +1,10 @@
 #include "menu.hpp"
-#include <iostream>
 
+/**
+ * @brief Construct a new Menu object
+ * 
+ * @param window pointer to the window
+ */
 Menu::Menu(std::shared_ptr<sf::RenderWindow> &window) : window(window)
 {
     // set FPS cap
@@ -14,69 +18,38 @@ Menu::Menu(std::shared_ptr<sf::RenderWindow> &window) : window(window)
     car2.getCarObj().setMaxSpeed(9);
 }
 
+/**
+ * @brief Load all assets
+ * 
+ */
 void Menu::loadAssets()
 {
-    buttons.push_back(Button(300, 250, "start"));
-    buttons.push_back(Button(300, 600, "exit"));
+    buttons.push_back(Button(300, 250, "start")); // Default position of button
+    buttons.push_back(Button(300, 600, "exit")); // Default position of button
 
-    gameModeButtons.push_back(Button(100, 300, "duel"));
-    gameModeButtons.push_back(Button(500, 300, "flag"));
+    gameModeButtons.push_back(Button(100, 300, "duel")); // Default position of button
+    gameModeButtons.push_back(Button(500, 300, "flag")); // Default position of button
 
-    arrows.push_back(Button(95, 340, "arrowLeft", sf::Vector2f(4, 4)));
-    arrows.push_back(Button(795, 340, "arrowRight", sf::Vector2f(4, 4)));
-    arrows.push_back(Button(95, 590, "arrowLeft", sf::Vector2f(4, 4)));
-    arrows.push_back(Button(795, 590, "arrowRight", sf::Vector2f(4, 4)));
+    arrows.push_back(Button(95, 340, "arrowLeft", sf::Vector2f(4, 4))); // Default position of button
+    arrows.push_back(Button(795, 340, "arrowRight", sf::Vector2f(4, 4))); // Default position of button
+    arrows.push_back(Button(95, 590, "arrowLeft", sf::Vector2f(4, 4))); // Default position of button
+    arrows.push_back(Button(795, 590, "arrowRight", sf::Vector2f(4, 4))); // Default position of button
 
-    settingsButtons.push_back(Button(107, 100, "longTime", sf::Vector2f(4, 3)));
-    settingsButtons.push_back(Button(107, 350, "longPoints", sf::Vector2f(4, 3)));
-    settingsButtons.push_back(Button(300, 680, "start"));
+    settingsButtons.push_back(Button(107, 100, "longTime", sf::Vector2f(4, 3))); // Default position of button
+    settingsButtons.push_back(Button(107, 350, "longPoints", sf::Vector2f(4, 3))); // Default position of button
+    settingsButtons.push_back(Button(300, 680, "start")); // Default position of button
 
     loadFont();
     loadMusic();
-    loadMap();
+    loadBackground();
 
     preloadTextures();
 }
 
-void Menu::preloadButtonTexture(std::vector<Button> &buttons)
-{
-    for (auto &button : buttons)
-    {
-        button.highlight(0);
-    }
-    buttons[currentPosition].highlight(1);
-}
-
-void Menu::preloadTextures()
-{
-    preloadButtonTexture(buttons);
-    preloadButtonTexture(gameModeButtons);
-    preloadButtonTexture(settingsButtons);
-    preloadButtonTexture(arrows);
-}
-
-void Menu::loadMusic()
-{
-    musicBuffer.loadFromFile(ASSET_PATHS_HPP::MUSIC_LIST[1]);
-    music.setBuffer(musicBuffer);
-    music.setVolume(20);
-    music.setLoop(true);
-    music.play();
-}
-
-void Menu::loadMap()
-{
-    mapTexture.loadFromFile(ASSET_PATHS_HPP::MAP_LIST[1]);
-    map.setTexture(mapTexture, true);
-}
-
-void Menu::updateTimeText()
-{
-    int min = static_cast<int>(chosenTimeLimit.asSeconds()) / 60;
-    int sec = static_cast<int>(chosenTimeLimit.asSeconds()) % 60;
-    timeText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
-}
-
+/**
+ * @brief Load font
+ * 
+ */
 void Menu::loadFont()
 {
     // Load from file
@@ -97,17 +70,60 @@ void Menu::loadFont()
     pointsText.setPosition(445, 593);
 }
 
-void Menu::makeCarMove(CarSprite &car, CarSprite &other, unsigned int range = 512)
+/**
+ * @brief Load music
+ * 
+ */
+void Menu::loadMusic()
 {
-    bool up = (car.getX() > range) && (car.getY() > range);
-    bool down = (car.getX() < range) && (car.getY() < range);
-    bool left = (car.getX() > range) && (car.getY() < range);
-    bool right = (car.getX() < range) && (car.getY() > range);
-
-    car.setNextAction(up, left, down, right, other);
-    car.move();
+    musicBuffer.loadFromFile(ASSET_PATHS_HPP::MUSIC_LIST[1]);
+    music.setBuffer(musicBuffer);
+    music.setVolume(20);
+    music.setLoop(true);
+    music.play();
 }
 
+/**
+ * @brief Load background
+ * 
+ */
+void Menu::loadBackground()
+{
+    backgroundTexture.loadFromFile(ASSET_PATHS_HPP::MAP_LIST[1]);
+    background.setTexture(backgroundTexture, true);
+}
+
+/**
+ * @brief Preload textures for buttons for a type of buttons
+ * 
+ * @param buttons vector containing one type of buttons to preload textures
+ */
+void Menu::preloadButtonTexture(std::vector<Button> &buttons)
+{
+    for (auto &button : buttons)
+    {
+        button.highlight(0);
+    }
+    buttons[currentPosition].highlight(1);
+}
+
+/**
+ * @brief preload textures for all buttons
+ * 
+ */
+void Menu::preloadTextures()
+{
+    preloadButtonTexture(buttons);
+    preloadButtonTexture(gameModeButtons);
+    preloadButtonTexture(settingsButtons);
+    preloadButtonTexture(arrows);
+}
+
+/**
+ * @brief Update button highlights while choosing buttons
+ * 
+ * @param buttons vector containing one type of buttons to update highlights
+ */
 void Menu::updateButtonHighlights(std::vector<Button> &buttons)
 {
     if ((isUpPressed || isDownPressed) && wait.getElapsedTime().asMilliseconds() > TIME_BETWEEN_ACTIONS)
@@ -122,6 +138,87 @@ void Menu::updateButtonHighlights(std::vector<Button> &buttons)
     }
 }
 
+/**
+ * @brief Update time text while choosing time limit
+ * 
+ */
+void Menu::updateTimeText()
+{
+    int min = static_cast<int>(chosenTimeLimit.asSeconds()) / 60;
+    int sec = static_cast<int>(chosenTimeLimit.asSeconds()) % 60;
+    timeText.setString((min < 10 ? "0" + std::to_string(min) : std::to_string(min)) + ":" + (sec < 10 ? "0" + std::to_string(sec) : std::to_string(sec)));
+}
+
+/**
+ * @brief Draw buttons
+ * 
+ * @param buttons 
+ */
+void Menu::drawButtons(std::vector<Button> buttons)
+{
+    for (auto &button : buttons)
+    {
+        window->draw(button);
+    }
+}
+
+/**
+ * @brief Draw background with title text
+ * 
+ * @param textToDraw 
+ */
+void Menu::drawBackground(sf::Text textToDraw)
+{
+    window->clear(sf::Color::Black);
+    window->draw(background);
+    window->draw(textToDraw);
+    window->draw(car1);
+    window->draw(car2);
+}
+
+/**
+ * @brief Restart camera position (reset view)
+ * 
+ */
+void Menu::restartCameraPosition()
+{
+    sf::View view;
+    view.setCenter(512, 512);
+    window->setView(view);
+}
+
+/**
+ * @brief Make cars moving around the screen for decoration
+ * 
+ * @param car 
+ * @param other 
+ * @param range 
+ */
+void Menu::makeCarMove(CarSprite &car, CarSprite &other, unsigned int range = 512)
+{
+    bool up = (car.getX() > range) && (car.getY() > range);
+    bool down = (car.getX() < range) && (car.getY() < range);
+    bool left = (car.getX() > range) && (car.getY() < range);
+    bool right = (car.getX() < range) && (car.getY() > range);
+
+    car.setNextAction(up, left, down, right, other);
+    car.move();
+}
+
+/**
+ * @brief Make cars moving around the screen for decoration
+ * 
+ */
+void Menu::moveCars()
+{
+    makeCarMove(car1, car2);
+    makeCarMove(car2, car1);
+}
+
+/**
+ * @brief Draw menu
+ * 
+ */
 void Menu::mainMenu()
 {
     if (isAcceptPressed)
@@ -135,6 +232,10 @@ void Menu::mainMenu()
     window->display();
 }
 
+/**
+ * @brief Draw game mode choosing menu
+ * 
+ */
 void Menu::gameModeMenu()
 {
     if (isAcceptPressed)
@@ -153,15 +254,10 @@ void Menu::gameModeMenu()
     window->display();
 }
 
-void Menu::drawBackground(sf::Text textToDraw)
-{
-    window->clear(sf::Color::Black);
-    window->draw(map);
-    window->draw(textToDraw);
-    window->draw(car1);
-    window->draw(car2);
-}
-
+/**
+ * @brief Draw game settings menu
+ * 
+ */
 void Menu::gameSettings()
 {
     if (isLeftPressed || isRightPressed || isAcceptPressed)
@@ -178,20 +274,12 @@ void Menu::gameSettings()
     window->display();
 }
 
-void Menu::moveCars()
-{
-    makeCarMove(car1, car2);
-    makeCarMove(car2, car1);
-}
 
-void Menu::drawButtons(std::vector<Button> buttons)
-{
-    for (auto &button : buttons)
-    {
-        window->draw(button);
-    }
-}
-
+/**
+ * @brief Handle events when user interacts with the window (presses a key, clicks, etc.)
+ * 
+ * @param event 
+ */
 void Menu::handleEvent(sf::Event &event)
 {
     if (event.type == sf::Event::Closed)
@@ -207,13 +295,12 @@ void Menu::handleEvent(sf::Event &event)
             {
                 isChoosingGameMode = 1;
                 isSettingsMenu = 0;
+                wait.restart();
             }
-
-            if (isChoosingGameMode)
-                isChoosingGameMode = 0;
-
-            else
-                window->close();
+            else {
+                if (isChoosingGameMode)
+                    isChoosingGameMode = 0;
+            }
         }
 
         isUpPressed = areKeysPressed(UP_BUTTONS);
@@ -235,32 +322,10 @@ void Menu::handleEvent(sf::Event &event)
     }
 }
 
-bool Menu::areKeysPressed(std::vector<sf::Keyboard::Key> keys)
-{
-    bool output = False;
-    for (auto &key : keys)
-        output = output || sf::Keyboard::isKeyPressed(key);
-    return output;
-}
-
-void Menu::restartCameraPosition()
-{
-    sf::View view;
-    view.setCenter(512, 512);
-    window->setView(view);
-}
-
-void Menu::resetAfterRound()
-{
-    wait.restart();
-    restartCameraPosition();
-    buttons[currentPosition].highlight(0);
-    gameModeButtons[currentPosition].highlight(0);
-    currentPosition = 0;
-    preloadTextures();
-    music.play();
-}
-
+/**
+ * @brief Draw objects and handle events on window
+ * 
+ */
 void Menu::loadObjectsRound()
 {
     if (!isGameActive)
@@ -285,6 +350,11 @@ void Menu::loadObjectsRound()
     }
 }
 
+/**
+ * @brief Make action after button is pressed
+ * 
+ * @param buttonsList 
+ */
 void Menu::buttonPressed(std::vector<Button> &buttonsList)
 {
     if (buttonsList[currentPosition].getName() == "start")
@@ -358,4 +428,33 @@ void Menu::buttonPressed(std::vector<Button> &buttonsList)
     }
 
     isAcceptPressed = 0;
+}
+
+/**
+ * @brief Check if any of the keys from the vector is pressed
+ * 
+ * @param keys 
+ * @return true false
+ */
+bool Menu::areKeysPressed(std::vector<sf::Keyboard::Key> keys)
+{
+    bool output = False;
+    for (auto &key : keys)
+        output = output || sf::Keyboard::isKeyPressed(key);
+    return output;
+}
+
+/**
+ * @brief Reset menu properties
+ * 
+ */
+void Menu::resetAfterRound()
+{
+    restartCameraPosition();
+    buttons[currentPosition].highlight(0);
+    gameModeButtons[currentPosition].highlight(0);
+    currentPosition = 0;
+    preloadTextures();
+    music.play();
+    wait.restart();
 }

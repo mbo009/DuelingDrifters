@@ -18,6 +18,9 @@
 #include "exception.hpp"
 #include "item.hpp"
 
+/**
+ * @brief Class that represents the car sprite, with the texture, position, and the car object.
+ */
 class CarSprite : public sf::Sprite
 {
 public:

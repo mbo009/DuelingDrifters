@@ -256,7 +256,7 @@ void CarSprite::resetCar()
 }
 
 /**
- * @brief Nomalize the string to lower case.
+ * @brief Normalize the string to lower case.
  *
  * @param str
  * @return std::string

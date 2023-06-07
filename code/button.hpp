@@ -14,6 +14,10 @@
 #include "SFML/Graphics.hpp"
 #include "assetPaths.hpp"
 
+/**
+ * @brief Class for the buttons.
+ * Required: the name of the button, position. Optional: scale
+ */
 class Button : public sf::Sprite
 {
 public:
