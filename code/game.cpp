@@ -2,7 +2,7 @@
 
 /**
  * @brief Construct a new Game object
- * 
+ *
  * @param window Pointer to the window
  * @param font Font inherited from menu
  * @param gameMode Game mode chosen by the player
@@ -35,7 +35,7 @@ Game::Game(std::shared_ptr<sf::RenderWindow> &window, sf::Font &font, unsigned i
 
 /**
  * @brief Load all assets
- * 
+ *
  */
 void Game::loadAssets()
 {
@@ -50,7 +50,7 @@ void Game::loadAssets()
 
 /**
  * @brief Load font from asset paths
- * 
+ *
  */
 void Game::loadFont()
 {
@@ -66,7 +66,7 @@ void Game::loadFont()
 
 /**
  * @brief Load map texture from asset paths
- * 
+ *
  */
 void Game::loadMap()
 {
@@ -74,12 +74,12 @@ void Game::loadMap()
     mapTexture.loadFromFile(ASSET_PATHS_HPP::MAP_LIST[0]);
     map.setTexture(mapTexture, true);
     map.setScale(sf::Vector2f(MAP_SCALE, MAP_SCALE));
-    map.setOrigin(190, 230);    // Set origin to the center of the map
+    map.setOrigin(190, 230); // Set origin to the center of the map
 }
 
 /**
  * @brief Load sound from asset paths (music, start sound, crash sound, victory sound)
- * 
+ *
  */
 void Game::loadSound()
 {
@@ -110,7 +110,7 @@ void Game::loadSound()
 
 /**
  * @brief Reset cars position to the starting position
- * 
+ *
  */
 void Game::resetCarsPosition()
 {
@@ -148,7 +148,7 @@ void Game::spawnItem()
 {
     std::srand(std::time(nullptr));
     float xItemPos = BORDER_LEFT + 30 + (755 * std::rand() % static_cast<int>(BORDER_RIGHT - BORDER_LEFT - 60)); // Randomize item position
-    float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60)); // Randomize item position
+    float yItemPos = BORDER_TOP + 30 + (521 * std::rand() % static_cast<int>(BORDER_BOTTOM - BORDER_TOP - 60));  // Randomize item position
     sf::Clock itemClock = sf::Clock();
 
     itemsOnMap.push_back(
@@ -161,7 +161,7 @@ void Game::spawnItem()
 
 /**
  * @brief Choose objects to draw on the screen.
- * 
+ *
  * @param drawCar boolean to choose whether to draw cars
  * @param drawTimer boolean to choose whether to draw timer
  * @param drawPoints boolean to choose whether to draw points
@@ -194,8 +194,8 @@ void Game::drawObjects(bool drawCar, bool drawTimer, bool drawPoints, bool drawF
 
 /**
  * @brief Check if there is a collision between two cars.
- * 
- * @return true false 
+ *
+ * @return true false
  */
 bool Game::checkCarCollisions()
 {
@@ -209,9 +209,9 @@ bool Game::checkCarCollisions()
 }
 
 /**
- * @brief Handle car collision by pushing the cars away from each other. 
+ * @brief Handle car collision by pushing the cars away from each other.
  * Calculate the dot product of the relative velocity and the relative position vectors to which car pushes the other.
- * 
+ *
  */
 void Game::handleCarCollision()
 {
@@ -286,7 +286,7 @@ void Game::handleItemAction()
 
 /**
  * @brief Apply item effects to the car.
- * 
+ *
  * @param car Car to apply item effects to
  * @param item Item to apply
  */
@@ -320,18 +320,26 @@ void Game::useItem(CarSprite &car, Item &item)
 
 /**
  * @brief Check if car crossed the border of the map.
- * 
- * @param car 
- * @return true false 
+ *
+ * @param car
+ * @return unsigned int:
+    0 - CAR DIDN'T CROSS LINE
+    1 - UP / DOWN
+    2 - LEFT / RIGHT
  */
-bool Game::carCrossedLine(const CarSprite &car)
+unsigned int Game::carCrossedLine(const CarSprite &car)
 {
-    return !(car.getX() > BORDER_LEFT && car.getY() > BORDER_TOP && car.getX() < BORDER_RIGHT && car.getY() < BORDER_BOTTOM);
+    if (car.getY() < BORDER_TOP || car.getY() > BORDER_BOTTOM)
+        return 1;
+    if (car.getX() > BORDER_RIGHT || car.getX() < BORDER_LEFT)
+        return 2;
+    return 0;
+    // return !(car.getX() > BORDER_LEFT && car.getY() > BORDER_TOP && car.getX() < BORDER_RIGHT && car.getY() < BORDER_BOTTOM);
 }
 
 /**
  * @brief Announce the winner of the round then count down to the next round.
- * 
+ *
  * @param winner Previous round winner
  */
 void Game::countDown(unsigned int winner)
@@ -367,9 +375,9 @@ void Game::countDown(unsigned int winner)
     clock.restart();
 }
 
-/** 
+/**
  * @brief Print message on the screen.
-*/
+ */
 void Game::printMsg(const std::string &msg, float x, float y)
 {
     message.setString(msg);
@@ -382,7 +390,7 @@ void Game::printMsg(const std::string &msg, float x, float y)
 
 /**
  * @brief End the game and display the winner.
- * 
+ *
  */
 void Game::endGame()
 {
@@ -403,7 +411,7 @@ void Game::endGame()
     if (winner > 0)
     {
         winnerText.setString(" Winner\n   is  \nPlayer " + std::to_string(winner));
-        (winner - 1) ? car1.setPosition(430, 450) : car2.setPosition(430, 450); // Final winner is in the middle
+        (winner - 1) ? car1.setPosition(430, 450) : car2.setPosition(430, 450);     // Final winner is in the middle
         (winner - 1) ? car2.setPosition(5000, 5000) : car1.setPosition(5000, 5000); // Final loser is out of the screen
         rotateCars(winnerText);
     }
@@ -421,7 +429,7 @@ void Game::endGame()
 
 /**
  * @brief Rotate cars 360 degrees and display the winner.
- * 
+ *
  * @param textToDisplay Content of winner announcement
  */
 void Game::rotateCars(sf::Text textToDisplay)
@@ -441,12 +449,12 @@ void Game::rotateCars(sf::Text textToDisplay)
 
 /**
  * @brief End round procedure for duel mode.
- * 
+ *
  */
 void Game::duelEndCondition()
 {
-    bool car1CrossedLine = carCrossedLine(car1);
-    bool car2CrossedLine = carCrossedLine(car2);
+    bool car1CrossedLine = carCrossedLine(car1) > 0;
+    bool car2CrossedLine = carCrossedLine(car2) > 0;
     unsigned int roundWinner = 0;
     if (car1CrossedLine)
     {
@@ -469,7 +477,7 @@ void Game::duelEndCondition()
 
 /**
  * @brief Draw objects for duel mode and handle events.
- * 
+ *
  */
 void Game::loadDuelRound()
 {
@@ -504,20 +512,30 @@ void Game::loadDuelRound()
 
 /**
  * @brief Check if car hit the wall and bounce it back to the map.
- * 
+ *
  */
 void Game::checkBounceCondition()
 {
     // If car hit the wall, bounce it back to the map using getPushed function
-    if (carCrossedLine(car1))
-        car1.getPushed(-car1.getVelocity().x, -car1.getVelocity().y);
+    std::map<unsigned int, std::vector<float>> bounceDirectionMultipliers = {
+        {1, {0.75, -0.75}},
+        {2, {-0.75, 0.75}}};
+    if (carCrossedLine(car1) > 0)
+    {
+        unsigned int situation = carCrossedLine(car1);
+        car1.getPushed(car1.getVelocity().x * bounceDirectionMultipliers[situation][0], car1.getVelocity().y * bounceDirectionMultipliers[situation][1]);
+    }
+
     if (carCrossedLine(car2))
-        car2.getPushed(-car2.getVelocity().x, -car2.getVelocity().y);
+    {
+        unsigned int situation = carCrossedLine(car2);
+        car2.getPushed(car2.getVelocity().x * bounceDirectionMultipliers[situation][0], car2.getVelocity().y * bounceDirectionMultipliers[situation][1]);
+    }
 }
 
 /**
  * @brief Check if the flag is held by a car or steal the flag from the other car.
- * 
+ *
  */
 void Game::checkFlag()
 {
@@ -546,7 +564,7 @@ void Game::checkFlag()
 
 /**
  * @brief End round procedure for tag mode.
- * 
+ *
  */
 void Game::tagEndCondition()
 {
@@ -569,7 +587,7 @@ void Game::tagEndCondition()
 
 /**
  * @brief Draw objects for tag mode and handle events.
- * 
+ *
  */
 void Game::loadTagRound()
 {
@@ -609,8 +627,8 @@ void Game::loadTagRound()
 
 /**
  * @brief Handle events from the window. Get input (key pressed) from the player.
- * 
- * @return int 
+ *
+ * @return int
  */
 int Game::handleEvent()
 {
@@ -648,7 +666,7 @@ int Game::handleEvent()
 
 /**
  * @brief Draw objects and handle events base on game mode.
- * 
+ *
  */
 void Game::loadObjectsRound()
 {
@@ -657,8 +675,8 @@ void Game::loadObjectsRound()
 
 /**
  * @brief Check if the game is ended.
- * 
- * @return true false 
+ *
+ * @return true false
  */
 bool Game::isEnded()
 {

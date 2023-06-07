@@ -3,7 +3,7 @@
  * @author Binh Vuong Le Duc, Filip Ryniewicz, Cieśla Miłosz
  * @brief Class that represents the game, control properties and handle events while in game.
  * @date 2023-06-07
- * 
+ *
  */
 #ifndef GAME_HPP
 #define GAME_HPP
@@ -19,7 +19,7 @@
 
 /**
  * @brief Class that represents the game, control properties and handle events while in game.
- * 
+ *
  */
 class Game
 {
@@ -42,7 +42,7 @@ public:
     void handleCarCollision();
     void handleItemAction();
     void useItem(CarSprite &car, Item &item);
-    bool carCrossedLine(const CarSprite &car);
+    unsigned int carCrossedLine(const CarSprite &car);
     void countDown(unsigned int winner);
     void printMsg(const std::string &msg, float x, float y);
     void endGame();
@@ -78,10 +78,9 @@ private:
     const float MAP_SCALE = 1.5;
     const float CAR_SCALE = 2.5;
     const float FLAG_SCALE = 1.75;
-    const std::pair <int, int> CAR1_START_POS = {80, 50};
-    const std::pair <int, int> CAR2_START_POS = {850, 850};
-    const std::pair <int, int> FLAG_START_POS = {480, 470};
-
+    const std::pair<int, int> CAR1_START_POS = {80, 50};
+    const std::pair<int, int> CAR2_START_POS = {850, 850};
+    const std::pair<int, int> FLAG_START_POS = {480, 470};
 
     // PLAYGROUND BORDERS
     const float BORDER_LEFT = 40;

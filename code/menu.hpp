@@ -14,7 +14,7 @@
 
 /**
  * @brief Class that represents the menu, contains all type of menus settings and functions before the game starts
- * 
+ *
  */
 class Menu
 {
@@ -27,7 +27,7 @@ public:
     void preloadTextures();
     void updateButtonHighlights(std::vector<Button> &buttons);
     void updateTimeText();
-    
+
     void drawButtons(std::vector<Button> buttons);
     void drawBackground(sf::Text textToDraw);
     void restartCameraPosition();
