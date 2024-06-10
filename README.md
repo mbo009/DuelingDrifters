@@ -6,7 +6,7 @@
     * Filip Ryniewicz
     * Cieśla Miłosz
     * Binh Vuong Le Duc
-* Instructor: mgr inż. Mateusz Mordrzejewski
+* Instructor: mgr inż. Mateusz Modrzejewski
 
 ## **Description**
 This is the final project for Object Oriented Programming. Apply knowledge of the C++ programming language as well as the fundamentals of object-oriented programming, design patterns, the git version management system, the SFML graphics library, and the catch2 test library.
